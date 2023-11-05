@@ -3,7 +3,7 @@ package com.example.deportestr.ui.screens.viewmodels
 import androidx.compose.runtime.toMutableStateList
 import com.example.deportestr.ui.models.UserMessages
 
-class ConversationViewModel(
+class SportsViewModel(
     val channelName: String,
     val channelMembers: Int,
     initialMessages: List<UserMessages>

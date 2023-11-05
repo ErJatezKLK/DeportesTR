@@ -98,7 +98,7 @@ fun ItemSport(sport: Sport, goFormula: NavHostController) {
         ) {
             Column {
                 Image(
-                    painter = painterResource(id = sport.photo),
+                    painter = painterResource(id = R.drawable.futbol),
                     contentDescription = null,
                     Modifier.fillMaxWidth(),
                 )
@@ -121,7 +121,7 @@ fun ItemSport(sport: Sport, goFormula: NavHostController) {
         ) {
             Column {
                 Image(
-                    painter = painterResource(id = sport.photo),
+                    painter = painterResource(id = R.drawable.f_uno),
                     contentDescription = null,
                     Modifier.fillMaxWidth(),
                 )
@@ -144,7 +144,7 @@ fun ItemSport(sport: Sport, goFormula: NavHostController) {
         ) {
             Column {
                 Image(
-                    painter = painterResource(id = sport.photo),
+                    painter = painterResource(id = R.drawable.tenis),
                     contentDescription = null,
                     Modifier.fillMaxWidth(),
                 )
@@ -167,7 +167,7 @@ fun ItemSport(sport: Sport, goFormula: NavHostController) {
         ) {
             Column {
                 Image(
-                    painter = painterResource(id = sport.photo),
+                    painter = painterResource(id = R.drawable.motogp),
                     contentDescription = null,
                     Modifier.fillMaxWidth(),
                 )
@@ -190,7 +190,7 @@ fun ItemSport(sport: Sport, goFormula: NavHostController) {
         ) {
             Column {
                 Image(
-                    painter = painterResource(id = sport.photo),
+                    painter = painterResource(id = R.drawable.baloncesto),
                     contentDescription = null,
                     Modifier.fillMaxWidth(),
                 )
@@ -213,7 +213,7 @@ fun ItemSport(sport: Sport, goFormula: NavHostController) {
         ) {
             Column {
                 Image(
-                    painter = painterResource(id = sport.photo),
+                    painter = painterResource(id = R.drawable.wrc),
                     contentDescription = null,
                     Modifier.fillMaxWidth(),
                 )
@@ -233,12 +233,12 @@ fun ItemSport(sport: Sport, goFormula: NavHostController) {
 
 fun getSports(): List<Sport> {
     return listOf(
-        Sport(1, "Futbol base de datos", R.drawable.futbol),
-        Sport(2, "Formula 1 base de datos", R.drawable.f_uno),
-        Sport(3, "Tenis base de datos", R.drawable.tenis),
-        Sport(4, "MotoGP base de datos", R.drawable.motogp),
-        Sport(5, "Baloncesto base de datos", R.drawable.baloncesto),
-        Sport(6, "WRC base de datos", R.drawable.wrc)
+        Sport(1, "Futbol base de datos"),
+        Sport(2, "Formula 1 base de datos"),
+        Sport(3, "Tenis base de datos"),
+        Sport(4, "MotoGP base de datos"),
+        Sport(5, "Baloncesto base de datos"),
+        Sport(6, "WRC base de datos")
     )
 }
 

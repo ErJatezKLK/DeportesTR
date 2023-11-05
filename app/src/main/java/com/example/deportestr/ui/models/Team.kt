@@ -1,12 +1,12 @@
 package com.example.deportestr.ui.models
 
-import java.sql.Date
+
+import java.sql.Timestamp
 
 data class Team(
     var id: Int,
     var name: String,
-    var creationDate: Date,
+    var creationDate: Timestamp,
     var pais: String,
     var deporte: Sport
-) {
-}
+)

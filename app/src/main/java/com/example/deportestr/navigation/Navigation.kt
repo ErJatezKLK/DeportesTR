@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.deportestr.ui.models.User
+import com.example.deportestr.ui.models.UserMessages
 import com.example.deportestr.ui.screens.FormulaScreen
 import com.example.deportestr.ui.screens.HomeScreen
 import com.example.deportestr.ui.screens.LoginScreen
