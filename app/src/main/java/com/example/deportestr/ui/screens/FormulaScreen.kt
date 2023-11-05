@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -88,8 +89,8 @@ fun FormulaScreen(
 
 @Composable
 fun FormulaContent(user: User) {
-    LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
-        items(sportEvents()){ sportEvent ->
+    LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
+        items(sportEvents()) { sportEvent ->
             ItemEvent(sportEvent = sportEvent, teams = teamsList())
 
         }
@@ -100,68 +101,133 @@ fun FormulaContent(user: User) {
 }
 
 
-
 @Composable
 fun ItemEvent(sportEvent: SportEvent, teams: List<Team>) {
-
-    Card(
-        modifier = Modifier
-            .clickable { }
-            .fillMaxWidth()
-            .background(Color(0xFF303030)),
-        shape = MaterialTheme.shapes.small
-    ) {
-        Column {
-            Row(modifier = Modifier.align(Alignment.Start)) {
+    when (sportEvent.id) {
+        sportEvent.id -> Card(
+            modifier = Modifier
+                .clickable { }
+                .fillMaxWidth()
+                .background(Color(0xFFAD0000))
+                .padding(8.dp),
+            shape = MaterialTheme.shapes.small
+        ) {
+            Column {
                 Text(
-                    text = "",
-                    fontSize = 20.sp,
+                    text = teams[0].name,
+                    fontSize = 18.sp,
                     modifier = Modifier.padding(2.dp)
                 )
                 Text(
-                    text = "",
-                    fontSize = 20.sp,
+                    text = teams[1].name,
+                    fontSize = 18.sp,
                     modifier = Modifier.padding(2.dp)
                 )
                 Text(
-                        text = sportEvent.localTeam.name,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(2.dp)
+                    text = teams[2].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
                 )
-
-
+                Text(
+                    text = teams[3].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[4].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+            }
+            Column {
+                Text(
+                    text = teams[5].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[6].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[7].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[8].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[9].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = sportEvent.result,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = sportEvent.location,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
 }
 
 fun sportEvents(): List<SportEvent> {
-    val date = Timestamp(2023-11-5)
-    val aston = Team(1, "Fernando PADRONSO", creationDate = date,"Vota al Brexit", Sport(2,"Formula 1"))
-    val redBull = Team(2, "Verstappen y Marko", creationDate = date,"Austria", Sport(2,"Formula 1"))
-    val mercedes = Team(3, "Mercedes", creationDate = date,"Tambien vota al brexit", Sport(2,"Formula 1"))
+    val date = Timestamp(2023 - 11 - 5)
+    val aston =
+        Team(1, "Fernando PADRONSO", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1"))
+    val redBull =
+        Team(2, "Verstappen y Marko", creationDate = date, "Austria", Sport(2, "Formula 1"))
+    val mercedes =
+        Team(3, "Mercedes", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1"))
     return listOf(
-        SportEvent(1, aston, redBull,"Gana Macs Visparten", "Mexico"),
-        SportEvent(2, aston, redBull,"3er EL VIEJO SABROSO", "Brasil"),
-        SportEvent(3, aston, redBull,"Max a la carcel por trampuchero", "Las vegas"),
-        SportEvent(4, aston, redBull,"Goatifi", "Yas marina")
+        SportEvent(1, aston, redBull, "Macs Visparten gana", "Mexico"),
+        SportEvent(2, mercedes, redBull, "MAGIIIC", "Brasil"),
+        SportEvent(3, aston, mercedes, "Macs Trampuchero", "Las vegas"),
+        SportEvent(4, mercedes, aston, "Goatifi", "Yas marina")
     )
 }
 
 fun teamsList(): List<Team> {
-    val date = Timestamp(2023-11-5)
+    val date = Timestamp(2023 - 11 - 5)
 
     return listOf(
-        Team(1, "Aston Martin", creationDate = date,"Vota al Brexit", Sport(2,"Formula 1")),
-        Team(2, "Bed Rull", creationDate = date,"Austria", Sport(2,"Formula 1")),
-        Team(3, "Mercedes", creationDate = date,"Tambien vota al brexit", Sport(2,"Formula 1")),
-        Team(4, "Mclaren", creationDate = date,"Lo mismo que mercedes", Sport(2,"Formula 1")),
-        Team(5, "Los putos gabachos", creationDate = date,"No deberia existir", Sport(2,"Formula 1")),
-        Team(6, "Ferrari", creationDate = date,"Pasta Boys", Sport(2,"Formula 1")),
-        Team(7, "Alphatauri", creationDate = date,"Austria supongo", Sport(2,"Formula 1")),
-        Team(8, "Williams", creationDate = date,"No se", Sport(2,"Formula 1")),
-        Team(9, "Haas", creationDate = date,"WTF IS A KILOMETER *gun shots and a chopper*", Sport(2,"Formula 1")),
-        Team(10, "Alfa romeo", creationDate = date,"Pasta boys 2", Sport(2,"Formula 1"))
+        Team(1, "La Mision???", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1")),
+        Team(2, "Bed Rull", creationDate = date, "Austria", Sport(2, "Formula 1")),
+        Team(3, "Votan por el brexit", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1")),
+        Team(4, "Votan por el brexit y van bien", creationDate = date, "Lo mismo que mercedes", Sport(2, "Formula 1")),
+        Team(
+            5,
+            "Los putos gabachos",
+            creationDate = date,
+            "No deberia existir",
+            Sport(2, "Formula 1")
+        ),
+        Team(6, "Strotegy", creationDate = date, "Pasta Boys", Sport(2, "Formula 1")),
+        Team(7, "Toro Alfa", creationDate = date, "Austria supongo", Sport(2, "Formula 1")),
+        Team(8, "Votan por el brexit y son lentos", creationDate = date, "No se", Sport(2, "Formula 1")),
+        Team(
+            9,
+            "WTF IS A KILOMETER *gun shots and a chopper*",
+            creationDate = date,
+            "",
+            Sport(2, "Formula 1")
+        ),
+        Team(10, "Alfa Bromeo", creationDate = date, "Pasta boys 2", Sport(2, "Formula 1"))
     )
 }
 
