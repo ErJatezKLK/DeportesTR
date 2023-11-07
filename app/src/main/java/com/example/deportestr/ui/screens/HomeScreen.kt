@@ -1,20 +1,26 @@
 package com.example.deportestr.ui.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
@@ -29,12 +35,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -68,8 +82,7 @@ fun HomeScreen(
     }, drawerState = drawerState) {
         Scaffold(topBar = {
             TopBarContent(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
-        }) {
-                innerPadding ->
+        }) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
                 HomeBody(goFormula)
             }
@@ -77,168 +90,82 @@ fun HomeScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeBody(goFormula: NavHostController) {
-    LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
-        items(getSports()) { sport ->
-            ItemSport(sport = sport, goFormula)
-        }
-    })
-}
+    var selectedTabIndex by remember {
+        mutableIntStateOf(0)
+    }
 
-@Composable
-fun ItemSport(sport: Sport, goFormula: NavHostController) {
-    when(sport.id){
-        1 ->  Card(
-            modifier = Modifier
-                .clickable {  }
-                .fillMaxWidth()
-                .background(Color(0xFF303030)),
-            shape = MaterialTheme.shapes.small
-        ) {
-            Column {
-                Image(
-                    painter = painterResource(id = R.drawable.futbol),
-                    contentDescription = null,
-                    Modifier.fillMaxWidth(),
+    val sports = getSports()
+    val pagerState = rememberPagerState {
+        sports.size
+    }
+    LaunchedEffect(selectedTabIndex) {
+        pagerState.animateScrollToPage(selectedTabIndex)
+        selectedTabIndex = pagerState.currentPage
+    }
+
+    Column {
+        ScrollableTabRow(selectedTabIndex = selectedTabIndex) {
+            sports.forEachIndexed { index, sport ->
+                Tab(
+                    selected = index == selectedTabIndex,
+                    onClick = { selectedTabIndex = index },
+                    text = { Text(text = sport.name) }
                 )
-                Row(modifier = Modifier.align(Alignment.Start)) {
-                    Text(
-                        text = sport.name,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(2.dp)
-                    )
-                    Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
-                }
             }
         }
-        2 ->  Card(
+        HorizontalPager(
+            state = pagerState,
             modifier = Modifier
-                .clickable { goFormula.navigate(route = AppScreens.FormulaScreen.route) }
                 .fillMaxWidth()
-                .background(Color(0xFF303030)),
-            shape = MaterialTheme.shapes.small
-        ) {
-            Column {
-                Image(
-                    painter = painterResource(id = R.drawable.f_uno),
-                    contentDescription = null,
-                    Modifier.fillMaxWidth(),
-                )
-                Row(modifier = Modifier.align(Alignment.Start)) {
-                    Text(
-                        text = sport.name,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(2.dp)
-                    )
-                    Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
-                }
-            }
-        }
-        3 ->  Card(
-            modifier = Modifier
-                .clickable {  }
-                .fillMaxWidth()
-                .background(Color(0xFF303030)),
-            shape = MaterialTheme.shapes.small
-        ) {
-            Column {
-                Image(
-                    painter = painterResource(id = R.drawable.tenis),
-                    contentDescription = null,
-                    Modifier.fillMaxWidth(),
-                )
-                Row(modifier = Modifier.align(Alignment.Start)) {
-                    Text(
-                        text = sport.name,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(2.dp)
-                    )
-                    Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
-                }
-            }
-        }
-        4 ->  Card(
-            modifier = Modifier
-                .clickable {  }
-                .fillMaxWidth()
-                .background(Color(0xFF303030)),
-            shape = MaterialTheme.shapes.small
-        ) {
-            Column {
-                Image(
-                    painter = painterResource(id = R.drawable.motogp),
-                    contentDescription = null,
-                    Modifier.fillMaxWidth(),
-                )
-                Row(modifier = Modifier.align(Alignment.Start)) {
-                    Text(
-                        text = sport.name,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(2.dp)
-                    )
-                    Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
-                }
-            }
-        }
-        5 ->  Card(
-            modifier = Modifier
-                .clickable {  }
-                .fillMaxWidth()
-                .background(Color(0xFF303030)),
-            shape = MaterialTheme.shapes.small
-        ) {
-            Column {
-                Image(
-                    painter = painterResource(id = R.drawable.baloncesto),
-                    contentDescription = null,
-                    Modifier.fillMaxWidth(),
-                )
-                Row(modifier = Modifier.align(Alignment.Start)) {
-                    Text(
-                        text = sport.name,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(2.dp)
-                    )
-                    Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
-                }
-            }
-        }
-        6 ->  Card(
-            modifier = Modifier
-                .clickable {  }
-                .fillMaxWidth()
-                .background(Color(0xFF303030)),
-            shape = MaterialTheme.shapes.small
-        ) {
-            Column {
-                Image(
-                    painter = painterResource(id = R.drawable.wrc),
-                    contentDescription = null,
-                    Modifier.fillMaxWidth(),
-                )
-                Row(modifier = Modifier.align(Alignment.Start)) {
-                    Text(
-                        text = sport.name,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(2.dp)
-                    )
-                    Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
+                .weight(1f)
+        ) { index ->
+            Box(modifier = Modifier.fillMaxSize()) {
+                Card(
+                    modifier = Modifier
+                        .clickable { }
+                        .fillMaxWidth()
+                        .background(Color(0xFF303030)),
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Column {
+                        Image(
+                            painter = painterResource(id = sports[index].photo),
+                            contentDescription = null,
+                            Modifier.fillMaxWidth(),
+                        )
+                        Row(modifier = Modifier.align(Alignment.Start)) {
+                            Text(
+                                text = sports[index].name,
+                                fontSize = 20.sp,
+                                modifier = Modifier.padding(2.dp)
+                            )
+                            Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
+                        }
+                    }
                 }
             }
         }
     }
+}
+
+
+@Composable
+fun ItemSport(sport: Sport, goFormula: NavHostController) {
+
 
 }
 
 fun getSports(): List<Sport> {
     return listOf(
-        Sport(1, "Futbol base de datos"),
-        Sport(2, "Formula 1 base de datos"),
-        Sport(3, "Tenis base de datos"),
-        Sport(4, "MotoGP base de datos"),
-        Sport(5, "Baloncesto base de datos"),
-        Sport(6, "WRC base de datos")
+        Sport(1, "Futbol base de datos", R.drawable.futbol),
+        Sport(2, "Formula 1 base de datos", R.drawable.f_uno),
+        Sport(3, "Tenis base de datos", R.drawable.tenis),
+        Sport(4, "MotoGP base de datos", R.drawable.motogp),
+        Sport(5, "Baloncesto base de datos", R.drawable.baloncesto),
+        Sport(6, "WRC base de datos", R.drawable.wrc)
     )
 }
 
@@ -331,3 +258,7 @@ fun DrawerContent(
         }
     }
 }
+
+data class TabItem(
+    val title: String
+)

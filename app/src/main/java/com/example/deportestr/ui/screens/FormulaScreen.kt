@@ -189,11 +189,11 @@ fun ItemEvent(sportEvent: SportEvent, teams: List<Team>) {
 fun sportEvents(): List<SportEvent> {
     val date = Timestamp(2023 - 11 - 5)
     val aston =
-        Team(1, "Fernando PADRONSO", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1"))
+        Team(1, "Fernando PADRONSO", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1", R.drawable.f_uno))
     val redBull =
-        Team(2, "Verstappen y Marko", creationDate = date, "Austria", Sport(2, "Formula 1"))
+        Team(2, "Verstappen y Marko", creationDate = date, "Austria", Sport(2, "Formula 1", R.drawable.f_uno))
     val mercedes =
-        Team(3, "Mercedes", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1"))
+        Team(3, "Mercedes", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1", R.drawable.f_uno))
     return listOf(
         SportEvent(1, aston, redBull, "Macs Visparten gana", "Mexico"),
         SportEvent(2, mercedes, redBull, "MAGIIIC", "Brasil"),
@@ -206,28 +206,28 @@ fun teamsList(): List<Team> {
     val date = Timestamp(2023 - 11 - 5)
 
     return listOf(
-        Team(1, "La Mision???", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1")),
-        Team(2, "Bed Rull", creationDate = date, "Austria", Sport(2, "Formula 1")),
-        Team(3, "Votan por el brexit", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1")),
-        Team(4, "Votan por el brexit y van bien", creationDate = date, "Lo mismo que mercedes", Sport(2, "Formula 1")),
+        Team(1, "La Mision???", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1", R.drawable.f_uno)),
+        Team(2, "Bed Rull", creationDate = date, "Austria", Sport(2, "Formula 1", R.drawable.f_uno)),
+        Team(3, "Votan por el brexit", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1", R.drawable.f_uno)),
+        Team(4, "Votan por el brexit y van bien", creationDate = date, "Lo mismo que mercedes", Sport(2, "Formula 1", R.drawable.f_uno)),
         Team(
             5,
             "Los putos gabachos",
             creationDate = date,
             "No deberia existir",
-            Sport(2, "Formula 1")
+            Sport(2, "Formula 1", R.drawable.f_uno)
         ),
-        Team(6, "Strotegy", creationDate = date, "Pasta Boys", Sport(2, "Formula 1")),
-        Team(7, "Toro Alfa", creationDate = date, "Austria supongo", Sport(2, "Formula 1")),
-        Team(8, "Votan por el brexit y son lentos", creationDate = date, "No se", Sport(2, "Formula 1")),
+        Team(6, "Strotegy", creationDate = date, "Pasta Boys", Sport(2, "Formula 1", R.drawable.f_uno)),
+        Team(7, "Toro Alfa", creationDate = date, "Austria supongo", Sport(2, "Formula 1", R.drawable.f_uno)),
+        Team(8, "Votan por el brexit y son lentos", creationDate = date, "No se", Sport(2, "Formula 1", R.drawable.f_uno)),
         Team(
             9,
             "WTF IS A KILOMETER *gun shots and a chopper*",
             creationDate = date,
             "",
-            Sport(2, "Formula 1")
+            Sport(2, "Formula 1", R.drawable.f_uno)
         ),
-        Team(10, "Alfa Bromeo", creationDate = date, "Pasta boys 2", Sport(2, "Formula 1"))
+        Team(10, "Alfa Bromeo", creationDate = date, "Pasta boys 2", Sport(2, "Formula 1", R.drawable.f_uno))
     )
 }
 
