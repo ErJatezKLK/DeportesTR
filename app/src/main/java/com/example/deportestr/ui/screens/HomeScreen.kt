@@ -103,8 +103,11 @@ fun HomeBody(goFormula: NavHostController) {
     }
     LaunchedEffect(selectedTabIndex) {
         pagerState.animateScrollToPage(selectedTabIndex)
+    }
+    LaunchedEffect(pagerState.currentPage) {
         selectedTabIndex = pagerState.currentPage
     }
+
 
     Column {
         ScrollableTabRow(selectedTabIndex = selectedTabIndex) {
@@ -123,26 +126,165 @@ fun HomeBody(goFormula: NavHostController) {
                 .weight(1f)
         ) { index ->
             Box(modifier = Modifier.fillMaxSize()) {
-                Card(
-                    modifier = Modifier
-                        .clickable { }
-                        .fillMaxWidth()
-                        .background(Color(0xFF303030)),
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Column {
-                        Image(
-                            painter = painterResource(id = sports[index].photo),
-                            contentDescription = null,
-                            Modifier.fillMaxWidth(),
-                        )
-                        Row(modifier = Modifier.align(Alignment.Start)) {
-                            Text(
-                                text = sports[index].name,
-                                fontSize = 20.sp,
-                                modifier = Modifier.padding(2.dp)
+
+                when (index) {
+                    0 -> Card(
+                        modifier = Modifier
+                            .clickable { }
+                            .fillMaxWidth()
+                            .background(Color(0xFF303030)),
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Column {
+                            Image(
+                                painter = painterResource(id = sports[index].photo),
+                                contentDescription = null,
+                                Modifier.fillMaxWidth(),
                             )
-                            Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
+                            Row(modifier = Modifier.align(Alignment.Start)) {
+                                Text(
+                                    text = sports[index].name,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.padding(2.dp)
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+
+                    1 -> Card(
+                        modifier = Modifier
+                            .clickable { goFormula.navigate(route = AppScreens.FormulaScreen.route)}
+                            .fillMaxWidth()
+                            .background(Color(0xFF303030)),
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Column {
+                            Image(
+                                painter = painterResource(id = sports[index].photo),
+                                contentDescription = null,
+                                Modifier.fillMaxWidth(),
+                            )
+                            Row(modifier = Modifier.align(Alignment.Start)) {
+                                Text(
+                                    text = sports[index].name,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.padding(2.dp)
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+
+                    2 -> Card(
+                        modifier = Modifier
+                            .clickable { }
+                            .fillMaxWidth()
+                            .background(Color(0xFF303030)),
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Column {
+                            Image(
+                                painter = painterResource(id = sports[index].photo),
+                                contentDescription = null,
+                                Modifier.fillMaxWidth(),
+                            )
+                            Row(modifier = Modifier.align(Alignment.Start)) {
+                                Text(
+                                    text = sports[index].name,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.padding(2.dp)
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+
+                    3 -> Card(
+                        modifier = Modifier
+                            .clickable { }
+                            .fillMaxWidth()
+                            .background(Color(0xFF303030)),
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Column {
+                            Image(
+                                painter = painterResource(id = sports[index].photo),
+                                contentDescription = null,
+                                Modifier.fillMaxWidth(),
+                            )
+                            Row(modifier = Modifier.align(Alignment.Start)) {
+                                Text(
+                                    text = sports[index].name,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.padding(2.dp)
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+                    4 -> Card(
+                        modifier = Modifier
+                            .clickable { }
+                            .fillMaxWidth()
+                            .background(Color(0xFF303030)),
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Column {
+                            Image(
+                                painter = painterResource(id = sports[index].photo),
+                                contentDescription = null,
+                                Modifier.fillMaxWidth(),
+                            )
+                            Row(modifier = Modifier.align(Alignment.Start)) {
+                                Text(
+                                    text = sports[index].name,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.padding(2.dp)
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+                    5 -> Card(
+                        modifier = Modifier
+                            .clickable { }
+                            .fillMaxWidth()
+                            .background(Color(0xFF303030)),
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Column {
+                            Image(
+                                painter = painterResource(id = sports[index].photo),
+                                contentDescription = null,
+                                Modifier.fillMaxWidth()
+                            )
+                            Row(modifier = Modifier.align(Alignment.Start)) {
+                                Text(
+                                    text = sports[index].name,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.padding(2.dp)
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = null
+                                )
+                            }
                         }
                     }
                 }
@@ -160,12 +302,12 @@ fun ItemSport(sport: Sport, goFormula: NavHostController) {
 
 fun getSports(): List<Sport> {
     return listOf(
-        Sport(1, "Futbol base de datos", R.drawable.futbol),
-        Sport(2, "Formula 1 base de datos", R.drawable.f_uno),
-        Sport(3, "Tenis base de datos", R.drawable.tenis),
-        Sport(4, "MotoGP base de datos", R.drawable.motogp),
-        Sport(5, "Baloncesto base de datos", R.drawable.baloncesto),
-        Sport(6, "WRC base de datos", R.drawable.wrc)
+        Sport(1, "Futbol", R.drawable.futbol),
+        Sport(2, "Formula 1", R.drawable.f_uno),
+        Sport(3, "Tenis", R.drawable.tenis),
+        Sport(4, "MotoGP", R.drawable.motogp),
+        Sport(5, "Baloncesto", R.drawable.baloncesto),
+        Sport(6, "WRC", R.drawable.wrc)
     )
 }
 
@@ -258,7 +400,3 @@ fun DrawerContent(
         }
     }
 }
-
-data class TabItem(
-    val title: String
-)

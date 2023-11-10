@@ -1,10 +1,10 @@
-package com.example.deportestr.datasource
+package com.example.deportestr.usecases
 
 import com.example.deportestr.ui.models.User
 import retrofit2.Response
 
-interface DeportesRepository {
-    //SIEMPRE SUSPEND EN INTERFACES
+interface SearchUserUsecases {
+
     suspend fun searchUser(email: String, password: String): Response<User>
 
 }

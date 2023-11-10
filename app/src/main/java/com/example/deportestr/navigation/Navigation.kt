@@ -29,12 +29,16 @@ fun AppNavigation() {
             RegisterScreen(viewModel = RegistrationViewModel(), goLogin = navController)
         }
         composable(route = AppScreens.HomeScreen.route) {
-            HomeScreen(goLogin =  navController, goProfile = navController, goFormula = navController)
+            HomeScreen(
+                goLogin = navController,
+                goProfile = navController,
+                goFormula = navController
+            )
         }
         composable(route = AppScreens.ProfileScreen.route) {
             ProfileScreen(goRegister = navController, goHome = navController)
         }
-        composable(route = AppScreens.FormulaScreen.route){
+        composable(route = AppScreens.FormulaScreen.route) {
             FormulaScreen(goLogin = navController, goHome = navController)
         }
     }
