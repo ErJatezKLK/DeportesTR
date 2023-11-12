@@ -1,28 +1,27 @@
 package com.example.deportestr.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.deportestr.ui.models.User
-import com.example.deportestr.ui.models.UserMessages
 import com.example.deportestr.ui.screens.FormulaScreen
 import com.example.deportestr.ui.screens.HomeScreen
 import com.example.deportestr.ui.screens.LoginScreen
 import com.example.deportestr.ui.screens.ProfileScreen
 import com.example.deportestr.ui.screens.RegisterScreen
-import com.example.deportestr.ui.screens.viewmodels.LoginViewModel
 import com.example.deportestr.ui.screens.viewmodels.RegistrationViewModel
 
 @Composable
-fun AppNavigation() {
-    val navController = rememberNavController()
+fun AppNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = AppScreens.LoginScreen.route) {
         composable(route = AppScreens.LoginScreen.route) {
             LoginScreen(
-                goRegister = navController,
-                goHome = navController,
-                viewModel = LoginViewModel()
+
+                goRegister = { navController.navigate(route = AppScreens.RegistrationScreen.route) },
+                goHome = {
+                    navController.popBackStack()
+                    navController.navigate(route = AppScreens.HomeScreen.route)
+                }
             )
         }
         composable(route = AppScreens.RegistrationScreen.route) {

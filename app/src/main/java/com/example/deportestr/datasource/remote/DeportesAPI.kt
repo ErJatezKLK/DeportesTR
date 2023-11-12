@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface DeportesAPI {
-    @GET("searchuser")
+    @GET("user")
     suspend fun searchUser(
         @Query("email") email: String,
         @Query("password") password: String

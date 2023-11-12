@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,10 +27,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,18 +41,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
 import com.example.deportestr.navigation.AppScreens
-import com.example.deportestr.ui.screens.viewmodels.LoginViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.example.deportestr.ui.screens.viewmodels.LoginViewModelV2
 
 @Composable
 fun LoginScreen(
-    goRegister: NavHostController,
-    goHome: NavHostController,
-    viewModel: LoginViewModel
+    goRegister: () -> Unit,
+    goHome: () -> Unit,
+    viewModel: LoginViewModelV2 = hiltViewModel()
 ) {
     Box(
         modifier = Modifier
@@ -70,50 +65,34 @@ fun LoginScreen(
 @Composable
 fun Login(
     modifier: Modifier,
-    viewModel: LoginViewModel,
-    goRegister: NavHostController,
-    goHome: NavHostController
+    viewModel: LoginViewModelV2,
+    goRegister: () -> Unit,
+    goHome: () -> Unit
 ) {
-    val email: String by viewModel.email.observeAsState(initial = "")
-    val password: String by viewModel.password.observeAsState(initial = "")
-    val loginEnabled: Boolean by viewModel.loginEnabled.observeAsState(initial = false)
-    val onRegister: Boolean by viewModel.loginEnabled.observeAsState(initial = false)
+    val email = viewModel.email
+    val password = viewModel.password
+    val loginEnabled = viewModel.onLoginChanged()
 
-    val isLoading: Boolean by viewModel.isloading.observeAsState(initial = false)
-    val coroutineScope = rememberCoroutineScope()
-
-    if (isLoading) {
-        Box(Modifier.fillMaxSize()) {
-            CircularProgressIndicator(Modifier.align(Alignment.Center))
-        }
-    } else {
-        Column(modifier = Modifier) {
-            Row(modifier = Modifier
+    Column(modifier = Modifier) {
+        Row(
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 20.dp, start = 10.dp)) {
-                TitleText()
-            }
-            Spacer(modifier = Modifier.padding(60.dp))
-            UserNameField(email) { viewModel.OnLoginChanged(it, password) }
-            Spacer(modifier = Modifier.padding(15.dp))
-            PasswordField(password) { viewModel.OnLoginChanged(email, it) }
-            Spacer(modifier = Modifier.padding(8.dp))
-            ForgotPassword(Modifier.align(Alignment.End))
-            Spacer(modifier = Modifier.padding(16.dp))
-            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                LoginButton(loginEnabled, goHome) {
-                    coroutineScope.launch {
-                        viewModel.onLoginSelected()
-                    }
-                }
-                RegisterButton(onRegister, goRegister) {
-                    coroutineScope.launch {
-                        viewModel.onRegisterSelected()
-                    }
-                }
+                .padding(top = 20.dp, start = 10.dp)
+        ) {
+            TitleText()
+        }
+        Spacer(modifier = Modifier.padding(60.dp))
+        UserNameField(email, viewModel)
+        Spacer(modifier = Modifier.padding(15.dp))
+        PasswordField(password, viewModel)
+        Spacer(modifier = Modifier.padding(8.dp))
+        ForgotPassword(Modifier.align(Alignment.End))
+        Spacer(modifier = Modifier.padding(16.dp))
+        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            LoginButton(loginEnabled, goHome, viewModel)
+            RegisterButton(goRegister)
 
 
-            }
         }
     }
 }
@@ -144,10 +123,10 @@ fun TitleText() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserNameField(user: String, onTextFieldChange: (String) -> Unit) {
+fun UserNameField(email: String, viewModelV2: LoginViewModelV2) {
     TextField(
-        value = user,
-        onValueChange = { onTextFieldChange(it) },
+        value = email,
+        onValueChange = { viewModelV2.email = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -167,11 +146,11 @@ fun UserNameField(user: String, onTextFieldChange: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordField(password: String, onTextFieldChange: (String) -> Unit) {
+fun PasswordField(password: String, viewModel: LoginViewModelV2) {
     var passwordVisibility by remember { mutableStateOf(false) }
     TextField(
         value = password,
-        onValueChange = { onTextFieldChange(it) },
+        onValueChange = { viewModel.password = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -218,9 +197,12 @@ fun ForgotPassword(modifier: Modifier) {
 }
 
 @Composable
-fun LoginButton(loginEnabled: Boolean, home: NavHostController, login: () -> Job) {
+fun LoginButton(loginEnabled: Unit, home: () -> Unit, viewModel: LoginViewModelV2) {
     Button(
-        onClick = { home.navigate(route = AppScreens.HomeScreen.route) },
+        onClick = {
+            home()
+            viewModel.searchUser()
+        },
         modifier = Modifier
             .padding(5.dp)
             .width(IntrinsicSize.Max)
@@ -229,16 +211,16 @@ fun LoginButton(loginEnabled: Boolean, home: NavHostController, login: () -> Job
             contentColor = Color(0xFFFFFFFF),
             disabledContentColor = Color(0xFF882D2D),
             containerColor = Color(0xFF882D2D)
-        ), enabled = loginEnabled
+        ), enabled = loginEnabled == Unit
     ) {
         Text(text = "Iniciar sesion")
     }
 }
 
 @Composable
-fun RegisterButton(onRegister: Boolean, register: NavHostController, goRegister: () -> Unit) {
+fun RegisterButton(goRegister: () -> Unit) {
     Button(
-        onClick = { register.navigate(route = AppScreens.RegistrationScreen.route) },
+        onClick = { goRegister() },
         modifier = Modifier
             .padding(5.dp)
             .width(IntrinsicSize.Max)
@@ -254,7 +236,3 @@ fun RegisterButton(onRegister: Boolean, register: NavHostController, goRegister:
 }
 
 
-@Composable
-fun HeaderImage() {
-
-}

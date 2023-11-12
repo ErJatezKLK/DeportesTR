@@ -9,7 +9,10 @@ import com.example.deportestr.datasource.DeportesRepositoryImpl
 import com.example.deportestr.datasource.remote.DeportesAPI
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSource
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSourceImpl
+import com.example.deportestr.usecases.SearchUserUsecases
+import com.example.deportestr.usecases.SearchUserUsecasesImpl
 import com.example.deportestr.util.DispatcherProvider
+import com.example.deportestr.util.DispatcherProviderImpl
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -96,6 +99,10 @@ object DataSourceModule {
 
     @Provides
     @Singleton
+    fun provideDispatchers():DispatcherProvider = DispatcherProviderImpl()
+
+    @Provides
+    @Singleton
     fun provideDeportesRemoteDataSource(
         deportesAPI: DeportesAPI, dispatcherProvider: DispatcherProvider
     ): DeportesRemoteDataSource {
@@ -110,5 +117,11 @@ object DataSourceModule {
         return DeportesRepositoryImpl(deportesRemoteDataSource)
     }
 
-
+    @Provides
+    @Singleton
+    fun provideSearchUserUsecases(
+        deportesRepository: DeportesRepository
+    ): SearchUserUsecases{
+        return SearchUserUsecasesImpl(deportesRepository)
+    }
 }
