@@ -6,7 +6,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,10 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -37,7 +32,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -57,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.deportestr.R
-import com.example.deportestr.navigation.AppScreens
 import com.example.deportestr.ui.models.Sport
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -66,9 +59,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    goLogin: NavHostController,
-    goProfile: NavHostController,
-    goFormula: NavHostController
+    goLogin: () -> Unit,
+    goProfile: () -> Unit,
+    goFormula: () -> Unit,
+    goFootball: () -> Unit,
+    goTenis: () -> Unit,
+    goMotoGp: () -> Unit,
+    goBasket: () -> Unit,
+    goWrc: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -84,7 +82,7 @@ fun HomeScreen(
             TopBarContent(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
         }) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
-                HomeBody(goFormula)
+                HomeBody(goFootball, goFormula, goTenis, goMotoGp, goBasket, goWrc)
             }
         }
     }
@@ -92,7 +90,14 @@ fun HomeScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeBody(goFormula: NavHostController) {
+fun HomeBody(
+    goFootball: () -> Unit,
+    goFormula: () -> Unit,
+    goTenis: () -> Unit,
+    goMotoGp: () -> Unit,
+    goBasket: () -> Unit,
+    goWrc: () -> Unit
+) {
     var selectedTabIndex by remember {
         mutableIntStateOf(0)
     }
@@ -130,14 +135,14 @@ fun HomeBody(goFormula: NavHostController) {
                 when (index) {
                     0 -> Card(
                         modifier = Modifier
-                            .clickable { }
+                            .clickable { goFootball() }
                             .fillMaxWidth()
                             .background(Color(0xFF303030)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
                             Image(
-                                painter = painterResource(id = sports[index].photo),
+                                painter = painterResource(id = R.drawable.futbol),
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
@@ -157,14 +162,14 @@ fun HomeBody(goFormula: NavHostController) {
 
                     1 -> Card(
                         modifier = Modifier
-                            .clickable { goFormula.navigate(route = AppScreens.FormulaScreen.route)}
+                            .clickable { goFormula() }
                             .fillMaxWidth()
                             .background(Color(0xFF303030)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
                             Image(
-                                painter = painterResource(id = sports[index].photo),
+                                painter = painterResource(id = R.drawable.f_uno),
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
@@ -184,14 +189,14 @@ fun HomeBody(goFormula: NavHostController) {
 
                     2 -> Card(
                         modifier = Modifier
-                            .clickable { }
+                            .clickable { goTenis() }
                             .fillMaxWidth()
                             .background(Color(0xFF303030)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
                             Image(
-                                painter = painterResource(id = sports[index].photo),
+                                painter = painterResource(id = R.drawable.tenis),
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
@@ -211,14 +216,14 @@ fun HomeBody(goFormula: NavHostController) {
 
                     3 -> Card(
                         modifier = Modifier
-                            .clickable { }
+                            .clickable { goMotoGp() }
                             .fillMaxWidth()
                             .background(Color(0xFF303030)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
                             Image(
-                                painter = painterResource(id = sports[index].photo),
+                                painter = painterResource(id = R.drawable.motogp),
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
@@ -235,16 +240,17 @@ fun HomeBody(goFormula: NavHostController) {
                             }
                         }
                     }
+
                     4 -> Card(
                         modifier = Modifier
-                            .clickable { }
+                            .clickable { goBasket() }
                             .fillMaxWidth()
                             .background(Color(0xFF303030)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
                             Image(
-                                painter = painterResource(id = sports[index].photo),
+                                painter = painterResource(id = R.drawable.baloncesto),
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
@@ -261,16 +267,17 @@ fun HomeBody(goFormula: NavHostController) {
                             }
                         }
                     }
+
                     5 -> Card(
                         modifier = Modifier
-                            .clickable { }
+                            .clickable { goWrc() }
                             .fillMaxWidth()
                             .background(Color(0xFF303030)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
                             Image(
-                                painter = painterResource(id = sports[index].photo),
+                                painter = painterResource(id = R.drawable.wrc),
                                 contentDescription = null,
                                 Modifier.fillMaxWidth()
                             )
@@ -302,12 +309,12 @@ fun ItemSport(sport: Sport, goFormula: NavHostController) {
 
 fun getSports(): List<Sport> {
     return listOf(
-        Sport(1, "Futbol", R.drawable.futbol),
-        Sport(2, "Formula 1", R.drawable.f_uno),
-        Sport(3, "Tenis", R.drawable.tenis),
-        Sport(4, "MotoGP", R.drawable.motogp),
-        Sport(5, "Baloncesto", R.drawable.baloncesto),
-        Sport(6, "WRC", R.drawable.wrc)
+        Sport(1, "Futbol"),
+        Sport(2, "Formula 1"),
+        Sport(3, "Tenis"),
+        Sport(4, "MotoGP"),
+        Sport(5, "Baloncesto"),
+        Sport(6, "WRC")
     )
 }
 
@@ -341,8 +348,8 @@ fun TopBarContent(onClickDrawer: () -> Unit) {
 
 @Composable
 fun DrawerContent(
-    goLogin: NavHostController,
-    goProfile: NavHostController,
+    goLogin: () -> Unit,
+    goProfile: () -> Unit,
     onCloseDrawer: () -> Job
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -366,7 +373,7 @@ fun DrawerContent(
                 .fillMaxWidth(), color = Color(0xFF757575)
         )
         Row(modifier = Modifier
-            .clickable { goProfile.navigate(route = AppScreens.ProfileScreen.route) }
+            .clickable { goProfile() }
             .fillMaxWidth()
         ) {
             Text(text = "Ir a mi perfil", fontSize = 25.sp)
@@ -384,7 +391,7 @@ fun DrawerContent(
                 .fillMaxWidth(), color = Color(0xFF757575)
         )
         Row(modifier = Modifier
-            .clickable { goLogin.navigate(route = AppScreens.LoginScreen.route) }
+            .clickable { goLogin() }
             .fillMaxWidth()
 
         ) {

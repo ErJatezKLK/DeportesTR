@@ -34,17 +34,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import com.example.deportestr.R
-import com.example.deportestr.navigation.AppScreens
 import com.example.deportestr.ui.screens.viewmodels.RegistrationViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
-    viewModel: RegistrationViewModel,
-    goLogin:NavHostController
+    goLogin: () -> Unit,
+    viewModel: RegistrationViewModel = hiltViewModel()
 ) {
     Box(
         modifier = Modifier
@@ -56,7 +56,7 @@ fun RegisterScreen(
 }
 
 @Composable
-fun Register(modifier: Modifier, viewModel: RegistrationViewModel, goLogin: NavHostController) {
+fun Register(modifier: Modifier, viewModel: RegistrationViewModel, goLogin: () -> Unit) {
     val email: String by viewModel.email.observeAsState(initial = "")
     val name: String by viewModel.userName.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
@@ -205,9 +205,9 @@ fun RepeatePassword(user: String, onTextFieldChange: (String) -> Unit) {
 }
 
 @Composable
-fun LogButton(loginEnabled: Boolean, goLogin: NavHostController, register: () -> Job) {
+fun LogButton(loginEnabled: Boolean, goLogin: () -> Unit, register: () -> Job) {
     Button(
-        onClick = { goLogin.navigate(route = AppScreens.LoginScreen.route) },
+        onClick = { register() },
         modifier = Modifier
             .padding(5.dp)
             .width(IntrinsicSize.Max)
