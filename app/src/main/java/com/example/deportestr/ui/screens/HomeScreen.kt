@@ -66,7 +66,8 @@ fun HomeScreen(
     goTenis: () -> Unit,
     goMotoGp: () -> Unit,
     goBasket: () -> Unit,
-    goWrc: () -> Unit
+    goWrc: () -> Unit,
+    email: String
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)

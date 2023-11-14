@@ -2,7 +2,6 @@ package com.example.deportestr.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,13 +13,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
@@ -45,34 +41,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.deportestr.R
 import com.example.deportestr.navigation.AppScreens
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    goRegister: NavHostController,
-    goHome: NavHostController
+    goLogin: () -> Unit,
+    goHome: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     ModalNavigationDrawer(drawerContent = {
         ModalDrawerSheet {
-            DrawerContentProfile(goRegister , goHome) {
+            DrawerContentProfile(goLogin , goHome) {
                 coroutineScope.launch { drawerState.close() }
             }
         }
@@ -223,8 +214,8 @@ fun ProfileProperty(label: String, value: String, isLink: Boolean = false) {
 
 @Composable
 fun DrawerContentProfile(
-    goLogin: NavHostController,
-    goHome: NavHostController,
+    goLogin: () -> Unit,
+    goHome: () -> Unit,
     onCloseDrawer: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -248,7 +239,7 @@ fun DrawerContentProfile(
                 .fillMaxWidth(), color = Color(0xFF757575)
         )
         Row(modifier = Modifier
-            .clickable { goHome.navigate(route = AppScreens.HomeScreen.route) }
+            .clickable { goHome() }
             .fillMaxWidth()
         ) {
             Text(text = "Deportes", fontSize = 25.sp)
@@ -266,7 +257,7 @@ fun DrawerContentProfile(
                 .fillMaxWidth(), color = Color(0xFF757575)
         )
         Row(modifier = Modifier
-            .clickable { goLogin.navigate(route = AppScreens.LoginScreen.route) }
+            .clickable { goLogin() }
             .fillMaxWidth()
 
         ) {

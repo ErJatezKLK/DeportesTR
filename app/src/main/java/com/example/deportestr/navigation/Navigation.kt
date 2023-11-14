@@ -20,18 +20,18 @@ fun AppNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = AppScreens.LoginScreen.route) {
         composable(route = AppScreens.LoginScreen.route) {
             LoginScreen(
-
                 goRegister = { navController.navigate(route = AppScreens.RegistrationScreen.route) },
                 goHome = {
+                    email ->
                     navController.popBackStack()
-                    navController.navigate(route = AppScreens.HomeScreen.route)
+                    navController.navigate(route = AppScreens.HomeScreen.route + "/${email}")
                 }
             )
         }
         composable(route = AppScreens.RegistrationScreen.route) {
             RegisterScreen(goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) })
         }
-        composable(route = AppScreens.HomeScreen.route) {
+        composable(route = AppScreens.HomeScreen.route) { backStackEntry ->
             HomeScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
                 goProfile = { navController.navigate(route = AppScreens.ProfileScreen.route) },
@@ -40,7 +40,8 @@ fun AppNavigation(navController: NavHostController) {
                 goTenis = { navController.navigate(route = AppScreens.TenisScreen.route) },
                 goMotoGp = { navController.navigate(route = AppScreens.MotoGpScreen.route) },
                 goBasket = { navController.navigate(route = AppScreens.BasketScreen.route) },
-                goWrc = { navController.navigate(route = AppScreens.WrcScreen.route) }
+                goWrc = { navController.navigate(route = AppScreens.WrcScreen.route) },
+                email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
         composable(route = AppScreens.ProfileScreen.route) {

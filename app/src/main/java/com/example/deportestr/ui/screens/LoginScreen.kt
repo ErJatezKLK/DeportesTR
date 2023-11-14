@@ -1,5 +1,7 @@
 package com.example.deportestr.ui.screens
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,13 +47,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
-import com.example.deportestr.navigation.AppScreens
+import com.example.deportestr.ui.models.User
 import com.example.deportestr.ui.screens.viewmodels.LoginViewModelV2
 
 @Composable
 fun LoginScreen(
     goRegister: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     viewModel: LoginViewModelV2 = hiltViewModel()
 ) {
     Box(
@@ -67,11 +71,10 @@ fun Login(
     modifier: Modifier,
     viewModel: LoginViewModelV2,
     goRegister: () -> Unit,
-    goHome: () -> Unit
+    goHome: (String) -> Unit,
 ) {
     val email = viewModel.email
     val password = viewModel.password
-    val loginEnabled = viewModel.onLoginChanged()
 
     Column(modifier = Modifier) {
         Row(
@@ -89,7 +92,7 @@ fun Login(
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.padding(16.dp))
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            LoginButton(loginEnabled, goHome, viewModel)
+            LoginButton(goHome, viewModel)
             RegisterButton(goRegister)
 
 
@@ -197,11 +200,22 @@ fun ForgotPassword(modifier: Modifier) {
 }
 
 @Composable
-fun LoginButton(loginEnabled: Unit, home: () -> Unit, viewModel: LoginViewModelV2) {
+fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModelV2) {
+    val user = viewModel.user
+    val context = LocalContext.current
+
     Button(
         onClick = {
-            home()
             viewModel.searchUser()
+            if (user == null) {
+                Toast.makeText(
+                    context,
+                    "No se ha encontrado el usuario",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                home(user.email)
+            }
         },
         modifier = Modifier
             .padding(5.dp)
@@ -211,7 +225,7 @@ fun LoginButton(loginEnabled: Unit, home: () -> Unit, viewModel: LoginViewModelV
             contentColor = Color(0xFFFFFFFF),
             disabledContentColor = Color(0xFF882D2D),
             containerColor = Color(0xFF882D2D)
-        ), enabled = loginEnabled == Unit
+        )
     ) {
         Text(text = "Iniciar sesion")
     }

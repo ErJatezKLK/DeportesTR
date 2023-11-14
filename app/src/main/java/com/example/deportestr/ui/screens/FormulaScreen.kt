@@ -41,7 +41,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.deportestr.R
 import com.example.deportestr.navigation.AppScreens
 import com.example.deportestr.ui.models.Sport
@@ -55,8 +54,8 @@ import java.sql.Timestamp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormulaScreen(
-    goLogin: NavHostController,
-    goHome: NavHostController
+    goLogin: () -> Unit,
+    goHome: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -79,7 +78,7 @@ fun FormulaScreen(
                     .padding(innerPadding)
                     .background(Color(0xFF303030))
             ) {
-                FormulaContent(user)
+                FormulaContent()
             }
 
         }
@@ -88,7 +87,7 @@ fun FormulaScreen(
 }
 
 @Composable
-fun FormulaContent(user: User) {
+fun FormulaContent() {
     LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
         items(sportEvents()) { sportEvent ->
             ItemEvent(sportEvent = sportEvent, teams = teamsList())
@@ -189,11 +188,11 @@ fun ItemEvent(sportEvent: SportEvent, teams: List<Team>) {
 fun sportEvents(): List<SportEvent> {
     val date = Timestamp(2023 - 11 - 5)
     val aston =
-        Team(1, "Fernando PADRONSO", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1", R.drawable.f_uno))
+        Team(1, "Fernando PADRONSO", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1"))
     val redBull =
-        Team(2, "Verstappen y Marko", creationDate = date, "Austria", Sport(2, "Formula 1", R.drawable.f_uno))
+        Team(2, "Verstappen y Marko", creationDate = date, "Austria", Sport(2, "Formula 1"))
     val mercedes =
-        Team(3, "Mercedes", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1", R.drawable.f_uno))
+        Team(3, "Mercedes", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1"))
     return listOf(
         SportEvent(1, aston, redBull, "Macs Visparten gana", "Mexico"),
         SportEvent(2, mercedes, redBull, "MAGIIIC", "Brasil"),
@@ -206,28 +205,28 @@ fun teamsList(): List<Team> {
     val date = Timestamp(2023 - 11 - 5)
 
     return listOf(
-        Team(1, "La Mision???", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1", R.drawable.f_uno)),
-        Team(2, "Bed Rull", creationDate = date, "Austria", Sport(2, "Formula 1", R.drawable.f_uno)),
-        Team(3, "Votan por el brexit", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1", R.drawable.f_uno)),
-        Team(4, "Votan por el brexit y van bien", creationDate = date, "Lo mismo que mercedes", Sport(2, "Formula 1", R.drawable.f_uno)),
+        Team(1, "La Mision???", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1")),
+        Team(2, "Bed Rull", creationDate = date, "Austria", Sport(2, "Formula 1")),
+        Team(3, "Votan por el brexit", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1")),
+        Team(4, "Votan por el brexit y van bien", creationDate = date, "Lo mismo que mercedes", Sport(2, "Formula 1")),
         Team(
             5,
             "Los putos gabachos",
             creationDate = date,
             "No deberia existir",
-            Sport(2, "Formula 1", R.drawable.f_uno)
+            Sport(2, "Formula 1")
         ),
-        Team(6, "Strotegy", creationDate = date, "Pasta Boys", Sport(2, "Formula 1", R.drawable.f_uno)),
-        Team(7, "Toro Alfa", creationDate = date, "Austria supongo", Sport(2, "Formula 1", R.drawable.f_uno)),
-        Team(8, "Votan por el brexit y son lentos", creationDate = date, "No se", Sport(2, "Formula 1", R.drawable.f_uno)),
+        Team(6, "Strotegy", creationDate = date, "Pasta Boys", Sport(2, "Formula 1")),
+        Team(7, "Toro Alfa", creationDate = date, "Austria supongo", Sport(2, "Formula 1")),
+        Team(8, "Votan por el brexit y son lentos", creationDate = date, "No se", Sport(2, "Formula 1")),
         Team(
             9,
             "WTF IS A KILOMETER *gun shots and a chopper*",
             creationDate = date,
             "",
-            Sport(2, "Formula 1", R.drawable.f_uno)
+            Sport(2, "Formula 1")
         ),
-        Team(10, "Alfa Bromeo", creationDate = date, "Pasta boys 2", Sport(2, "Formula 1", R.drawable.f_uno))
+        Team(10, "Alfa Bromeo", creationDate = date, "Pasta boys 2", Sport(2, "Formula 1"))
     )
 }
 
@@ -280,8 +279,8 @@ fun MessageCard(userMessages: UserMessages, user: User) {
 
 @Composable
 fun DrawerContentFormula(
-    goLogin: NavHostController,
-    goHome: NavHostController,
+    goLogin: () -> Unit,
+    goHome: () -> Unit,
     onCloseDrawer: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -305,7 +304,7 @@ fun DrawerContentFormula(
                 .fillMaxWidth(), color = Color(0xFF757575)
         )
         Row(modifier = Modifier
-            .clickable { goHome.navigate(route = AppScreens.HomeScreen.route) }
+            .clickable { goHome() }
             .fillMaxWidth()
         ) {
             Text(text = "Deportes", fontSize = 25.sp)
@@ -323,7 +322,7 @@ fun DrawerContentFormula(
                 .fillMaxWidth(), color = Color(0xFF757575)
         )
         Row(modifier = Modifier
-            .clickable { goLogin.navigate(route = AppScreens.LoginScreen.route) }
+            .clickable { goLogin() }
             .fillMaxWidth()
 
         ) {

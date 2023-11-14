@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.deportestr.ui.models.User
 import com.example.deportestr.usecases.SearchUserUsecases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,20 +19,13 @@ class LoginViewModelV2 @Inject constructor(
 ): ViewModel() {
     var email: String by mutableStateOf("")
     var password: String by mutableStateOf("")
-    private var loginEnabled : Boolean by mutableStateOf(false)
+    var user: User? = null
 
-    fun searchUser(){
+    fun searchUser(): User? {
         viewModelScope.launch(Dispatchers.IO){
-            val response = searchUserUsecases.searchUser(email, password)
+            val responseBody = searchUserUsecases.searchUser(email, password)
+            user = responseBody.body()
         }
+        return user
     }
-
-    fun onLoginChanged() {
-        loginEnabled = isValidUser(email) && isValidPassword(password)
-    }
-
-    private fun isValidUser(email: String): Boolean =
-        Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
-    private fun isValidPassword(password: String): Boolean = password.length > 6
 }

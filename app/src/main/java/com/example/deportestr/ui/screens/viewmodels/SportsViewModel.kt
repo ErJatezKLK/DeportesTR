@@ -2,6 +2,7 @@ package com.example.deportestr.ui.screens.viewmodels
 
 import androidx.compose.runtime.toMutableStateList
 import com.example.deportestr.ui.models.UserMessages
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 class SportsViewModel(
     val channelName: String,
