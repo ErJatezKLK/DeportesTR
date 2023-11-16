@@ -59,7 +59,10 @@ fun FormulaScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val user = User(1, "Big.Boss", "big.boss@dd.com", "Esta", 0, R.drawable.iris)
+    val sport = Sport(1,"")
+    val team = Team(1,"nada",Timestamp(1111-21-12),"este",sport)
+    val teamsList = listOf(team)
+    val user = User(1, "Big.Boss", "big.boss@dd.com", "Esta", teamsList, R.drawable.iris)
 
 
     ModalNavigationDrawer(drawerContent = {
