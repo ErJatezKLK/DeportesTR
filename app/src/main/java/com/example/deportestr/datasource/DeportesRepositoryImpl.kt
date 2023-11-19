@@ -16,4 +16,8 @@ class DeportesRepositoryImpl @Inject constructor(
         return deportesRemoteDataSource.searchUserByEmail(email)
     }
 
+    override suspend fun addUser(): Response<Void> {
+        return deportesRemoteDataSource.addUser()
+    }
+
 }

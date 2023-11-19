@@ -4,6 +4,7 @@ import com.example.deportestr.ui.models.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface DeportesAPI {
@@ -13,8 +14,11 @@ interface DeportesAPI {
         @Query("password") password: String
     ): Response<User>
 
-    @GET("userE")
+    @GET("user")
     suspend fun searchUserByEmail(
        @Query("email") email: String
     ): Response<User>
+
+    @POST("user")
+    fun addUser(): Response<User>
 }

@@ -56,6 +56,7 @@ import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,14 +74,15 @@ fun HomeScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    viewModel.email = email
-    var paCargar = false
-    val searchUser = viewModel.user
-    paCargar = true
 
-    LaunchedEffect(paCargar){
-        viewModel.searchUser()
+    LaunchedEffect(viewModel.userLoaded) {
+        if (!viewModel.userLoaded) {
+            viewModel.email = email
+            viewModel.loadUser()
+        }
     }
+
+    val searchUser = viewModel.user
 
     ModalNavigationDrawer(drawerContent = {
         ModalDrawerSheet {
@@ -98,7 +100,6 @@ fun HomeScreen(
         }
     }
 }
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeBody(

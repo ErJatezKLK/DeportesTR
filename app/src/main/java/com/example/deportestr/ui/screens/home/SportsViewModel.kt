@@ -21,21 +21,21 @@ import javax.inject.Inject
 @HiltViewModel
 class SportsViewModel @Inject constructor(
     private val searchUserByEmailUseCases: SearchUserByEmailUseCases
-): ViewModel() {
-    var userLoaded = false
-    var user: User? = null
-    var email: String by mutableStateOf("")
+) : ViewModel() {
+    var userLoaded by mutableStateOf(false)
+    var user by mutableStateOf<User?>(null)
+    var email by mutableStateOf("")
 
-    fun searchUser() {
+    init {
+        loadUser()
+    }
+
+    fun loadUser() {
         viewModelScope.launch(Dispatchers.IO) {
-            awaitAll(
-                async {
-                    val responseBody = searchUserByEmailUseCases.searchUserByEmail(email)
-                    user = responseBody.body()
-                    userLoaded = true
-                    Log.i(ContentValues.TAG, "User loaded: $user")
-                }
-            )
+            val responseBody = searchUserByEmailUseCases.searchUserByEmail(email)
+            user = responseBody.body()
+            userLoaded = true
+            Log.i(ContentValues.TAG, "User loaded: $user")
         }
     }
 }

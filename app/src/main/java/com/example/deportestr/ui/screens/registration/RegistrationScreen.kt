@@ -1,6 +1,5 @@
 package com.example.deportestr.ui.screens.registration
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,14 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
@@ -55,38 +49,28 @@ fun RegisterScreen(
 
 @Composable
 fun Register(modifier: Modifier, viewModel: RegistrationViewModel, goLogin: () -> Unit) {
-    val email: String by viewModel.email.observeAsState(initial = "")
-    val name: String by viewModel.userName.observeAsState(initial = "")
-    val password: String by viewModel.password.observeAsState(initial = "")
-    val repeatPassword: String by viewModel.repeatPassword.observeAsState(initial = "")
-    val loginEnabled: Boolean by viewModel.loginEnabled.observeAsState(initial = false)
+    val name = viewModel.name
+    val email = viewModel.email
+    val password = viewModel.password
+    val repeatPassword = viewModel.reapeatPassword
+    val loginEnabled = viewModel.loginEnabled
 
-    val isLoading: Boolean by viewModel.isloading.observeAsState(initial = false)
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
-    if (isLoading) {
-        Box(Modifier.fillMaxSize()) {
-            CircularProgressIndicator(Modifier.align(Alignment.Center))
-            Toast.makeText(context, "Guardando informacion", Toast.LENGTH_SHORT).show()
-        }
-    } else {
 
-        Column(modifier = Modifier) {
-            HeaderImageRegistration()
-            SignTitle(Modifier.align(Alignment.CenterHorizontally))
-            Spacer(modifier = Modifier.padding(15.dp))
-            EmailRegister(email) { viewModel.OnRegistrationChanged(it, password, repeatPassword) }
-            Spacer(modifier = Modifier.padding(15.dp))
-            NameRegister(name) { viewModel.NameRegister(it) }
-            Spacer(modifier = Modifier.padding(15.dp))
-            PasswordRegister(password) { viewModel.OnRegistrationChanged(email, it, repeatPassword) }
-            Spacer(modifier = Modifier.padding(15.dp))
-            RepeatePassword(repeatPassword) { viewModel.OnRegistrationChanged(email, password, it) }
-            Spacer(modifier = Modifier.padding(16.dp))
-            LogButton(loginEnabled, goLogin) {
-                coroutineScope.launch { viewModel.onLoginSelected() }
-            }
-        }
+    Column(modifier = Modifier) {
+        HeaderImageRegistration()
+        SignTitle(Modifier.align(Alignment.CenterHorizontally))
+        Spacer(modifier = Modifier.padding(15.dp))
+        EmailRegister(email, viewModel)
+        Spacer(modifier = Modifier.padding(15.dp))
+        NameRegister(name, viewModel)
+        Spacer(modifier = Modifier.padding(15.dp))
+        PasswordRegister(password, viewModel)
+        Spacer(modifier = Modifier.padding(15.dp))
+        RepeatePassword(repeatPassword, viewModel)
+        Spacer(modifier = Modifier.padding(16.dp))
+        LogButton(loginEnabled, goLogin, viewModel)
     }
 }
 
@@ -112,10 +96,10 @@ fun HeaderImageRegistration() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailRegister(user: String, onTextFieldChange: (String) -> Unit) {
+fun EmailRegister(user: String, viewModel: RegistrationViewModel) {
     TextField(
         value = user,
-        onValueChange = { onTextFieldChange(it) },
+        onValueChange = { viewModel.email = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -135,10 +119,10 @@ fun EmailRegister(user: String, onTextFieldChange: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NameRegister(name: String, onTextFieldChange: (String) -> Unit) {
+fun NameRegister(name: String, viewModel: RegistrationViewModel) {
     TextField(
         value = name,
-        onValueChange = { onTextFieldChange(it) },
+        onValueChange = { viewModel.name = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -158,10 +142,10 @@ fun NameRegister(name: String, onTextFieldChange: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordRegister(user: String, onTextFieldChange: (String) -> Unit) {
+fun PasswordRegister(user: String, viewModel: RegistrationViewModel) {
     TextField(
         value = user,
-        onValueChange = { onTextFieldChange(it) },
+        onValueChange = { viewModel.password = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -181,10 +165,10 @@ fun PasswordRegister(user: String, onTextFieldChange: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RepeatePassword(user: String, onTextFieldChange: (String) -> Unit) {
+fun RepeatePassword(user: String, viewModel: RegistrationViewModel) {
     TextField(
         value = user,
-        onValueChange = { onTextFieldChange(it) },
+        onValueChange = { viewModel.reapeatPassword },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -203,9 +187,9 @@ fun RepeatePassword(user: String, onTextFieldChange: (String) -> Unit) {
 }
 
 @Composable
-fun LogButton(loginEnabled: Boolean, goLogin: () -> Unit, register: () -> Job) {
+fun LogButton(loginEnabled: Boolean, goLogin: () -> Unit, register: RegistrationViewModel) {
     Button(
-        onClick = { register() },
+        onClick = { goLogin() },
         modifier = Modifier
             .padding(5.dp)
             .width(IntrinsicSize.Max)

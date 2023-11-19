@@ -87,7 +87,7 @@ object DataSourceModule {
         client: OkHttpClient, gson: Gson
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.20")//ip_casa = 192.168.1.20 / ip_local = 10.0.2.2
+            .baseUrl("http://10.0.2.2:8080")//ip_casa = 192.168.1.20 / ip_local = 10.0.2.2
             .addConverterFactory(GsonConverterFactory.create(gson)).client(client).build()
     }
 

@@ -95,8 +95,6 @@ fun Login(
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             LoginButton(goHome, viewModel, loginEnabled)
             RegisterButton(goRegister)
-
-
         }
     }
 }
