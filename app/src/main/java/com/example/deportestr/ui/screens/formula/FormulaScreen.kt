@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.formula
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -42,7 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.deportestr.R
-import com.example.deportestr.navigation.AppScreens
+import com.example.deportestr.ui.models.Athlete
 import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.SportEvent
 import com.example.deportestr.ui.models.Team
@@ -62,7 +62,9 @@ fun FormulaScreen(
     val sport = Sport(1,"")
     val team = Team(1,"nada",Timestamp(1111-21-12),"este",sport)
     val teamsList = listOf(team)
-    val user = User(1, "Big.Boss", "big.boss@dd.com", "Esta", teamsList, R.drawable.iris)
+    val athelete = Athlete(1,"Sam", "JetStream", "Samurai", 32, "Brasileriro", "Sam", 1, team, sport)
+    val athleteList = listOf(athelete)
+    val user = User(1, "Big.Boss", "big.boss@dd.com", "Esta", teamsList, athleteList)
 
 
     ModalNavigationDrawer(drawerContent = {
@@ -197,10 +199,10 @@ fun sportEvents(): List<SportEvent> {
     val mercedes =
         Team(3, "Mercedes", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1"))
     return listOf(
-        SportEvent(1, aston, redBull, "Macs Visparten gana", "Mexico"),
-        SportEvent(2, mercedes, redBull, "MAGIIIC", "Brasil"),
-        SportEvent(3, aston, mercedes, "Macs Trampuchero", "Las vegas"),
-        SportEvent(4, mercedes, aston, "Goatifi", "Yas marina")
+        SportEvent(1, Timestamp(18-11-2023), "Macs Visparten gana","Mexico" ),
+        SportEvent(2, Timestamp(18-11-2023), "MAGIIIC", "Brasil"),
+        SportEvent(3, Timestamp(18-11-2023), "Macs Trampuchero", "Las vegas"),
+        SportEvent(4, Timestamp(18-11-2023), "Goatifi", "Yas marina")
     )
 }
 
@@ -232,53 +234,6 @@ fun teamsList(): List<Team> {
         Team(10, "Alfa Bromeo", creationDate = date, "Pasta boys 2", Sport(2, "Formula 1"))
     )
 }
-
-
-/*
-@Composable
-fun MessageCard(userMessages: UserMessages, user: User) {
-    var isExpanded by remember { mutableStateOf(false) }
-    val surfaceColor by animateColorAsState(
-        if (isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
-        label = ""
-    )
-    Row(modifier = Modifier.padding(8.dp)) {
-        Image(
-            painter = painterResource(id = user.photo),
-            contentDescription = null,
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
-            Text(
-                text = userMessages.author,
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.titleSmall
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                shadowElevation = 2.dp,
-                color = surfaceColor,
-                modifier = Modifier
-                    .animateContentSize()
-                    .padding(1.dp),
-        ) {
-        Text(
-            text = userMessages.body,
-            modifier = Modifier.padding(4.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = if (isExpanded) Int.MAX_VALUE else 1
-        )
-    }
-    }
-}
-}
-
- */
 
 @Composable
 fun DrawerContentFormula(

@@ -12,4 +12,8 @@ class DeportesRepositoryImpl @Inject constructor(
         return deportesRemoteDataSource.searchUser(email, password)
     }
 
+    override suspend fun searchUserByEmail(email: String): Response<User> {
+        return deportesRemoteDataSource.searchUserByEmail(email)
+    }
+
 }

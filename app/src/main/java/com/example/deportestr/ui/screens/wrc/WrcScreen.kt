@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.wrc
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,23 +39,20 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TenisScreen(
-    goLogin: () -> Unit,
-    goHome: () -> Unit
-){
+fun WrcScreen(goLogin: () -> Unit, goHome: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
 
     ModalNavigationDrawer(drawerContent = {
         ModalDrawerSheet {
-            DrawerContentTenis(goLogin, goHome) {
+            DrawerContentWrc(goLogin, goHome) {
                 coroutineScope.launch { drawerState.close() }
             }
         }
     }, drawerState = drawerState) {
         Scaffold(topBar = {
-            TopBarTenis(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
+            TopBarWrc(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
         }
         ) { innerPadding ->
             Box(
@@ -63,7 +60,7 @@ fun TenisScreen(
                     .padding(innerPadding)
                     .background(Color(0xFF303030))
             ) {
-                TenisContent()
+                WrcContent()
             }
 
         }
@@ -72,12 +69,12 @@ fun TenisScreen(
 }
 
 @Composable
-fun TenisContent() {
+fun WrcContent() {
 
 }
 
 @Composable
-fun DrawerContentTenis(
+fun DrawerContentWrc(
     goLogin: () -> Unit,
     goHome: () -> Unit,
     onCloseDrawer: () -> Unit
@@ -140,7 +137,7 @@ fun DrawerContentTenis(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarTenis(onClickDrawer: () -> Unit) {
+fun TopBarWrc(onClickDrawer: () -> Unit) {
     TopAppBar(
 
         title = {
@@ -164,4 +161,3 @@ fun TopBarTenis(onClickDrawer: () -> Unit) {
         colors = TopAppBarDefaults.largeTopAppBarColors(Color.Red),
     )
 }
-

@@ -5,4 +5,5 @@ import retrofit2.Response
 
 interface DeportesRemoteDataSource {
     suspend fun searchUser(email: String, password: String): Response<User>
+    suspend fun searchUserByEmail(email: String): Response<User>
 }

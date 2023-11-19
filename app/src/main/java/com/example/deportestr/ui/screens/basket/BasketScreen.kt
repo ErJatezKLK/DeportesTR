@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.basket
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,20 +39,20 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MotoGpScreen(goLogin: () -> Unit, goHome: () -> Unit) {
+fun BasketScreen(goLogin: () -> Unit, goHome: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
 
     ModalNavigationDrawer(drawerContent = {
         ModalDrawerSheet {
-            DrawerContentMotoGp(goLogin, goHome) {
+            DrawerContentBasket(goLogin, goHome) {
                 coroutineScope.launch { drawerState.close() }
             }
         }
     }, drawerState = drawerState) {
         Scaffold(topBar = {
-            TopBarMotoGp(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
+            TopBarBasket(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
         }
         ) { innerPadding ->
             Box(
@@ -60,7 +60,7 @@ fun MotoGpScreen(goLogin: () -> Unit, goHome: () -> Unit) {
                     .padding(innerPadding)
                     .background(Color(0xFF303030))
             ) {
-                MotoGpContent()
+                BasketContent()
             }
 
         }
@@ -69,12 +69,12 @@ fun MotoGpScreen(goLogin: () -> Unit, goHome: () -> Unit) {
 }
 
 @Composable
-fun MotoGpContent() {
+fun BasketContent() {
 
 }
 
 @Composable
-fun DrawerContentMotoGp(
+fun DrawerContentBasket(
     goLogin: () -> Unit,
     goHome: () -> Unit,
     onCloseDrawer: () -> Unit
@@ -137,7 +137,7 @@ fun DrawerContentMotoGp(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarMotoGp(onClickDrawer: () -> Unit) {
+fun TopBarBasket(onClickDrawer: () -> Unit) {
     TopAppBar(
 
         title = {

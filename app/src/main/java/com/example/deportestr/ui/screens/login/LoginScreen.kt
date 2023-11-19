@@ -1,6 +1,5 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.login
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,13 +47,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
 import com.example.deportestr.ui.models.User
-import com.example.deportestr.ui.screens.viewmodels.LoginViewModelV2
+
 
 @Composable
 fun LoginScreen(
     goRegister: () -> Unit,
     goHome: (String) -> Unit,
-    viewModel: LoginViewModelV2 = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     Box(
         modifier = Modifier
@@ -69,12 +68,14 @@ fun LoginScreen(
 @Composable
 fun Login(
     modifier: Modifier,
-    viewModel: LoginViewModelV2,
+    viewModel: LoginViewModel,
     goRegister: () -> Unit,
     goHome: (String) -> Unit,
 ) {
     val email = viewModel.email
     val password = viewModel.password
+    val loginEnabled = viewModel.loginEnabled
+    viewModel.onLoginChange(email, password)
 
     Column(modifier = Modifier) {
         Row(
@@ -92,7 +93,7 @@ fun Login(
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.padding(16.dp))
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            LoginButton(goHome, viewModel)
+            LoginButton(goHome, viewModel, loginEnabled)
             RegisterButton(goRegister)
 
 
@@ -126,7 +127,7 @@ fun TitleText() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserNameField(email: String, viewModelV2: LoginViewModelV2) {
+fun UserNameField(email: String, viewModelV2: LoginViewModel) {
     TextField(
         value = email,
         onValueChange = { viewModelV2.email = it },
@@ -149,7 +150,7 @@ fun UserNameField(email: String, viewModelV2: LoginViewModelV2) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordField(password: String, viewModel: LoginViewModelV2) {
+fun PasswordField(password: String, viewModel: LoginViewModel) {
     var passwordVisibility by remember { mutableStateOf(false) }
     TextField(
         value = password,
@@ -199,22 +200,24 @@ fun ForgotPassword(modifier: Modifier) {
     )
 }
 
+
 @Composable
-fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModelV2) {
-    val user = viewModel.user
+fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModel, loginEnabled: Boolean) {
     val context = LocalContext.current
+    val userLoaded = viewModel.userLoaded
 
     Button(
         onClick = {
             viewModel.searchUser()
-            if (user == null) {
+            val user = viewModel.user
+            if (user != null) {
+                home(user.email)
+            } else {
                 Toast.makeText(
                     context,
                     "No se ha encontrado el usuario",
                     Toast.LENGTH_LONG
                 ).show()
-            } else {
-                home(user.email)
             }
         },
         modifier = Modifier
@@ -225,9 +228,13 @@ fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModelV2) {
             contentColor = Color(0xFFFFFFFF),
             disabledContentColor = Color(0xFF882D2D),
             containerColor = Color(0xFF882D2D)
-        )
+        ), enabled = loginEnabled
     ) {
         Text(text = "Iniciar sesion")
+    }
+
+    LaunchedEffect(userLoaded){
+        viewModel.searchUser()
     }
 }
 
@@ -248,5 +255,3 @@ fun RegisterButton(goRegister: () -> Unit) {
         Text(text = "Registrarse")
     }
 }
-
-

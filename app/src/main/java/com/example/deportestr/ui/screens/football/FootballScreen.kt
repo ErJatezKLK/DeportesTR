@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.football
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,20 +39,23 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BasketScreen(goLogin: () -> Unit, goHome: () -> Unit) {
+fun FootballScreen(
+    goLogin: () -> Unit,
+    goHome: () -> Unit
+){
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
 
     ModalNavigationDrawer(drawerContent = {
         ModalDrawerSheet {
-            DrawerContentBasket(goLogin, goHome) {
+            DrawerContentFootball(goLogin, goHome) {
                 coroutineScope.launch { drawerState.close() }
             }
         }
     }, drawerState = drawerState) {
         Scaffold(topBar = {
-            TopBarBasket(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
+            TopBarFootball(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
         }
         ) { innerPadding ->
             Box(
@@ -60,7 +63,7 @@ fun BasketScreen(goLogin: () -> Unit, goHome: () -> Unit) {
                     .padding(innerPadding)
                     .background(Color(0xFF303030))
             ) {
-                BasketContent()
+                FootballContent()
             }
 
         }
@@ -69,12 +72,12 @@ fun BasketScreen(goLogin: () -> Unit, goHome: () -> Unit) {
 }
 
 @Composable
-fun BasketContent() {
+fun FootballContent() {
 
 }
 
 @Composable
-fun DrawerContentBasket(
+fun DrawerContentFootball(
     goLogin: () -> Unit,
     goHome: () -> Unit,
     onCloseDrawer: () -> Unit
@@ -137,7 +140,7 @@ fun DrawerContentBasket(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarBasket(onClickDrawer: () -> Unit) {
+fun TopBarFootball(onClickDrawer: () -> Unit) {
     TopAppBar(
 
         title = {

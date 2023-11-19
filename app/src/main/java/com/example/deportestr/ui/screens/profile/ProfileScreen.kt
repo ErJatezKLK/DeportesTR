@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.profile
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -48,7 +48,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.deportestr.R
-import com.example.deportestr.navigation.AppScreens
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

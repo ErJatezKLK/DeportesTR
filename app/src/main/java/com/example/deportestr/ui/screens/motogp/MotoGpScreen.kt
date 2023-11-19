@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.motogp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,28 +35,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.deportestr.R
-import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FootballScreen(
-    goLogin: () -> Unit,
-    goHome: () -> Unit
-){
+fun MotoGpScreen(goLogin: () -> Unit, goHome: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
 
     ModalNavigationDrawer(drawerContent = {
         ModalDrawerSheet {
-            DrawerContentFootball(goLogin, goHome) {
+            DrawerContentMotoGp(goLogin, goHome) {
                 coroutineScope.launch { drawerState.close() }
             }
         }
     }, drawerState = drawerState) {
         Scaffold(topBar = {
-            TopBarFootball(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
+            TopBarMotoGp(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
         }
         ) { innerPadding ->
             Box(
@@ -64,7 +60,7 @@ fun FootballScreen(
                     .padding(innerPadding)
                     .background(Color(0xFF303030))
             ) {
-                FootballContent()
+                MotoGpContent()
             }
 
         }
@@ -73,12 +69,12 @@ fun FootballScreen(
 }
 
 @Composable
-fun FootballContent() {
+fun MotoGpContent() {
 
 }
 
 @Composable
-fun DrawerContentFootball(
+fun DrawerContentMotoGp(
     goLogin: () -> Unit,
     goHome: () -> Unit,
     onCloseDrawer: () -> Unit
@@ -141,7 +137,7 @@ fun DrawerContentFootball(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarFootball(onClickDrawer: () -> Unit) {
+fun TopBarMotoGp(onClickDrawer: () -> Unit) {
     TopAppBar(
 
         title = {

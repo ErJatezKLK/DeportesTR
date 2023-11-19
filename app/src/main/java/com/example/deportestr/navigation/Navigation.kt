@@ -4,16 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.deportestr.ui.screens.BasketScreen
-import com.example.deportestr.ui.screens.FootballScreen
-import com.example.deportestr.ui.screens.FormulaScreen
-import com.example.deportestr.ui.screens.HomeScreen
-import com.example.deportestr.ui.screens.LoginScreen
-import com.example.deportestr.ui.screens.MotoGpScreen
-import com.example.deportestr.ui.screens.ProfileScreen
-import com.example.deportestr.ui.screens.RegisterScreen
-import com.example.deportestr.ui.screens.TenisScreen
-import com.example.deportestr.ui.screens.WrcScreen
+import com.example.deportestr.ui.screens.basket.BasketScreen
+import com.example.deportestr.ui.screens.football.FootballScreen
+import com.example.deportestr.ui.screens.formula.FormulaScreen
+import com.example.deportestr.ui.screens.home.HomeScreen
+import com.example.deportestr.ui.screens.login.LoginScreen
+import com.example.deportestr.ui.screens.motogp.MotoGpScreen
+import com.example.deportestr.ui.screens.profile.ProfileScreen
+import com.example.deportestr.ui.screens.registration.RegisterScreen
+import com.example.deportestr.ui.screens.tenis.TenisScreen
+import com.example.deportestr.ui.screens.wrc.WrcScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -21,17 +21,15 @@ fun AppNavigation(navController: NavHostController) {
         composable(route = AppScreens.LoginScreen.route) {
             LoginScreen(
                 goRegister = { navController.navigate(route = AppScreens.RegistrationScreen.route) },
-                goHome = {
-                    email ->
-                    navController.popBackStack()
-                    navController.navigate(route = AppScreens.HomeScreen.route + "/${email}")
+                goHome = { email ->
+                    navController.navigate(route = AppScreens.HomeScreen.route + "/$email")
                 }
             )
         }
         composable(route = AppScreens.RegistrationScreen.route) {
             RegisterScreen(goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) })
         }
-        composable(route = AppScreens.HomeScreen.route) { backStackEntry ->
+        composable(route = AppScreens.HomeScreen.route + "/{email}") { backStackEntry ->
             HomeScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
                 goProfile = { navController.navigate(route = AppScreens.ProfileScreen.route) },

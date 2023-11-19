@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.tenis
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,20 +39,23 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WrcScreen(goLogin: () -> Unit, goHome: () -> Unit) {
+fun TenisScreen(
+    goLogin: () -> Unit,
+    goHome: () -> Unit
+){
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
 
     ModalNavigationDrawer(drawerContent = {
         ModalDrawerSheet {
-            DrawerContentWrc(goLogin, goHome) {
+            DrawerContentTenis(goLogin, goHome) {
                 coroutineScope.launch { drawerState.close() }
             }
         }
     }, drawerState = drawerState) {
         Scaffold(topBar = {
-            TopBarWrc(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
+            TopBarTenis(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
         }
         ) { innerPadding ->
             Box(
@@ -60,7 +63,7 @@ fun WrcScreen(goLogin: () -> Unit, goHome: () -> Unit) {
                     .padding(innerPadding)
                     .background(Color(0xFF303030))
             ) {
-                WrcContent()
+                TenisContent()
             }
 
         }
@@ -69,12 +72,12 @@ fun WrcScreen(goLogin: () -> Unit, goHome: () -> Unit) {
 }
 
 @Composable
-fun WrcContent() {
+fun TenisContent() {
 
 }
 
 @Composable
-fun DrawerContentWrc(
+fun DrawerContentTenis(
     goLogin: () -> Unit,
     goHome: () -> Unit,
     onCloseDrawer: () -> Unit
@@ -137,7 +140,7 @@ fun DrawerContentWrc(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarWrc(onClickDrawer: () -> Unit) {
+fun TopBarTenis(onClickDrawer: () -> Unit) {
     TopAppBar(
 
         title = {
@@ -161,3 +164,4 @@ fun TopBarWrc(onClickDrawer: () -> Unit) {
         colors = TopAppBarDefaults.largeTopAppBarColors(Color.Red),
     )
 }
+

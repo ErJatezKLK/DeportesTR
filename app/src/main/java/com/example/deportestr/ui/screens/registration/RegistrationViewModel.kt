@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens.viewmodels
+package com.example.deportestr.ui.screens.registration
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData

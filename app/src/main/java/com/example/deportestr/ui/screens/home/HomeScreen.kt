@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -49,9 +49,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
 import com.example.deportestr.ui.models.Sport
+import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -67,14 +68,23 @@ fun HomeScreen(
     goMotoGp: () -> Unit,
     goBasket: () -> Unit,
     goWrc: () -> Unit,
-    email: String
+    email: String,
+    viewModel: SportsViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    viewModel.email = email
+    var paCargar = false
+    val searchUser = viewModel.user
+    paCargar = true
+
+    LaunchedEffect(paCargar){
+        viewModel.searchUser()
+    }
 
     ModalNavigationDrawer(drawerContent = {
         ModalDrawerSheet {
-            DrawerContent(goLogin = goLogin, goProfile = goProfile) {
+            DrawerContent(searchUser, goLogin = goLogin, goProfile = goProfile) {
                 coroutineScope.launch { drawerState.close() }
             }
         }
@@ -113,7 +123,6 @@ fun HomeBody(
     LaunchedEffect(pagerState.currentPage) {
         selectedTabIndex = pagerState.currentPage
     }
-
 
     Column {
         ScrollableTabRow(selectedTabIndex = selectedTabIndex) {
@@ -300,14 +309,6 @@ fun HomeBody(
         }
     }
 }
-
-
-@Composable
-fun ItemSport(sport: Sport, goFormula: NavHostController) {
-
-
-}
-
 fun getSports(): List<Sport> {
     return listOf(
         Sport(1, "Futbol"),
@@ -349,6 +350,7 @@ fun TopBarContent(onClickDrawer: () -> Unit) {
 
 @Composable
 fun DrawerContent(
+    user: User?,
     goLogin: () -> Unit,
     goProfile: () -> Unit,
     onCloseDrawer: () -> Job
@@ -364,8 +366,10 @@ fun DrawerContent(
                     .size(100.dp)
             )
             Column {
-                Text(text = "Big Boss")
-                Text(text = "@big_boss.oh")
+                if (user != null) {
+                    Text(text = user.name)
+                    Text(text = user.email)
+                }
             }
         }
         Divider(

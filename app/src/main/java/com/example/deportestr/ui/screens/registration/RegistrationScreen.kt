@@ -1,4 +1,4 @@
-package com.example.deportestr.ui.screens
+package com.example.deportestr.ui.screens.registration
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -35,9 +35,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
 import com.example.deportestr.R
-import com.example.deportestr.ui.screens.viewmodels.RegistrationViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

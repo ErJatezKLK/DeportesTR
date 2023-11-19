@@ -14,4 +14,9 @@ class DeportesRemoteDataSourceImpl @Inject constructor(
         withContext(dispatcherProvider.ioDispatcher){
             return@withContext deportesAPI.searchUser(email, password)
         }
+
+    override suspend fun searchUserByEmail(email: String): Response<User> =
+        withContext(dispatcherProvider.ioDispatcher){
+            return@withContext deportesAPI.searchUserByEmail(email)
+        }
 }
