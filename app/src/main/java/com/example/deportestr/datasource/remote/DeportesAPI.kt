@@ -20,5 +20,7 @@ interface DeportesAPI {
     ): Response<User>
 
     @POST("user")
-    fun addUser(): Response<User>
+    fun addUser(
+        @Body user: User
+    ): Response<Void>
 }
