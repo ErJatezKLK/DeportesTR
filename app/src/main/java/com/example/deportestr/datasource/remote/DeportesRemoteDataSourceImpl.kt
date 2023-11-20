@@ -20,9 +20,9 @@ class DeportesRemoteDataSourceImpl @Inject constructor(
             return@withContext deportesAPI.searchUserByEmail(email)
         }
 
-    override suspend fun addUser(): Response<Void> =
+    override suspend fun addUser(User: user): Response<Void> =
         withContext(dispatcherProvider.ioDispatcher){
-            deportesAPI.addUser()
+            deportesAPI.addUser(user)
         }
 
 }
