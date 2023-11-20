@@ -8,7 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deportestr.ui.models.User
-import com.example.deportestr.usecases.AddUserUsecases
+import com.example.deportestr.usecases.AddUserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,8 +16,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
-    private val addUserUseCases: AddUserUsecases
+    private val addUserUseCases: AddUserUseCases
 ) :ViewModel() {
+    var id: Int by mutableIntStateOf(0)
     var name: String by mutableStateOf("")
     var email: String by mutableStateOf("")
     var password: String by mutableStateOf("")
@@ -37,10 +38,15 @@ class RegistrationViewModel @Inject constructor(
         this.email = email
         this.password = password
         this.reapeatPassword = repeatPassword
-        loginEnabled = isValidEmail(email) && isValidPassword(password) && isEqualPassword(
-            password,
-            repeatPassword
-        )
+        if (isValidEmail(email) && isValidPassword(password) && isEqualPassword(
+                password,
+                repeatPassword
+            )
+        ) {
+            loginEnabled = true
+        } else {
+            loginEnabled = false
+        }
     }
 
 

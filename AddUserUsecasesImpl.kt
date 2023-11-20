@@ -7,8 +7,7 @@ import javax.inject.Inject
 
 class AddUserUsecasesImpl @Inject constructor(
     private val deportesRepository: DeportesRepository
-): AddUserUsecases {
-
+): AddUserUseCases {
     override suspend fun addUser(user: User): Response<Void> {
         return deportesRepository.addUser(user)
     }
