@@ -1,4 +1,4 @@
-package com.example.deportestr.datasource
+: package com.example.deportestr.datasource
 
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSource
 import com.example.deportestr.ui.models.User
@@ -16,7 +16,7 @@ class DeportesRepositoryImpl @Inject constructor(
         return deportesRemoteDataSource.searchUserByEmail(email)
     }
 
-    override suspend fun addUser(): Response<Void> {
+    override suspend fun addUser(user: User): Response<Void> {
         return deportesRemoteDataSource.addUser()
     }
 
