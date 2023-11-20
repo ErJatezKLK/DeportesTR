@@ -14,11 +14,13 @@ interface DeportesAPI {
         @Query("password") password: String
     ): Response<User>
 
-    @GET("user")
+    @GET("userE")
     suspend fun searchUserByEmail(
        @Query("email") email: String
     ): Response<User>
 
-    @POST("user")
-    fun addUser(): Response<User>
+    @POST("userP")
+    fun addUser(
+       @Body user: User
+    ): Response<Void>
 }

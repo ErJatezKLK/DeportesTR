@@ -54,7 +54,9 @@ import com.example.deportestr.R
 import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.delay
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -74,28 +76,30 @@ fun HomeScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val user = viewModel.user
 
-    LaunchedEffect(viewModel.userLoaded) {
-        if (!viewModel.userLoaded) {
-            viewModel.email = email
-            viewModel.loadUser()
+    LaunchedEffect(Unit) {
+        viewModel.loadUser(email)
+        while (user == null) {
+            delay(100)
         }
     }
 
-    val searchUser = viewModel.user
 
-    ModalNavigationDrawer(drawerContent = {
-        ModalDrawerSheet {
-            DrawerContent(searchUser, goLogin = goLogin, goProfile = goProfile) {
-                coroutineScope.launch { drawerState.close() }
+    if (user != null) {
+        ModalNavigationDrawer(drawerContent = {
+            ModalDrawerSheet {
+                DrawerContent(user, goLogin = goLogin, goProfile = goProfile) {
+                    coroutineScope.launch { drawerState.close() }
+                }
             }
-        }
-    }, drawerState = drawerState) {
-        Scaffold(topBar = {
-            TopBarContent(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
-        }) { innerPadding ->
-            Box(modifier = Modifier.padding(innerPadding)) {
-                HomeBody(goFootball, goFormula, goTenis, goMotoGp, goBasket, goWrc)
+        }, drawerState = drawerState) {
+            Scaffold(topBar = {
+                TopBarContent(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
+            }) { innerPadding ->
+                Box(modifier = Modifier.padding(innerPadding)) {
+                    HomeBody(goFootball, goFormula, goTenis, goMotoGp, goBasket, goWrc)
+                }
             }
         }
     }
@@ -356,60 +360,62 @@ fun DrawerContent(
     goProfile: () -> Unit,
     onCloseDrawer: () -> Job
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Filled.AccountCircle,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(6.dp)
-                    .clickable { onCloseDrawer() }
-                    .size(100.dp)
-            )
-            Column {
-                if (user != null) {
-                    Text(text = user.name)
-                    Text(text = user.email)
+    if (user != null) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Filled.AccountCircle,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(6.dp)
+                        .clickable { onCloseDrawer() }
+                        .size(100.dp)
+                )
+                Column {
+                    if (user != null) {
+                        Text(text = user.name)
+                        Text(text = user.email)
+                    }
                 }
             }
-        }
-        Divider(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth(), color = Color(0xFF757575)
-        )
-        Row(modifier = Modifier
-            .clickable { goProfile() }
-            .fillMaxWidth()
-        ) {
-            Text(text = "Ir a mi perfil", fontSize = 25.sp)
-            Icon(
-                imageVector = Icons.Filled.NavigateNext,
-                contentDescription = null,
+            Divider(
                 modifier = Modifier
-                    .padding(start = 10.dp)
-                    .size(35.dp)
+                    .height(1.dp)
+                    .fillMaxWidth(), color = Color(0xFF757575)
             )
-        }
-        Divider(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth(), color = Color(0xFF757575)
-        )
-        Row(modifier = Modifier
-            .clickable { goLogin() }
-            .fillMaxWidth()
+            Row(modifier = Modifier
+                .clickable { goProfile() }
+                .fillMaxWidth()
+            ) {
+                Text(text = "Ir a mi perfil", fontSize = 25.sp)
+                Icon(
+                    imageVector = Icons.Filled.NavigateNext,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                        .size(35.dp)
+                )
+            }
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .fillMaxWidth(), color = Color(0xFF757575)
+            )
+            Row(modifier = Modifier
+                .clickable { goLogin() }
+                .fillMaxWidth()
 
-        ) {
-            Text(text = "Cerrar session", color = Color(0xFFC70606), fontSize = 25.sp)
-            Icon(
-                imageVector = Icons.Filled.ExitToApp,
-                contentDescription = null,
-                tint = Color(0xFFC70606),
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .size(35.dp)
-            )
+            ) {
+                Text(text = "Cerrar session", color = Color(0xFFC70606), fontSize = 25.sp)
+                Icon(
+                    imageVector = Icons.Filled.ExitToApp,
+                    contentDescription = null,
+                    tint = Color(0xFFC70606),
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                        .size(35.dp)
+                )
+            }
         }
     }
 }

@@ -9,6 +9,8 @@ import com.example.deportestr.datasource.DeportesRepositoryImpl
 import com.example.deportestr.datasource.remote.DeportesAPI
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSource
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSourceImpl
+import com.example.deportestr.usecases.AddUserUsecases
+import com.example.deportestr.usecases.AddUserUsecasesImpl
 import com.example.deportestr.usecases.SearchUserByEmailUseCases
 import com.example.deportestr.usecases.SearchUserByEmailUseCasesImpl
 import com.example.deportestr.usecases.SearchUserUsecases
@@ -134,4 +136,13 @@ object DataSourceModule {
     ): SearchUserByEmailUseCases{
         return SearchUserByEmailUseCasesImpl(deportesRepository)
     }
+
+    @Provides
+    @Singleton
+    fun provideAddUserUsecases(
+        deportesRepository: DeportesRepository
+    ): AddUserUsecases {
+        return AddUserUsecasesImpl(deportesRepository)
+    }
+
 }

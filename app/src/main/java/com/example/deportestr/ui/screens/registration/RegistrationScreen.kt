@@ -54,6 +54,7 @@ fun Register(modifier: Modifier, viewModel: RegistrationViewModel, goLogin: () -
     val password = viewModel.password
     val repeatPassword = viewModel.reapeatPassword
     val loginEnabled = viewModel.loginEnabled
+    viewModel.OnRegistrationChanged(email, password, repeatPassword)
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -168,7 +169,7 @@ fun PasswordRegister(user: String, viewModel: RegistrationViewModel) {
 fun RepeatePassword(user: String, viewModel: RegistrationViewModel) {
     TextField(
         value = user,
-        onValueChange = { viewModel.reapeatPassword },
+        onValueChange = { viewModel.reapeatPassword = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -187,9 +188,12 @@ fun RepeatePassword(user: String, viewModel: RegistrationViewModel) {
 }
 
 @Composable
-fun LogButton(loginEnabled: Boolean, goLogin: () -> Unit, register: RegistrationViewModel) {
+fun LogButton(loginEnabled: Boolean, goLogin: () -> Unit, viewModel: RegistrationViewModel) {
     Button(
-        onClick = { goLogin() },
+        onClick = {
+            viewModel.addUser()
+            goLogin()
+                  },
         modifier = Modifier
             .padding(5.dp)
             .width(IntrinsicSize.Max)

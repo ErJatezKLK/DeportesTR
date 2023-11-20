@@ -1,31 +1,23 @@
 package com.example.deportestr.ui.screens.registration
 
-import android.content.ContentValues
-import android.util.Log
 import android.util.Patterns
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deportestr.ui.models.User
-import com.example.deportestr.usecases.AddUserUseCases
+import com.example.deportestr.usecases.AddUserUsecases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
-    private val addUserUseCases: AddUserUseCases
+    private val addUserUseCases: AddUserUsecases
 ) :ViewModel() {
-    var id: Int by mutableIntStateOf(0)
     var name: String by mutableStateOf("")
     var email: String by mutableStateOf("")
     var password: String by mutableStateOf("")
@@ -36,11 +28,8 @@ class RegistrationViewModel @Inject constructor(
 
     fun addUser() {
         viewModelScope.launch(Dispatchers.IO) {
-            var user: User? = null
-            user?.name = name
-            user?.email = email
-            user?.password = password
-            val responseBody = addUserUseCases.addUser()
+            val user = User(null, name, email, password, null, null)
+            val responseBody = addUserUseCases.addUser(user)
         }
     }
 
@@ -48,15 +37,10 @@ class RegistrationViewModel @Inject constructor(
         this.email = email
         this.password = password
         this.reapeatPassword = repeatPassword
-        if (isValidEmail(email) && isValidPassword(password) && isEqualPassword(
-                password,
-                repeatPassword
-            )
-        ) {
-            loginEnabled = true
-        } else {
-            loginEnabled = false
-        }
+        loginEnabled = isValidEmail(email) && isValidPassword(password) && isEqualPassword(
+            password,
+            repeatPassword
+        )
     }
 
 
