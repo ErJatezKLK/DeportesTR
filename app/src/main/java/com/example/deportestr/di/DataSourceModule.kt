@@ -1,16 +1,20 @@
 package com.example.deportestr.di
 
+import DeportesRepositoryImpl
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.example.deportestr.datasource.DeportesRepository
-import com.example.deportestr.datasource.DeportesRepositoryImpl
 import com.example.deportestr.datasource.remote.DeportesAPI
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSource
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSourceImpl
 import com.example.deportestr.usecases.AddUserUsecases
 import com.example.deportestr.usecases.AddUserUsecasesImpl
+import com.example.deportestr.usecases.DeleteUserUsecases
+import com.example.deportestr.usecases.DeleteUserUsecasesImpl
+import com.example.deportestr.usecases.SearchAllSportsUsecases
+import com.example.deportestr.usecases.SearchAllSportsUsecasesImpl
 import com.example.deportestr.usecases.SearchUserByEmailUseCases
 import com.example.deportestr.usecases.SearchUserByEmailUseCasesImpl
 import com.example.deportestr.usecases.SearchUserUsecases
@@ -89,7 +93,7 @@ object DataSourceModule {
         client: OkHttpClient, gson: Gson
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080")//ip_casa = 192.168.1.20 / ip_local = 10.0.2.2
+            .baseUrl("http://192.168.1.20:8080")//ip_casa = 192.168.1.20 / ip_local = 10.0.2.2
             .addConverterFactory(GsonConverterFactory.create(gson)).client(client).build()
     }
 
@@ -143,6 +147,22 @@ object DataSourceModule {
         deportesRepository: DeportesRepository
     ): AddUserUsecases {
         return AddUserUsecasesImpl(deportesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAllSportsUsecases(
+        deportesRepository: DeportesRepository
+    ): SearchAllSportsUsecases {
+        return SearchAllSportsUsecasesImpl(deportesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteUserUsecases(
+        deportesRepository: DeportesRepository
+    ): DeleteUserUsecases{
+        return DeleteUserUsecasesImpl(deportesRepository)
     }
 
 }

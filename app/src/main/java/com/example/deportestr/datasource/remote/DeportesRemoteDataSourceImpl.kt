@@ -1,5 +1,6 @@
 package com.example.deportestr.datasource.remote
 
+import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.User
 import com.example.deportestr.util.DispatcherProvider
 import kotlinx.coroutines.withContext
@@ -24,5 +25,16 @@ class DeportesRemoteDataSourceImpl @Inject constructor(
         withContext(dispatcherProvider.ioDispatcher){
             deportesAPI.addUser(user)
         }
+
+    override suspend fun searchAllSports(): Response<List<Sport>> =
+        withContext(dispatcherProvider.ioDispatcher){
+            return@withContext deportesAPI.searchAllSports()
+        }
+
+    override suspend fun deleteUser(email: String): Response<Void> =
+        withContext(dispatcherProvider.ioDispatcher){
+            return@withContext deportesAPI.deleteUser(email)
+        }
+
 
 }

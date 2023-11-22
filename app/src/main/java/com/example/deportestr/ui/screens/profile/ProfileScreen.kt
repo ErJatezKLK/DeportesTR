@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.NavigateNext
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,11 +33,17 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,7 +54,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
+import com.example.deportestr.ui.models.User
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -55,32 +65,43 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileScreen(
     goLogin: () -> Unit,
-    goHome: () -> Unit
+    goHome: () -> Unit,
+    viewModel: ProfieViewModel = hiltViewModel(),
+    email: String
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val user = viewModel.user
 
-    ModalNavigationDrawer(drawerContent = {
-        ModalDrawerSheet {
-            DrawerContentProfile(goLogin , goHome) {
-                coroutineScope.launch { drawerState.close() }
-            }
+    LaunchedEffect(Unit) {
+        viewModel.loadInfoUser(email)
+        while (user == null) {
+            delay(100)
         }
-    }, drawerState = drawerState) {
-        Scaffold(topBar = {
-            TopBarProfile(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
-        },
-            ) {
-                innerPadding ->
-            Box(modifier = Modifier.padding(innerPadding)){
-                ProfileContent()
+    }
+    if (user != null) {
+
+        ModalNavigationDrawer(drawerContent = {
+            ModalDrawerSheet {
+                DrawerContentProfile(user, goLogin, goHome) {
+                    coroutineScope.launch { drawerState.close() }
+                }
+            }
+        }, drawerState = drawerState) {
+            Scaffold(
+                topBar = {
+                    TopBarProfile(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
+                },
+            ) { innerPadding ->
+                Box(modifier = Modifier.padding(innerPadding).background(Color(0xFF1D1D1D)),) {
+                    ProfileContent(user, viewModel, goLogin)
+                }
+
             }
 
         }
-
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -111,31 +132,37 @@ fun TopBarProfile(onClickDrawer: () -> Unit) {
 }
 
 @Composable
-fun ProfileContent() {
-    Divider(
-        modifier = Modifier
-            .height(1.dp)
-            .fillMaxWidth()
-            .padding(top = 10.dp), color = Color(0xFF757575)
-    )
-    BoxWithConstraints(modifier = Modifier
-        .fillMaxSize()
-        .systemBarsPadding()
-        .padding(10.dp)
-        .background(Color(0xFF303030))
-    ) {
-        Surface {
-            Column(modifier = Modifier
+fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) {
+    if (user != null) {
+        Divider(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .padding(top = 10.dp), color = Color(0xFF757575)
+        )
+        BoxWithConstraints(
+            modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 16.dp)) {
-                ProfileHeader(
-                    this@BoxWithConstraints.maxHeight)
-                UserInfo(this@BoxWithConstraints.maxHeight)
+                .systemBarsPadding()
+                .padding(10.dp)
+                .background(Color(0xFF303030))
+        ) {
+            Surface {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 16.dp)
+                        .background(Color(0xFF1D1D1D))
+                ) {
+                    ProfileHeader(
+                        this@BoxWithConstraints.maxHeight
+                    )
+                    UserInfo(this@BoxWithConstraints.maxHeight, user, viewModel, goLogin)
+                }
             }
         }
     }
 }
-
 
 
 @Composable
@@ -152,30 +179,81 @@ fun ProfileHeader(maxHeight: Dp) {
             .border(2.dp, Color.Gray, CircleShape)
     )
 }
-@Composable
-fun UserInfo(maxHeight: Dp) {
-    Column {
-        Name(
-            modifier = Modifier.height(32.dp)
-        )
-        Position(
-            modifier = Modifier
-                .padding(bottom = 20.dp)
-                .height(24.dp)
-        )
-        ProfileProperty(stringResource(R.string.display_name), "Nombre de usuario")
 
-        ProfileProperty(stringResource(R.string.email), "big.boss@dd.com")
-        Spacer(Modifier.height((320.dp).coerceAtLeast(0.dp)))
+@Composable
+fun UserInfo(maxHeight: Dp, user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) {
+    if (user != null) {
+        var show by remember { mutableStateOf(false) }
+        Column {
+            Name(
+                modifier = Modifier.height(32.dp),
+                user
+            )
+            Position(
+                modifier = Modifier
+                    .padding(bottom = 20.dp)
+                    .height(24.dp)
+            )
+            ProfileProperty(stringResource(R.string.display_name), user.name)
+
+            ProfileProperty(stringResource(R.string.email), user.email)
+            Row(
+                modifier = Modifier
+                    .clickable { show = true }
+                    .align(Alignment.CenterHorizontally),
+            ) {
+                Text(text = "Borrar cuenta", color = Color(0xFFC70606))
+                DeleteAccountDialog(
+                    user = user,
+                    viewModel = viewModel,
+                    show = show,
+                    goLogin,
+                    onDismiss = { show = false })
+            }
+            Spacer(Modifier.height((50.dp).coerceAtLeast(0.dp)))
+        }
     }
 }
+
 @Composable
-private fun Name(modifier: Modifier = Modifier) {
-    Text(
-        text = "Nombre de usuario",
-        modifier = modifier,
-        style = MaterialTheme.typography.headlineSmall
-    )
+fun DeleteAccountDialog(
+    user: User,
+    viewModel: ProfieViewModel,
+    show: Boolean,
+    goLogin: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (show) {
+        AlertDialog(
+            onDismissRequest = { },
+            confirmButton = {
+                TextButton(onClick = {
+                    goLogin()
+                    viewModel.deleteUser(user.email)
+                }) {
+                    Text(text = "Confirmar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { onDismiss() }) {
+                    Text(text = "Cancelar")
+                }
+            },
+            title = { Text(text = "Desea Borrar la cuenta") },
+            text = { Text(text = "Si aceptas automaticamente se te borrara la cuenta y te devolvera al inicio de sesion") }
+        )
+    }
+}
+
+@Composable
+private fun Name(modifier: Modifier = Modifier, user: User) {
+    if (user != null) {
+        Text(
+            text = user.name,
+            modifier = modifier,
+            style = MaterialTheme.typography.headlineSmall
+        )
+    }
 }
 
 @Composable
@@ -213,62 +291,65 @@ fun ProfileProperty(label: String, value: String, isLink: Boolean = false) {
 
 @Composable
 fun DrawerContentProfile(
+    user: User?,
     goLogin: () -> Unit,
     goHome: () -> Unit,
     onCloseDrawer: () -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Filled.AccountCircle,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(6.dp)
-                    .clickable { onCloseDrawer() }
-                    .size(100.dp)
-            )
-            Column {
-                Text(text = "Big Boss")
-                Text(text = "@big_boss.oh")
+    if (user != null) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Filled.AccountCircle,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(6.dp)
+                        .clickable { onCloseDrawer() }
+                        .size(100.dp)
+                )
+                Column {
+                    Text(text = user.name)
+                    Text(text = user.email)
+                }
             }
-        }
-        Divider(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth(), color = Color(0xFF757575)
-        )
-        Row(modifier = Modifier
-            .clickable { goHome() }
-            .fillMaxWidth()
-        ) {
-            Text(text = "Deportes", fontSize = 25.sp)
-            Icon(
-                imageVector = Icons.Filled.NavigateNext,
-                contentDescription = null,
+            Divider(
                 modifier = Modifier
-                    .padding(start = 10.dp)
-                    .size(35.dp)
+                    .height(1.dp)
+                    .fillMaxWidth(), color = Color(0xFF757575)
             )
-        }
-        Divider(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth(), color = Color(0xFF757575)
-        )
-        Row(modifier = Modifier
-            .clickable { goLogin() }
-            .fillMaxWidth()
+            Row(modifier = Modifier
+                .clickable { goHome() }
+                .fillMaxWidth()
+            ) {
+                Text(text = "Deportes", fontSize = 25.sp)
+                Icon(
+                    imageVector = Icons.Filled.NavigateNext,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                        .size(35.dp)
+                )
+            }
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .fillMaxWidth(), color = Color(0xFF757575)
+            )
+            Row(modifier = Modifier
+                .clickable { goLogin() }
+                .fillMaxWidth()
 
-        ) {
-            Text(text = "Cerrar session", color = Color(0xFFC70606), fontSize = 25.sp)
-            Icon(
-                imageVector = Icons.Filled.ExitToApp,
-                contentDescription = null,
-                tint = Color(0xFFC70606),
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .size(35.dp)
-            )
+            ) {
+                Text(text = "Cerrar session", color = Color(0xFFC70606), fontSize = 25.sp)
+                Icon(
+                    imageVector = Icons.Filled.ExitToApp,
+                    contentDescription = null,
+                    tint = Color(0xFFC70606),
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                        .size(35.dp)
+                )
+            }
         }
     }
 }

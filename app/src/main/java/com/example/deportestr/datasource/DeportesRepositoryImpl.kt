@@ -1,6 +1,7 @@
 import com.example.deportestr.datasource.DeportesRepository
 
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSource
+import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.User
 import retrofit2.Response
 import javax.inject.Inject
@@ -18,6 +19,14 @@ class DeportesRepositoryImpl @Inject constructor(
 
     override suspend fun addUser(user: User): Response<Void> {
         return deportesRemoteDataSource.addUser(user)
+    }
+
+    override suspend fun searchAllSports(): Response<List<Sport>> {
+        return deportesRemoteDataSource.searchAllSports()
+    }
+
+    override suspend fun deleteUser(email: String): Response<Void> {
+        return deportesRemoteDataSource.deleteUser(email)
     }
 
 }

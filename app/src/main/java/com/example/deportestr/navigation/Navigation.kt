@@ -32,7 +32,8 @@ fun AppNavigation(navController: NavHostController) {
         composable(route = AppScreens.HomeScreen.route + "/{email}") { backStackEntry ->
             HomeScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goProfile = { navController.navigate(route = AppScreens.ProfileScreen.route) },
+                goProfile = { email ->
+                    navController.navigate(route = AppScreens.ProfileScreen.route + "/$email") },
                 goFormula = { navController.navigate(route = AppScreens.FormulaScreen.route) },
                 goFootball = { navController.navigate(route = AppScreens.FootballScreen.route) },
                 goTenis = { navController.navigate(route = AppScreens.TenisScreen.route) },
@@ -42,10 +43,11 @@ fun AppNavigation(navController: NavHostController) {
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
-        composable(route = AppScreens.ProfileScreen.route) {
+        composable(route = AppScreens.ProfileScreen.route + "/{email}") {backStackEntry ->
             ProfileScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) }
+                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
         composable(route = AppScreens.FormulaScreen.route) {

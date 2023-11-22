@@ -56,7 +56,6 @@ import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.time.delay
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -64,7 +63,7 @@ import kotlinx.coroutines.time.delay
 @Composable
 fun HomeScreen(
     goLogin: () -> Unit,
-    goProfile: () -> Unit,
+    goProfile: (String) -> Unit,
     goFormula: () -> Unit,
     goFootball: () -> Unit,
     goTenis: () -> Unit,
@@ -77,16 +76,17 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val user = viewModel.user
+    val sports = viewModel.sports
 
     LaunchedEffect(Unit) {
-        viewModel.loadUser(email)
-        while (user == null) {
+        viewModel.loadInfo(email)
+        while (user == null || sports == null) {
             delay(100)
         }
     }
 
 
-    if (user != null) {
+    if (user != null && sports != null) {
         ModalNavigationDrawer(drawerContent = {
             ModalDrawerSheet {
                 DrawerContent(user, goLogin = goLogin, goProfile = goProfile) {
@@ -97,8 +97,8 @@ fun HomeScreen(
             Scaffold(topBar = {
                 TopBarContent(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
             }) { innerPadding ->
-                Box(modifier = Modifier.padding(innerPadding)) {
-                    HomeBody(goFootball, goFormula, goTenis, goMotoGp, goBasket, goWrc)
+                Box(modifier = Modifier.padding(innerPadding).background(color = Color(0xFF1D1D1D))) {
+                    HomeBody(goFootball, goFormula, goTenis, goMotoGp, goBasket, goWrc, sports)
                 }
             }
         }
@@ -112,13 +112,12 @@ fun HomeBody(
     goTenis: () -> Unit,
     goMotoGp: () -> Unit,
     goBasket: () -> Unit,
-    goWrc: () -> Unit
+    goWrc: () -> Unit,
+    sports: List<Sport>
 ) {
     var selectedTabIndex by remember {
         mutableIntStateOf(0)
     }
-
-    val sports = getSports()
     val pagerState = rememberPagerState {
         sports.size
     }
@@ -145,14 +144,14 @@ fun HomeBody(
                 .fillMaxWidth()
                 .weight(1f)
         ) { index ->
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize().background(Color(0xFF1D1D1D))) {
 
                 when (index) {
                     0 -> Card(
                         modifier = Modifier
                             .clickable { goFootball() }
                             .fillMaxWidth()
-                            .background(Color(0xFF303030)),
+                            .background(Color(0xFF1D1D1D)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
@@ -161,7 +160,7 @@ fun HomeBody(
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
-                            Row(modifier = Modifier.align(Alignment.Start)) {
+                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
                                 Text(
                                     text = sports[index].name,
                                     fontSize = 20.sp,
@@ -179,7 +178,7 @@ fun HomeBody(
                         modifier = Modifier
                             .clickable { goFormula() }
                             .fillMaxWidth()
-                            .background(Color(0xFF303030)),
+                            .background(Color(0xFF1D1D1D)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
@@ -188,7 +187,7 @@ fun HomeBody(
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
-                            Row(modifier = Modifier.align(Alignment.Start)) {
+                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
                                 Text(
                                     text = sports[index].name,
                                     fontSize = 20.sp,
@@ -206,7 +205,7 @@ fun HomeBody(
                         modifier = Modifier
                             .clickable { goTenis() }
                             .fillMaxWidth()
-                            .background(Color(0xFF303030)),
+                            .background(Color(0xFF1D1D1D)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
@@ -215,7 +214,7 @@ fun HomeBody(
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
-                            Row(modifier = Modifier.align(Alignment.Start)) {
+                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
                                 Text(
                                     text = sports[index].name,
                                     fontSize = 20.sp,
@@ -233,7 +232,7 @@ fun HomeBody(
                         modifier = Modifier
                             .clickable { goMotoGp() }
                             .fillMaxWidth()
-                            .background(Color(0xFF303030)),
+                            .background(Color(0xFF1D1D1D)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
@@ -242,7 +241,7 @@ fun HomeBody(
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
-                            Row(modifier = Modifier.align(Alignment.Start)) {
+                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
                                 Text(
                                     text = sports[index].name,
                                     fontSize = 20.sp,
@@ -260,7 +259,7 @@ fun HomeBody(
                         modifier = Modifier
                             .clickable { goBasket() }
                             .fillMaxWidth()
-                            .background(Color(0xFF303030)),
+                            .background(Color(0xFF1D1D1D)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
@@ -269,7 +268,7 @@ fun HomeBody(
                                 contentDescription = null,
                                 Modifier.fillMaxWidth(),
                             )
-                            Row(modifier = Modifier.align(Alignment.Start)) {
+                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
                                 Text(
                                     text = sports[index].name,
                                     fontSize = 20.sp,
@@ -287,7 +286,7 @@ fun HomeBody(
                         modifier = Modifier
                             .clickable { goWrc() }
                             .fillMaxWidth()
-                            .background(Color(0xFF303030)),
+                            .background(Color(0xFF1D1D1D)),
                         shape = MaterialTheme.shapes.small
                     ) {
                         Column {
@@ -296,7 +295,7 @@ fun HomeBody(
                                 contentDescription = null,
                                 Modifier.fillMaxWidth()
                             )
-                            Row(modifier = Modifier.align(Alignment.Start)) {
+                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
                                 Text(
                                     text = sports[index].name,
                                     fontSize = 20.sp,
@@ -357,7 +356,7 @@ fun TopBarContent(onClickDrawer: () -> Unit) {
 fun DrawerContent(
     user: User?,
     goLogin: () -> Unit,
-    goProfile: () -> Unit,
+    goProfile: (String) -> Unit,
     onCloseDrawer: () -> Job
 ) {
     if (user != null) {
@@ -372,10 +371,8 @@ fun DrawerContent(
                         .size(100.dp)
                 )
                 Column {
-                    if (user != null) {
-                        Text(text = user.name)
-                        Text(text = user.email)
-                    }
+                    Text(text = user.name)
+                    Text(text = user.email)
                 }
             }
             Divider(
@@ -384,7 +381,7 @@ fun DrawerContent(
                     .fillMaxWidth(), color = Color(0xFF757575)
             )
             Row(modifier = Modifier
-                .clickable { goProfile() }
+                .clickable { goProfile(user.email) }
                 .fillMaxWidth()
             ) {
                 Text(text = "Ir a mi perfil", fontSize = 25.sp)
