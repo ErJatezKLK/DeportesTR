@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,37 +35,52 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
+import com.example.deportestr.ui.models.User
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WrcScreen(goLogin: () -> Unit, goHome: () -> Unit) {
+fun WrcScreen(
+    goLogin: () -> Unit,
+    goHome: () -> Unit,
+    email: String,
+    viewModel: WrcViewModel = hiltViewModel()
+) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val user = viewModel.user
 
+    LaunchedEffect(Unit) {
+        viewModel.loadInfo(email)
+        while (user == null) {
+            delay(100)
+        }
+    }
 
-    ModalNavigationDrawer(drawerContent = {
-        ModalDrawerSheet {
-            DrawerContentWrc(goLogin, goHome) {
-                coroutineScope.launch { drawerState.close() }
+    if (user != null) {
+        ModalNavigationDrawer(drawerContent = {
+            ModalDrawerSheet {
+                DrawerContentWrc(user, goLogin = goLogin, goHome = goHome) {
+                    coroutineScope.launch { drawerState.close() }
+                }
+            }
+        }, drawerState = drawerState) {
+            Scaffold(topBar = {
+                TopBarWrc(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
+            }
+            ) { innerPadding ->
+                Box(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .background(Color(0xFF303030))
+                ) {
+                    WrcContent()
+                }
             }
         }
-    }, drawerState = drawerState) {
-        Scaffold(topBar = {
-            TopBarWrc(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
-        }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .background(Color(0xFF303030))
-            ) {
-                WrcContent()
-            }
-
-        }
-
     }
 }
 
@@ -75,6 +91,7 @@ fun WrcContent() {
 
 @Composable
 fun DrawerContentWrc(
+    user: User,
     goLogin: () -> Unit,
     goHome: () -> Unit,
     onCloseDrawer: () -> Unit
@@ -90,8 +107,8 @@ fun DrawerContentWrc(
                     .size(100.dp)
             )
             Column {
-                Text(text = "Big Boss")
-                Text(text = "@big_boss.oh")
+                Text(text = user.name)
+                Text(text = user.email)
             }
         }
         Divider(

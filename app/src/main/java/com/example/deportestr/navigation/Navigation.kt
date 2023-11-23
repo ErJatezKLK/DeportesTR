@@ -34,12 +34,12 @@ fun AppNavigation(navController: NavHostController) {
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
                 goProfile = { email ->
                     navController.navigate(route = AppScreens.ProfileScreen.route + "/$email") },
-                goFormula = { navController.navigate(route = AppScreens.FormulaScreen.route) },
-                goFootball = { navController.navigate(route = AppScreens.FootballScreen.route) },
-                goTenis = { navController.navigate(route = AppScreens.TenisScreen.route) },
-                goMotoGp = { navController.navigate(route = AppScreens.MotoGpScreen.route) },
-                goBasket = { navController.navigate(route = AppScreens.BasketScreen.route) },
-                goWrc = { navController.navigate(route = AppScreens.WrcScreen.route) },
+                goFormula = { email -> navController.navigate(route = AppScreens.FormulaScreen.route + "/$email") },
+                goFootball = { email ->navController.navigate(route = AppScreens.FootballScreen.route + "/$email") },
+                goTenis = { email -> navController.navigate(route = AppScreens.TenisScreen.route + "/$email") },
+                goMotoGp = { email -> navController.navigate(route = AppScreens.MotoGpScreen.route + "/$email") },
+                goBasket = { email -> navController.navigate(route = AppScreens.BasketScreen.route + "/$email") },
+                goWrc = { email -> navController.navigate(route = AppScreens.WrcScreen.route + "/$email") },
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
@@ -50,40 +50,46 @@ fun AppNavigation(navController: NavHostController) {
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
-        composable(route = AppScreens.FormulaScreen.route) {
+        composable(route = AppScreens.FormulaScreen.route + "/{email}") {backStackEntry ->
             FormulaScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) }
+                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
-        composable(route = AppScreens.FootballScreen.route) {
+        composable(route = AppScreens.FootballScreen.route + "/{email}") {backStackEntry ->
             FootballScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) }
+                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
-        composable(route = AppScreens.TenisScreen.route) {
+        composable(route = AppScreens.TenisScreen.route + "/{email}") {backStackEntry ->
             TenisScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) }
+                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
-        composable(route = AppScreens.MotoGpScreen.route) {
+        composable(route = AppScreens.MotoGpScreen.route + "/{email}") {backStackEntry ->
             MotoGpScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) }
+                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
-        composable(route = AppScreens.BasketScreen.route) {
+        composable(route = AppScreens.BasketScreen.route + "/{email}") {backStackEntry ->
             BasketScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) }
+                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
-        composable(route = AppScreens.WrcScreen.route) {
+        composable(route = AppScreens.WrcScreen.route + "/{email}") {backStackEntry ->
             WrcScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) }
+                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
     }

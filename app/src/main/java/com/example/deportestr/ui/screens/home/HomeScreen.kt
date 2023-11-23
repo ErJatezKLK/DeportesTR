@@ -64,12 +64,12 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     goLogin: () -> Unit,
     goProfile: (String) -> Unit,
-    goFormula: () -> Unit,
-    goFootball: () -> Unit,
-    goTenis: () -> Unit,
-    goMotoGp: () -> Unit,
-    goBasket: () -> Unit,
-    goWrc: () -> Unit,
+    goFormula: (String) -> Unit,
+    goFootball: (String) -> Unit,
+    goTenis: (String) -> Unit,
+    goMotoGp: (String) -> Unit,
+    goBasket: (String) -> Unit,
+    goWrc: (String) -> Unit,
     email: String,
     viewModel: SportsViewModel = hiltViewModel()
 ) {
@@ -98,7 +98,7 @@ fun HomeScreen(
                 TopBarContent(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
             }) { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding).background(color = Color(0xFF1D1D1D))) {
-                    HomeBody(goFootball, goFormula, goTenis, goMotoGp, goBasket, goWrc, sports)
+                    HomeBody(goFootball, goFormula, goTenis, goMotoGp, goBasket, goWrc, sports, user)
                 }
             }
         }
@@ -107,204 +107,225 @@ fun HomeScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeBody(
-    goFootball: () -> Unit,
-    goFormula: () -> Unit,
-    goTenis: () -> Unit,
-    goMotoGp: () -> Unit,
-    goBasket: () -> Unit,
-    goWrc: () -> Unit,
-    sports: List<Sport>
+    goFootball: (String) -> Unit,
+    goFormula: (String) -> Unit,
+    goTenis: (String) -> Unit,
+    goMotoGp: (String) -> Unit,
+    goBasket: (String) -> Unit,
+    goWrc: (String) -> Unit,
+    sports: List<Sport>,
+    user: User
 ) {
-    var selectedTabIndex by remember {
-        mutableIntStateOf(0)
-    }
-    val pagerState = rememberPagerState {
-        sports.size
-    }
-    LaunchedEffect(selectedTabIndex) {
-        pagerState.animateScrollToPage(selectedTabIndex)
-    }
-    LaunchedEffect(pagerState.currentPage) {
-        selectedTabIndex = pagerState.currentPage
-    }
-
-    Column {
-        ScrollableTabRow(selectedTabIndex = selectedTabIndex) {
-            sports.forEachIndexed { index, sport ->
-                Tab(
-                    selected = index == selectedTabIndex,
-                    onClick = { selectedTabIndex = index },
-                    text = { Text(text = sport.name) }
-                )
-            }
+    if (user != null) {
+        var selectedTabIndex by remember {
+            mutableIntStateOf(0)
         }
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ) { index ->
-            Box(modifier = Modifier.fillMaxSize().background(Color(0xFF1D1D1D))) {
+        val pagerState = rememberPagerState {
+            sports.size
+        }
+        LaunchedEffect(selectedTabIndex) {
+            pagerState.animateScrollToPage(selectedTabIndex)
+        }
+        LaunchedEffect(pagerState.currentPage) {
+            selectedTabIndex = pagerState.currentPage
+        }
 
-                when (index) {
-                    0 -> Card(
-                        modifier = Modifier
-                            .clickable { goFootball() }
-                            .fillMaxWidth()
-                            .background(Color(0xFF1D1D1D)),
-                        shape = MaterialTheme.shapes.small
-                    ) {
-                        Column {
-                            Image(
-                                painter = painterResource(id = R.drawable.futbol),
-                                contentDescription = null,
-                                Modifier.fillMaxWidth(),
-                            )
-                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
-                                Text(
-                                    text = sports[index].name,
-                                    fontSize = 20.sp,
-                                    modifier = Modifier.padding(2.dp)
+        Column {
+            ScrollableTabRow(selectedTabIndex = selectedTabIndex) {
+                sports.forEachIndexed { index, sport ->
+                    Tab(
+                        selected = index == selectedTabIndex,
+                        onClick = { selectedTabIndex = index },
+                        text = { Text(text = sport.name) }
+                    )
+                }
+            }
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) { index ->
+                Box(modifier = Modifier.fillMaxSize().background(Color(0xFF1D1D1D))) {
+
+                    when (index) {
+                        0 -> Card(
+                            modifier = Modifier
+                                .clickable { goFootball(user.email) }
+                                .fillMaxWidth()
+                                .background(Color(0xFF1D1D1D)),
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Column {
+                                Image(
+                                    painter = painterResource(id = R.drawable.futbol),
+                                    contentDescription = null,
+                                    Modifier.fillMaxWidth(),
                                 )
-                                Icon(
-                                    imageVector = Icons.Filled.NavigateNext,
-                                    contentDescription = null
-                                )
+                                Row(
+                                    modifier = Modifier.align(Alignment.Start)
+                                        .background(Color(0xFF1D1D1D))
+                                ) {
+                                    Text(
+                                        text = sports[index].name,
+                                        fontSize = 20.sp,
+                                        modifier = Modifier.padding(2.dp)
+                                    )
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    1 -> Card(
-                        modifier = Modifier
-                            .clickable { goFormula() }
-                            .fillMaxWidth()
-                            .background(Color(0xFF1D1D1D)),
-                        shape = MaterialTheme.shapes.small
-                    ) {
-                        Column {
-                            Image(
-                                painter = painterResource(id = R.drawable.f_uno),
-                                contentDescription = null,
-                                Modifier.fillMaxWidth(),
-                            )
-                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
-                                Text(
-                                    text = sports[index].name,
-                                    fontSize = 20.sp,
-                                    modifier = Modifier.padding(2.dp)
+                        1 -> Card(
+                            modifier = Modifier
+                                .clickable { goFormula(user.email) }
+                                .fillMaxWidth()
+                                .background(Color(0xFF1D1D1D)),
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Column {
+                                Image(
+                                    painter = painterResource(id = R.drawable.f_uno),
+                                    contentDescription = null,
+                                    Modifier.fillMaxWidth(),
                                 )
-                                Icon(
-                                    imageVector = Icons.Filled.NavigateNext,
-                                    contentDescription = null
-                                )
+                                Row(
+                                    modifier = Modifier.align(Alignment.Start)
+                                        .background(Color(0xFF1D1D1D))
+                                ) {
+                                    Text(
+                                        text = sports[index].name,
+                                        fontSize = 20.sp,
+                                        modifier = Modifier.padding(2.dp)
+                                    )
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    2 -> Card(
-                        modifier = Modifier
-                            .clickable { goTenis() }
-                            .fillMaxWidth()
-                            .background(Color(0xFF1D1D1D)),
-                        shape = MaterialTheme.shapes.small
-                    ) {
-                        Column {
-                            Image(
-                                painter = painterResource(id = R.drawable.tenis),
-                                contentDescription = null,
-                                Modifier.fillMaxWidth(),
-                            )
-                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
-                                Text(
-                                    text = sports[index].name,
-                                    fontSize = 20.sp,
-                                    modifier = Modifier.padding(2.dp)
+                        2 -> Card(
+                            modifier = Modifier
+                                .clickable { goTenis(user.email) }
+                                .fillMaxWidth()
+                                .background(Color(0xFF1D1D1D)),
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Column {
+                                Image(
+                                    painter = painterResource(id = R.drawable.tenis),
+                                    contentDescription = null,
+                                    Modifier.fillMaxWidth(),
                                 )
-                                Icon(
-                                    imageVector = Icons.Filled.NavigateNext,
-                                    contentDescription = null
-                                )
+                                Row(
+                                    modifier = Modifier.align(Alignment.Start)
+                                        .background(Color(0xFF1D1D1D))
+                                ) {
+                                    Text(
+                                        text = sports[index].name,
+                                        fontSize = 20.sp,
+                                        modifier = Modifier.padding(2.dp)
+                                    )
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    3 -> Card(
-                        modifier = Modifier
-                            .clickable { goMotoGp() }
-                            .fillMaxWidth()
-                            .background(Color(0xFF1D1D1D)),
-                        shape = MaterialTheme.shapes.small
-                    ) {
-                        Column {
-                            Image(
-                                painter = painterResource(id = R.drawable.motogp),
-                                contentDescription = null,
-                                Modifier.fillMaxWidth(),
-                            )
-                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
-                                Text(
-                                    text = sports[index].name,
-                                    fontSize = 20.sp,
-                                    modifier = Modifier.padding(2.dp)
+                        3 -> Card(
+                            modifier = Modifier
+                                .clickable { goMotoGp(user.email) }
+                                .fillMaxWidth()
+                                .background(Color(0xFF1D1D1D)),
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Column {
+                                Image(
+                                    painter = painterResource(id = R.drawable.motogp),
+                                    contentDescription = null,
+                                    Modifier.fillMaxWidth(),
                                 )
-                                Icon(
-                                    imageVector = Icons.Filled.NavigateNext,
-                                    contentDescription = null
-                                )
+                                Row(
+                                    modifier = Modifier.align(Alignment.Start)
+                                        .background(Color(0xFF1D1D1D))
+                                ) {
+                                    Text(
+                                        text = sports[index].name,
+                                        fontSize = 20.sp,
+                                        modifier = Modifier.padding(2.dp)
+                                    )
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    4 -> Card(
-                        modifier = Modifier
-                            .clickable { goBasket() }
-                            .fillMaxWidth()
-                            .background(Color(0xFF1D1D1D)),
-                        shape = MaterialTheme.shapes.small
-                    ) {
-                        Column {
-                            Image(
-                                painter = painterResource(id = R.drawable.baloncesto),
-                                contentDescription = null,
-                                Modifier.fillMaxWidth(),
-                            )
-                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
-                                Text(
-                                    text = sports[index].name,
-                                    fontSize = 20.sp,
-                                    modifier = Modifier.padding(2.dp)
+                        4 -> Card(
+                            modifier = Modifier
+                                .clickable { goBasket(user.email) }
+                                .fillMaxWidth()
+                                .background(Color(0xFF1D1D1D)),
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Column {
+                                Image(
+                                    painter = painterResource(id = R.drawable.baloncesto),
+                                    contentDescription = null,
+                                    Modifier.fillMaxWidth(),
                                 )
-                                Icon(
-                                    imageVector = Icons.Filled.NavigateNext,
-                                    contentDescription = null
-                                )
+                                Row(
+                                    modifier = Modifier.align(Alignment.Start)
+                                        .background(Color(0xFF1D1D1D))
+                                ) {
+                                    Text(
+                                        text = sports[index].name,
+                                        fontSize = 20.sp,
+                                        modifier = Modifier.padding(2.dp)
+                                    )
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    5 -> Card(
-                        modifier = Modifier
-                            .clickable { goWrc() }
-                            .fillMaxWidth()
-                            .background(Color(0xFF1D1D1D)),
-                        shape = MaterialTheme.shapes.small
-                    ) {
-                        Column {
-                            Image(
-                                painter = painterResource(id = R.drawable.wrc),
-                                contentDescription = null,
-                                Modifier.fillMaxWidth()
-                            )
-                            Row(modifier = Modifier.align(Alignment.Start).background(Color(0xFF1D1D1D))) {
-                                Text(
-                                    text = sports[index].name,
-                                    fontSize = 20.sp,
-                                    modifier = Modifier.padding(2.dp)
+                        5 -> Card(
+                            modifier = Modifier
+                                .clickable { goWrc(user.email) }
+                                .fillMaxWidth()
+                                .background(Color(0xFF1D1D1D)),
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Column {
+                                Image(
+                                    painter = painterResource(id = R.drawable.wrc),
+                                    contentDescription = null,
+                                    Modifier.fillMaxWidth()
                                 )
-                                Icon(
-                                    imageVector = Icons.Filled.NavigateNext,
-                                    contentDescription = null
-                                )
+                                Row(
+                                    modifier = Modifier.align(Alignment.Start)
+                                        .background(Color(0xFF1D1D1D))
+                                ) {
+                                    Text(
+                                        text = sports[index].name,
+                                        fontSize = 20.sp,
+                                        modifier = Modifier.padding(2.dp)
+                                    )
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
                     }

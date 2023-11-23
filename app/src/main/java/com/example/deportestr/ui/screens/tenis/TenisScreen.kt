@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,22 +35,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
+import com.example.deportestr.ui.models.User
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TenisScreen(
     goLogin: () -> Unit,
-    goHome: () -> Unit
+    goHome: () -> Unit,
+    email: String,
+    viewModel: TenisViewModel = hiltViewModel()
 ){
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val user = viewModel.user
 
-
+    LaunchedEffect(Unit) {
+        viewModel.loadInfo(email)
+        while (user == null) {
+            delay(100)
+        }
+    }
+    if (user != null)
     ModalNavigationDrawer(drawerContent = {
         ModalDrawerSheet {
-            DrawerContentTenis(goLogin, goHome) {
+            DrawerContentTenis( user, goLogin = goLogin, goHome = goHome) {
                 coroutineScope.launch { drawerState.close() }
             }
         }
@@ -78,62 +91,65 @@ fun TenisContent() {
 
 @Composable
 fun DrawerContentTenis(
+    user: User?,
     goLogin: () -> Unit,
     goHome: () -> Unit,
     onCloseDrawer: () -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Filled.AccountCircle,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(6.dp)
-                    .clickable { onCloseDrawer() }
-                    .size(100.dp)
-            )
-            Column {
-                Text(text = "Big Boss")
-                Text(text = "@big_boss.oh")
+    if (user != null) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Filled.AccountCircle,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(6.dp)
+                        .clickable { onCloseDrawer() }
+                        .size(100.dp)
+                )
+                Column {
+                    Text(text = user.name)
+                    Text(text = user.email)
+                }
             }
-        }
-        Divider(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth(), color = Color(0xFF757575)
-        )
-        Row(modifier = Modifier
-            .clickable { goHome() }
-            .fillMaxWidth()
-        ) {
-            Text(text = "Deportes", fontSize = 25.sp)
-            Icon(
-                imageVector = Icons.Filled.NavigateNext,
-                contentDescription = null,
+            Divider(
                 modifier = Modifier
-                    .padding(start = 10.dp)
-                    .size(35.dp)
+                    .height(1.dp)
+                    .fillMaxWidth(), color = Color(0xFF757575)
             )
-        }
-        Divider(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth(), color = Color(0xFF757575)
-        )
-        Row(modifier = Modifier
-            .clickable { goLogin() }
-            .fillMaxWidth()
+            Row(modifier = Modifier
+                .clickable { goHome() }
+                .fillMaxWidth()
+            ) {
+                Text(text = "Deportes", fontSize = 25.sp)
+                Icon(
+                    imageVector = Icons.Filled.NavigateNext,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                        .size(35.dp)
+                )
+            }
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .fillMaxWidth(), color = Color(0xFF757575)
+            )
+            Row(modifier = Modifier
+                .clickable { goLogin() }
+                .fillMaxWidth()
 
-        ) {
-            Text(text = "Cerrar session", color = Color(0xFFC70606), fontSize = 25.sp)
-            Icon(
-                imageVector = Icons.Filled.ExitToApp,
-                contentDescription = null,
-                tint = Color(0xFFC70606),
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .size(35.dp)
-            )
+            ) {
+                Text(text = "Cerrar session", color = Color(0xFFC70606), fontSize = 25.sp)
+                Icon(
+                    imageVector = Icons.Filled.ExitToApp,
+                    contentDescription = null,
+                    tint = Color(0xFFC70606),
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                        .size(35.dp)
+                )
+            }
         }
     }
 }
