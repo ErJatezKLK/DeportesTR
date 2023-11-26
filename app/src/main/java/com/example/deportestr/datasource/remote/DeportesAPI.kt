@@ -1,6 +1,7 @@
 package com.example.deportestr.datasource.remote
 
 import com.example.deportestr.ui.models.Sport
+import com.example.deportestr.ui.models.Team
 import com.example.deportestr.ui.models.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -34,5 +35,10 @@ interface DeportesAPI {
 
     @GET("sports")
     suspend fun searchAllSports(): Response<List<Sport>>
+
+    @GET("teams")
+    suspend fun searchTeamsInAthletesBySport(
+      @Query("sport")  sportId: Int
+    ): Response<List<Team>>
 
 }

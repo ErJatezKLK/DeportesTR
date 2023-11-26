@@ -7,6 +7,5 @@ data class Team(
     var id: Int,
     var name: String,
     var creationDate: Timestamp,
-    var pais: String,
-    var deporte: Sport
+    var pais: String
 )

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
@@ -44,14 +43,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
-import com.example.deportestr.ui.models.Athlete
-import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.SportEvent
 import com.example.deportestr.ui.models.Team
 import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.sql.Timestamp
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,16 +60,12 @@ fun FormulaScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val sport = Sport(1,"")
-    val team = Team(1,"nada",Timestamp(1111-21-12),"este",sport)
-    val teamsList = listOf(team)
-    val athelete = Athlete(1,"Sam", "JetStream", "Samurai", 32, "Brasileriro", "Sam", 1, team, sport)
-    val athleteList = listOf(athelete)
     val user = viewModel.user
+    val teams = viewModel.teams
 
     LaunchedEffect(Unit) {
         viewModel.loadInfo(email)
-        while (user == null) {
+        while (user == null || teams == null) {
             delay(100)
         }
     }
@@ -95,7 +87,7 @@ fun FormulaScreen(
                         .padding(innerPadding)
                         .background(Color(0xFF303030))
                 ) {
-                    FormulaContent()
+                    FormulaContent(teams)
                 }
             }
         }
@@ -103,7 +95,7 @@ fun FormulaScreen(
 }
 
 @Composable
-fun FormulaContent() {
+fun FormulaContent(teams: List<Team>?) {
     LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
         items(sportEvents()) { sportEvent ->
             ItemEvent(sportEvent = sportEvent, teams = teamsList())
@@ -200,7 +192,7 @@ fun ItemEvent(sportEvent: SportEvent, teams: List<Team>) {
         }
     }
 }
-
+/*
 fun sportEvents(): List<SportEvent> {
     val date = Timestamp(2023 - 11 - 5)
     val aston =
@@ -216,6 +208,7 @@ fun sportEvents(): List<SportEvent> {
         SportEvent(4, Timestamp(18-11-2023), "Goatifi", "Yas marina")
     )
 }
+
 
 fun teamsList(): List<Team> {
     val date = Timestamp(2023 - 11 - 5)
@@ -245,6 +238,7 @@ fun teamsList(): List<Team> {
         Team(10, "Alfa Bromeo", creationDate = date, "Pasta boys 2", Sport(2, "Formula 1"))
     )
 }
+*/
 
 @Composable
 fun DrawerContentFormula(
