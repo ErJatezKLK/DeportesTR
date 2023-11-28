@@ -15,6 +15,10 @@ import com.example.deportestr.usecases.DeleteUserUsecases
 import com.example.deportestr.usecases.DeleteUserUsecasesImpl
 import com.example.deportestr.usecases.SearchAllSportsUsecases
 import com.example.deportestr.usecases.SearchAllSportsUsecasesImpl
+import com.example.deportestr.usecases.SearchEventBySportUsecases
+import com.example.deportestr.usecases.SearchEventBySportUsecasesImpl
+import com.example.deportestr.usecases.SearchTeamsBySportUsecases
+import com.example.deportestr.usecases.SearchTeamsBySportUsecasesImpl
 import com.example.deportestr.usecases.SearchUserByEmailUseCases
 import com.example.deportestr.usecases.SearchUserByEmailUseCasesImpl
 import com.example.deportestr.usecases.SearchUserUsecases
@@ -163,6 +167,22 @@ object DataSourceModule {
         deportesRepository: DeportesRepository
     ): DeleteUserUsecases{
         return DeleteUserUsecasesImpl(deportesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchEventBySportUsecases(
+        deportesRepository: DeportesRepository
+    ): SearchEventBySportUsecases{
+        return SearchEventBySportUsecasesImpl(deportesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchTeamsBySportUsecases(
+        deportesRepository: DeportesRepository
+    ): SearchTeamsBySportUsecases{
+        return SearchTeamsBySportUsecasesImpl(deportesRepository)
     }
 
 }

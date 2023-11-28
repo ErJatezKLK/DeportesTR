@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
@@ -62,18 +63,19 @@ fun FormulaScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val user = viewModel.user
     val teams = viewModel.teams
+    val events = viewModel.events
 
     LaunchedEffect(Unit) {
         viewModel.loadInfo(email)
-        while (user == null || teams == null) {
-            delay(100)
+        while (user == null || teams == null || events == null) {
+            delay(200)
         }
     }
 
-    if(user != null) {
+    if (user != null) {
         ModalNavigationDrawer(drawerContent = {
             ModalDrawerSheet {
-                DrawerContentFormula(user , goLogin = goLogin, goHome = goHome) {
+                DrawerContentFormula(user, goLogin = goLogin, goHome = goHome) {
                     coroutineScope.launch { drawerState.close() }
                 }
             }
@@ -87,7 +89,7 @@ fun FormulaScreen(
                         .padding(innerPadding)
                         .background(Color(0xFF303030))
                 ) {
-                    FormulaContent(teams)
+                    FormulaContent(teams, events)
                 }
             }
         }
@@ -95,99 +97,96 @@ fun FormulaScreen(
 }
 
 @Composable
-fun FormulaContent(teams: List<Team>?) {
-    LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
-        items(sportEvents()) { sportEvent ->
-            ItemEvent(sportEvent = sportEvent, teams = teamsList())
-
-        }
-
-    })
-
-
+fun FormulaContent(teams: List<Team>?, events: List<SportEvent>?) {
+    if (events != null) {
+        LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
+            items(events) { sportEvent ->
+                ItemEvent(sportEvent = sportEvent, teams = teams)
+            }
+        })
+    }
 }
 
-
 @Composable
-fun ItemEvent(sportEvent: SportEvent, teams: List<Team>) {
-    when (sportEvent.id) {
-        sportEvent.id -> Card(
-            modifier = Modifier
-                .clickable { }
-                .fillMaxWidth()
-                .background(Color(0xFFAD0000))
-                .padding(8.dp),
-            shape = MaterialTheme.shapes.small
-        ) {
-            Column {
-                Text(
-                    text = teams[0].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-                Text(
-                    text = teams[1].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-                Text(
-                    text = teams[2].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-                Text(
-                    text = teams[3].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-                Text(
-                    text = teams[4].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-            }
-            Column {
-                Text(
-                    text = teams[5].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-                Text(
-                    text = teams[6].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-                Text(
-                    text = teams[7].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-                Text(
-                    text = teams[8].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-                Text(
-                    text = teams[9].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
-                )
-            }
-            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                Text(
-                    text = sportEvent.result,
-                    fontSize = 23.sp,
-                    modifier = Modifier.padding(2.dp),
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                Text(
-                    text = sportEvent.location,
-                    fontSize = 23.sp,
-                    modifier = Modifier.padding(2.dp),
-                    fontWeight = FontWeight.Bold
-                )
+fun ItemEvent(sportEvent: SportEvent?, teams: List<Team>?) {
+    if (sportEvent != null || teams != null) {
+        if (sportEvent != null) {
+            Card(
+                modifier = Modifier
+                    .clickable { }
+                    .fillMaxWidth()
+                    .background(Color(0xFFAD0000))
+                    .padding(8.dp),
+                shape = MaterialTheme.shapes.small
+            ) {
+                Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                    Text(
+                        text = "",
+                        fontSize = 23.sp,
+                        modifier = Modifier.padding(2.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = sportEvent.location,
+                        fontSize = 23.sp,
+                        modifier = Modifier.padding(2.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Column {
+                    if (teams != null) {
+                        Text(
+                            text = teams[0].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                        Text(
+                            text = teams[1].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                        Text(
+                            text = teams[2].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                        Text(
+                            text = teams[3].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                        Text(
+                            text = teams[4].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                        Text(
+                            text = teams[5].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                        Text(
+                            text = teams[6].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                        Text(
+                            text = teams[7].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                        Text(
+                            text = teams[8].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                        Text(
+                            text = teams[9].name,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                    }
+                }
             }
         }
     }

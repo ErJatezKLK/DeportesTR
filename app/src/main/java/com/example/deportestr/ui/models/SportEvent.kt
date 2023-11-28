@@ -4,7 +4,7 @@ import java.sql.Timestamp
 
 data class SportEvent(
     var id : Int,
-    var fecha : Timestamp,
+    var date : Timestamp,
     var result : String,
     var location : String
 )

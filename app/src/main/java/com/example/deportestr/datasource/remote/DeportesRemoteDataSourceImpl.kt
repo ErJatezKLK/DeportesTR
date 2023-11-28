@@ -1,6 +1,7 @@
 package com.example.deportestr.datasource.remote
 
 import com.example.deportestr.ui.models.Sport
+import com.example.deportestr.ui.models.SportEvent
 import com.example.deportestr.ui.models.Team
 import com.example.deportestr.ui.models.User
 import com.example.deportestr.util.DispatcherProvider
@@ -42,6 +43,10 @@ class DeportesRemoteDataSourceImpl @Inject constructor(
             return@withContext deportesAPI.searchTeamsInAthletesBySport(sportId)
         }
 
+    override suspend fun searchEventBySport(sportId: Int): Response<List<SportEvent>> =
+        withContext(dispatcherProvider.ioDispatcher){
+            return@withContext deportesAPI.searchEventBySport(sportId)
+        }
 
 
 }
