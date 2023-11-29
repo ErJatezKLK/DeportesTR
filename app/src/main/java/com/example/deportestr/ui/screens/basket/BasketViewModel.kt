@@ -18,16 +18,26 @@ import javax.inject.Inject
 class BasketViewModel  @Inject constructor(
     private val searchUserByEmailUseCases: SearchUserByEmailUseCases,
 ) : ViewModel() {
-    var userLoaded by mutableStateOf(false)
+     var userLoaded by mutableStateOf(false)
     var user: User? = null
+    var teams: List<Team>? = null
+    var events: List<SportEvent>? = null
     var email by mutableStateOf("")
+    private var sportId = 5
 
     fun loadInfo(email: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseBody = searchUserByEmailUseCases.searchUserByEmail(email)
+            val responseTeams = searchTeamsBySportUsecases.searchTeamsInAthletesBySport(sportId)
+            val responseEvents = searchEventsBySportUsecases.searchEventBySport(sportId)
             user = responseBody.body()
+            teams = responseTeams.body()
+            events = responseEvents.body()
             userLoaded = true
+            Log.i(ContentValues.TAG, "$events")
             Log.i(ContentValues.TAG, "User loaded: $user")
         }
     }
+
+}
 }
