@@ -40,7 +40,9 @@ class WrcViewModel @Inject constructor(
             teams = responseTeams.body()
             events = responseEvents.body()
             userLoaded = true
+            Log.i(ContentValues.TAG, "$events")
             Log.i(ContentValues.TAG, "User loaded: $user")
         }
     }
+
 }

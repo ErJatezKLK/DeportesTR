@@ -21,8 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TenisViewModel @Inject constructor(
     private val searchUserByEmailUseCases: SearchUserByEmailUseCases,
-    private val searchTeamsBySportUsecases : SearchTeamsBySportUsecases,
-    private val searchEventsBySportUsecases : SearchEventBySportUsecases
+    private val searchTeamsBySportUsecases: SearchTeamsBySportUsecases,
+    private val searchEventsBySportUsecases: SearchEventBySportUsecases
 ) : ViewModel() {
     var userLoaded by mutableStateOf(false)
     var user: User? = null

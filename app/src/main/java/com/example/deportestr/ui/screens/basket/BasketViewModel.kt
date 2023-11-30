@@ -24,7 +24,7 @@ class BasketViewModel @Inject constructor(
     private val searchTeamsBySportUsecases : SearchTeamsBySportUsecases,
     private val searchEventsBySportUsecases : SearchEventBySportUsecases
 ) : ViewModel() {
-    var userLoaded by mutableStateOf(false)
+     var userLoaded by mutableStateOf(false)
     var user: User? = null
     var teams: List<Team>? = null
     var events: List<SportEvent>? = null
@@ -40,7 +40,10 @@ class BasketViewModel @Inject constructor(
             teams = responseTeams.body()
             events = responseEvents.body()
             userLoaded = true
+            Log.i(ContentValues.TAG, "$events")
             Log.i(ContentValues.TAG, "User loaded: $user")
         }
     }
+
 }
+
