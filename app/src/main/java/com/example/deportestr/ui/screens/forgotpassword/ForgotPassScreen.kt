@@ -1,13 +1,10 @@
-package com.example.deportestr.ui.screens.login
+package com.example.deportestr.ui.screens.forgotpassword
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,10 +24,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,76 +44,58 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
 
-
 @Composable
-fun LoginScreen(
-    goRegister: () -> Unit,
-    goHome: (String) -> Unit,
-    viewModel: LoginViewModel = hiltViewModel(),
-    goForgot: () -> Unit
+fun ForgotScreen(
+    goLogin: () -> Unit,
+    viewModel: ForgotViewModel = hiltViewModel()
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF303030))
     ) {
-        Login(Modifier.align(Alignment.Center), viewModel, goRegister, goHome, goForgot)
+        Forgotted(Modifier.align(Alignment.Center), viewModel, goLogin)
     }
-
 }
 
 @Composable
-fun Login(
-    modifier: Modifier,
-    viewModel: LoginViewModel,
-    goRegister: () -> Unit,
-    goHome: (String) -> Unit,
-    goForgot: () -> Unit,
-) {
+fun Forgotted(modifier: Modifier, viewModel: ForgotViewModel, goLogin: () -> Unit) {
     val email = viewModel.email
     val password = viewModel.password
+    val repeatPassword = viewModel.reapeatPassword
     val loginEnabled = viewModel.loginEnabled
-    viewModel.onLoginChange(email, password)
+    viewModel.OnRegistrationChanged(email, password, repeatPassword)
+
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Column(modifier = Modifier) {
-        Row(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 20.dp, start = 10.dp)
-        ) {
-            TitleText()
-        }
-        Spacer(modifier = Modifier.padding(60.dp))
-        UserNameField(email, viewModel)
+        HeaderImageChange()
+        SignChange(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.padding(15.dp))
-        PasswordField(password, viewModel)
-        Spacer(modifier = Modifier.padding(8.dp))
-        ForgotPassword(Modifier.align(Alignment.End), goForgot)
+        EmailChanged(email, viewModel)
+        Spacer(modifier = Modifier.padding(15.dp))
+        PasswordChanged(password, viewModel)
+        Spacer(modifier = Modifier.padding(15.dp))
+        RepeateChanged(repeatPassword, viewModel)
         Spacer(modifier = Modifier.padding(16.dp))
-        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            LoginButton(goHome, viewModel, loginEnabled)
-            RegisterButton(goRegister)
-        }
+        ChangePassword(loginEnabled, goLogin, viewModel)
     }
 }
 
-
 @Composable
-fun TitleText() {
+fun SignChange(modifier: Modifier) {
     Text(
-        text = "Deportes",
+        text = "DeportesTR",
         fontSize = 40.sp,
         fontWeight = FontWeight.Bold,
         color = Color(0xFFB10404),
-        modifier = Modifier.padding(start = 4.dp)
+        modifier = modifier
     )
-    Text(
-        text = "TR",
-        fontSize = 40.sp,
-        fontWeight = FontWeight.Bold,
-        color = Color(0xFF000000),
-        modifier = Modifier.padding(start = 4.dp)
-    )
+}
+
+@Composable
+fun HeaderImageChange() {
     Image(
         painter = painterResource(id = R.drawable.logo_bueno),
         contentDescription = null,
@@ -126,10 +105,10 @@ fun TitleText() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserNameField(email: String, viewModelV2: LoginViewModel) {
+fun EmailChanged(user: String, viewModel: ForgotViewModel) {
     TextField(
-        value = email,
-        onValueChange = { viewModelV2.email = it },
+        value = user,
+        onValueChange = { viewModel.email = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -149,15 +128,54 @@ fun UserNameField(email: String, viewModelV2: LoginViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordField(password: String, viewModel: LoginViewModel) {
+fun PasswordChanged(user: String, viewModel: ForgotViewModel) {
     var passwordVisibility by remember { mutableStateOf(false) }
     TextField(
-        value = password,
+        value = user,
         onValueChange = { viewModel.password = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
         placeholder = { Text(text = "contraseña") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        singleLine = true,
+        maxLines = 1,
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color(0xFFFFFFFF),
+            containerColor = Color(0xFF1D1D1D),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+        ),
+        trailingIcon = {
+            val image = if (passwordVisibility) {
+                Icons.Filled.Visibility
+            } else {
+                Icons.Filled.VisibilityOff
+            }
+            IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                Icon(imageVector = image, contentDescription = "show")
+            }
+        },
+        visualTransformation = if (passwordVisibility) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation()
+        },
+        label = { Text(text = "Introduce tu contraseña") }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RepeateChanged(user: String, viewModel: ForgotViewModel) {
+    var passwordVisibility by remember { mutableStateOf(false) }
+    TextField(
+        value = user,
+        onValueChange = { viewModel.reapeatPassword = it },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 4.dp, end = 4.dp),
+        placeholder = { Text(text = "Repite la contraseña") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
@@ -187,38 +205,11 @@ fun PasswordField(password: String, viewModel: LoginViewModel) {
 }
 
 @Composable
-fun ForgotPassword(modifier: Modifier, goForgot: () -> Unit) {
-    Text(
-        text = "¿Olvidaste tu crontraseña eh?",
-        modifier = modifier
-            .clickable { }
-            .padding(end = 4.dp)
-            .clickable { goForgot() },
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Bold,
-        color = Color(0xFFB10404)
-    )
-}
-
-
-@Composable
-fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModel, loginEnabled: Boolean) {
-    val context = LocalContext.current
-    val userLoaded = viewModel.userLoaded
-
+fun ChangePassword(loginEnabled: Boolean, goLogin: () -> Unit, viewModel: ForgotViewModel) {
     Button(
         onClick = {
-            viewModel.searchUser()
-            val user = viewModel.user
-            if (user != null) {
-                home(user.email!!)
-            } else {
-                Toast.makeText(
-                    context,
-                    "No se ha encontrado el usuario",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            viewModel.addUser()
+            goLogin()
         },
         modifier = Modifier
             .padding(5.dp)
@@ -230,28 +221,6 @@ fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModel, loginEnabled:
             containerColor = Color(0xFF882D2D)
         ), enabled = loginEnabled
     ) {
-        Text(text = "Iniciar sesion")
-    }
-
-    LaunchedEffect(userLoaded){
-        viewModel.searchUser()
-    }
-}
-
-@Composable
-fun RegisterButton(goRegister: () -> Unit) {
-    Button(
-        onClick = { goRegister() },
-        modifier = Modifier
-            .padding(5.dp)
-            .width(IntrinsicSize.Max)
-            .height(48.dp),
-        colors = ButtonDefaults.buttonColors(
-            contentColor = Color(0xFFFFFFFF),
-            disabledContentColor = Color(0xFF882D2D),
-            containerColor = Color(0xFF882D2D)
-        )
-    ) {
-        Text(text = "Registrarse")
+        Text(text = "Sign In")
     }
 }

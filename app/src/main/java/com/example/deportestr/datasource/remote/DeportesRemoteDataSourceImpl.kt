@@ -48,5 +48,10 @@ class DeportesRemoteDataSourceImpl @Inject constructor(
             return@withContext deportesAPI.searchEventBySport(sportId)
         }
 
+    override suspend fun changePassword(user: User): Response<User> =
+        withContext(dispatcherProvider.ioDispatcher){
+            return@withContext deportesAPI.changePassword(user)
+        }
+
 
 }

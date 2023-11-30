@@ -99,7 +99,7 @@ fun FormulaScreen(
 @Composable
 fun FormulaContent(teams: List<Team>?, events: List<SportEvent>?) {
     if (events != null) {
-        LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
+        LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
             items(events) { sportEvent ->
                 ItemEvent(sportEvent = sportEvent, teams = teams)
             }
@@ -187,6 +187,14 @@ fun ItemEvent(sportEvent: SportEvent?, teams: List<Team>?) {
                         )
                     }
                 }
+                Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                    Text(
+                        text = sportEvent.result,
+                        fontSize = 23.sp,
+                        modifier = Modifier.padding(2.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
@@ -258,8 +266,8 @@ fun DrawerContentFormula(
                         .size(100.dp)
                 )
                 Column {
-                    Text(text = user.name)
-                    Text(text = user.email)
+                    Text(text = user.name!!)
+                    Text(text = user.email!!)
                 }
             }
             Divider(

@@ -151,7 +151,7 @@ fun HomeBody(
                     when (index) {
                         0 -> Card(
                             modifier = Modifier
-                                .clickable { goFootball(user.email) }
+                                .clickable { goFootball(user.email!!) }
                                 .fillMaxWidth()
                                 .background(Color(0xFF1D1D1D)),
                             shape = MaterialTheme.shapes.small
@@ -181,7 +181,7 @@ fun HomeBody(
 
                         1 -> Card(
                             modifier = Modifier
-                                .clickable { goFormula(user.email) }
+                                .clickable { goFormula(user.email!!) }
                                 .fillMaxWidth()
                                 .background(Color(0xFF1D1D1D)),
                             shape = MaterialTheme.shapes.small
@@ -211,7 +211,7 @@ fun HomeBody(
 
                         2 -> Card(
                             modifier = Modifier
-                                .clickable { goTenis(user.email) }
+                                .clickable { goTenis(user.email!!) }
                                 .fillMaxWidth()
                                 .background(Color(0xFF1D1D1D)),
                             shape = MaterialTheme.shapes.small
@@ -241,7 +241,7 @@ fun HomeBody(
 
                         3 -> Card(
                             modifier = Modifier
-                                .clickable { goMotoGp(user.email) }
+                                .clickable { goMotoGp(user.email!!) }
                                 .fillMaxWidth()
                                 .background(Color(0xFF1D1D1D)),
                             shape = MaterialTheme.shapes.small
@@ -271,7 +271,7 @@ fun HomeBody(
 
                         4 -> Card(
                             modifier = Modifier
-                                .clickable { goBasket(user.email) }
+                                .clickable { goBasket(user.email!!) }
                                 .fillMaxWidth()
                                 .background(Color(0xFF1D1D1D)),
                             shape = MaterialTheme.shapes.small
@@ -301,7 +301,7 @@ fun HomeBody(
 
                         5 -> Card(
                             modifier = Modifier
-                                .clickable { goWrc(user.email) }
+                                .clickable { goWrc(user.email!!) }
                                 .fillMaxWidth()
                                 .background(Color(0xFF1D1D1D)),
                             shape = MaterialTheme.shapes.small
@@ -392,8 +392,8 @@ fun DrawerContent(
                         .size(100.dp)
                 )
                 Column {
-                    Text(text = user.name)
-                    Text(text = user.email)
+                    Text(text = user.name!!)
+                    Text(text = user.email!!)
                 }
             }
             Divider(
@@ -402,7 +402,7 @@ fun DrawerContent(
                     .fillMaxWidth(), color = Color(0xFF757575)
             )
             Row(modifier = Modifier
-                .clickable { goProfile(user.email) }
+                .clickable { goProfile(user.email!!) }
                 .fillMaxWidth()
             ) {
                 Text(text = "Ir a mi perfil", fontSize = 25.sp)

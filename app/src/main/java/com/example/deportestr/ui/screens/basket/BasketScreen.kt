@@ -107,8 +107,8 @@ fun DrawerContentBasket(
                     .size(100.dp)
             )
             Column {
-                Text(text = user.name)
-                Text(text = user.email)
+                Text(text = user.name!!)
+                Text(text = user.email!!)
             }
         }
         Divider(

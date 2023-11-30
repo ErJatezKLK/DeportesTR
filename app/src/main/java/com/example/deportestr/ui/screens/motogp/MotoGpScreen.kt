@@ -1,5 +1,6 @@
 package com.example.deportestr.ui.screens.motogp
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,15 +11,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.NavigateNext
+import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -33,11 +39,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
+import com.example.deportestr.ui.models.SportEvent
+import com.example.deportestr.ui.models.Team
 import com.example.deportestr.ui.models.User
+import com.example.deportestr.ui.screens.formula.ItemEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -52,11 +62,13 @@ fun MotoGpScreen(
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val user = viewModel.user
+    val teams = viewModel.teams
+    val events = viewModel.events
 
     LaunchedEffect(Unit) {
         viewModel.loadInfo(email)
-        while (user == null) {
-            delay(100)
+        while (user == null || teams == null || events == null) {
+            delay(200)
         }
     }
 
@@ -77,7 +89,7 @@ fun MotoGpScreen(
                         .padding(innerPadding)
                         .background(Color(0xFF303030))
                 ) {
-                    MotoGpContent()
+                    MotoGpContent(teams, events)
                 }
             }
         }
@@ -85,10 +97,106 @@ fun MotoGpScreen(
 }
 
 @Composable
-fun MotoGpContent() {
-
+fun MotoGpContent(teams: List<Team>?, events: List<SportEvent>?) {
+    if (events != null) {
+        LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
+            items(events) { sportEvent ->
+                ItemMotoGp(sportEvent = sportEvent, teams = teams)
+            }
+        })
+    }
 }
 
+@Composable
+fun ItemMotoGp(sportEvent: SportEvent, teams: List<Team>?) {
+    Card(
+        modifier = Modifier
+            .clickable { }
+            .fillMaxWidth()
+            .background(Color(0xFFAD0000))
+            .padding(8.dp),
+        shape = MaterialTheme.shapes.small
+    ) {
+        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Text(
+                text = "",
+                fontSize = 23.sp,
+                modifier = Modifier.padding(2.dp),
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = sportEvent.location,
+                fontSize = 23.sp,
+                modifier = Modifier.padding(2.dp),
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Column {
+            if (teams != null) {
+                Text(
+                    text = teams[0].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[1].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[2].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[3].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[4].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[5].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[6].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[7].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[8].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+                Text(
+                    text = teams[9].name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(2.dp)
+                )
+            }
+        }
+        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Text(
+                text = sportEvent.result,
+                fontSize = 23.sp,
+                modifier = Modifier.padding(2.dp),
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun DrawerContentMotoGp(
     user: User,
@@ -96,7 +204,6 @@ fun DrawerContentMotoGp(
     goHome: () -> Unit,
     onCloseDrawer: () -> Unit
 ) {
-    if (user != null)
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -108,8 +215,8 @@ fun DrawerContentMotoGp(
                     .size(100.dp)
             )
             Column {
-                Text(text = user.name)
-                Text(text = user.email)
+                Text(text = user.name!!)
+                Text(text = user.email!!)
             }
         }
         Divider(

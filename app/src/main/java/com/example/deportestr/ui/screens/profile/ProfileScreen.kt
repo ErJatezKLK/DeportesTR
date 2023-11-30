@@ -133,32 +133,30 @@ fun TopBarProfile(onClickDrawer: () -> Unit) {
 
 @Composable
 fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) {
-    if (user != null) {
-        Divider(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth()
-                .padding(top = 10.dp), color = Color(0xFF757575)
-        )
-        BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding()
-                .padding(10.dp)
-                .background(Color(0xFF303030))
-        ) {
-            Surface {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 16.dp)
-                        .background(Color(0xFF1D1D1D))
-                ) {
-                    ProfileHeader(
-                        this@BoxWithConstraints.maxHeight
-                    )
-                    UserInfo(this@BoxWithConstraints.maxHeight, user, viewModel, goLogin)
-                }
+    Divider(
+        modifier = Modifier
+            .height(1.dp)
+            .fillMaxWidth()
+            .padding(top = 10.dp), color = Color(0xFF757575)
+    )
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+            .padding(10.dp)
+            .background(Color(0xFF303030))
+    ) {
+        Surface {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 16.dp)
+                    .background(Color(0xFF1D1D1D))
+            ) {
+                ProfileHeader(
+                    this@BoxWithConstraints.maxHeight
+                )
+                UserInfo(this@BoxWithConstraints.maxHeight, user, viewModel, goLogin)
             }
         }
     }
@@ -182,36 +180,34 @@ fun ProfileHeader(maxHeight: Dp) {
 
 @Composable
 fun UserInfo(maxHeight: Dp, user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) {
-    if (user != null) {
-        var show by remember { mutableStateOf(false) }
-        Column {
-            Name(
-                modifier = Modifier.height(32.dp),
-                user
-            )
-            Position(
-                modifier = Modifier
-                    .padding(bottom = 20.dp)
-                    .height(24.dp)
-            )
-            ProfileProperty(stringResource(R.string.display_name), user.name)
+    var show by remember { mutableStateOf(false) }
+    Column {
+        Name(
+            modifier = Modifier.height(32.dp),
+            user
+        )
+        Position(
+            modifier = Modifier
+                .padding(bottom = 20.dp)
+                .height(24.dp)
+        )
+        ProfileProperty(stringResource(R.string.display_name), user.name!!)
 
-            ProfileProperty(stringResource(R.string.email), user.email)
-            Row(
-                modifier = Modifier
-                    .clickable { show = true }
-                    .align(Alignment.CenterHorizontally),
-            ) {
-                Text(text = "Borrar cuenta", color = Color(0xFFC70606))
-                DeleteAccountDialog(
-                    user = user,
-                    viewModel = viewModel,
-                    show = show,
-                    goLogin,
-                    onDismiss = { show = false })
-            }
-            Spacer(Modifier.height((50.dp).coerceAtLeast(0.dp)))
+        ProfileProperty(stringResource(R.string.email), user.email!!)
+        Row(
+            modifier = Modifier
+                .clickable { show = true }
+                .align(Alignment.CenterHorizontally),
+        ) {
+            Text(text = "Borrar cuenta", color = Color(0xFFC70606))
+            DeleteAccountDialog(
+                user = user,
+                viewModel = viewModel,
+                show = show,
+                goLogin,
+                onDismiss = { show = false })
         }
+        Spacer(Modifier.height((50.dp).coerceAtLeast(0.dp)))
     }
 }
 
@@ -229,7 +225,7 @@ fun DeleteAccountDialog(
             confirmButton = {
                 TextButton(onClick = {
                     goLogin()
-                    viewModel.deleteUser(user.email)
+                    viewModel.deleteUser(user.email!!)
                 }) {
                     Text(text = "Confirmar")
                 }
@@ -249,7 +245,7 @@ fun DeleteAccountDialog(
 private fun Name(modifier: Modifier = Modifier, user: User) {
     if (user != null) {
         Text(
-            text = user.name,
+            text = user.name!!,
             modifier = modifier,
             style = MaterialTheme.typography.headlineSmall
         )
@@ -308,8 +304,8 @@ fun DrawerContentProfile(
                         .size(100.dp)
                 )
                 Column {
-                    Text(text = user.name)
-                    Text(text = user.email)
+                    Text(text = user.name!!)
+                    Text(text = user.email!!)
                 }
             }
             Divider(

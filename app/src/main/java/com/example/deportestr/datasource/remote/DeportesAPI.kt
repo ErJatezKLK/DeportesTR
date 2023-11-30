@@ -47,4 +47,9 @@ interface DeportesAPI {
         @Query("sportId") sportId: Int
     ): Response<List<SportEvent>>
 
+    @POST("userM")
+    suspend fun changePassword(
+        @Body user: User
+    ): Response<User>
+
 }

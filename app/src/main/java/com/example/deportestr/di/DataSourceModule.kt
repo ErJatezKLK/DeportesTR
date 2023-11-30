@@ -11,6 +11,8 @@ import com.example.deportestr.datasource.remote.DeportesRemoteDataSource
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSourceImpl
 import com.example.deportestr.usecases.AddUserUsecases
 import com.example.deportestr.usecases.AddUserUsecasesImpl
+import com.example.deportestr.usecases.ChangePasswordUsecases
+import com.example.deportestr.usecases.ChangePasswordUsecasesImpl
 import com.example.deportestr.usecases.DeleteUserUsecases
 import com.example.deportestr.usecases.DeleteUserUsecasesImpl
 import com.example.deportestr.usecases.SearchAllSportsUsecases
@@ -183,6 +185,14 @@ object DataSourceModule {
         deportesRepository: DeportesRepository
     ): SearchTeamsBySportUsecases{
         return SearchTeamsBySportUsecasesImpl(deportesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideForgotPasswordUsecases(
+        deportesRepository: DeportesRepository
+    ): ChangePasswordUsecases{
+        return ChangePasswordUsecasesImpl(deportesRepository)
     }
 
 }
