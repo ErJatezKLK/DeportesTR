@@ -61,10 +61,10 @@ fun ForgotScreen(
 @Composable
 fun Forgotted(modifier: Modifier, viewModel: ForgotViewModel, goLogin: () -> Unit) {
     val email = viewModel.email
-    val password = viewModel.password
+    val password = viewModel.newPassword
     val repeatPassword = viewModel.reapeatPassword
     val loginEnabled = viewModel.loginEnabled
-    viewModel.OnRegistrationChanged(email, password, repeatPassword)
+    viewModel.onRegistrationChanged(email, password, repeatPassword)
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -132,7 +132,7 @@ fun PasswordChanged(user: String, viewModel: ForgotViewModel) {
     var passwordVisibility by remember { mutableStateOf(false) }
     TextField(
         value = user,
-        onValueChange = { viewModel.password = it },
+        onValueChange = { viewModel.newPassword = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -208,7 +208,7 @@ fun RepeateChanged(user: String, viewModel: ForgotViewModel) {
 fun ChangePassword(loginEnabled: Boolean, goLogin: () -> Unit, viewModel: ForgotViewModel) {
     Button(
         onClick = {
-            viewModel.addUser()
+            viewModel.resetPassword()
             goLogin()
         },
         modifier = Modifier

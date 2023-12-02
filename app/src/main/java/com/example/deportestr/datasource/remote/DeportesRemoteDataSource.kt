@@ -14,5 +14,5 @@ interface DeportesRemoteDataSource {
     suspend fun deleteUser(email: String): Response<Void>
     suspend fun searchTeamsInAthletesBySport(sportId: Int): Response<List<Team>>
     suspend fun searchEventBySport(sportId: Int): Response<List<SportEvent>>
-    suspend fun changePassword(user: User): Response<User>
+    suspend fun changePassword(email: String, newPassword: String): Response<Void>
 }

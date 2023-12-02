@@ -12,28 +12,42 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface DeportesAPI {
+    /**
+     * Busca el usuario por email y contraseña
+     */
     @GET("user")
     suspend fun searchUser(
         @Query("email") email: String,
         @Query("password") password: String
     ): Response<User>
 
-    @GET("userE")
+    /**
+     * Busca el usuario por email
+     */
+    @GET("user-email")
     suspend fun searchUserByEmail(
        @Query("email") email: String
     ): Response<User>
 
-
-    @POST("userP")
+    /**
+     * Crea un usuario
+     */
+    @POST("user-add")
     suspend fun addUser(
        @Body user: User
     ): Response<Void>
 
-    @DELETE("user")
+    /**
+     * Borra un usuario pero desde aqui no funciona
+     */
+    @DELETE("user-del")
     suspend fun deleteUser(
         @Query("email") email: String
     ): Response<Void>
 
+    /**
+     *
+     */
     @GET("sports")
     suspend fun searchAllSports(): Response<List<Sport>>
 
@@ -47,9 +61,10 @@ interface DeportesAPI {
         @Query("sportId") sportId: Int
     ): Response<List<SportEvent>>
 
-    @POST("userM")
+    @POST("user-update")
     suspend fun changePassword(
-        @Body user: User
-    ): Response<User>
+        @Query("email") email: String,
+        @Query("newPassword") newPassword: String
+    ): Response<Void>
 
 }

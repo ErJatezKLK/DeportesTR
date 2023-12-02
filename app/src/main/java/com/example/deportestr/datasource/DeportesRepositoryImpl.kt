@@ -39,8 +39,8 @@ class DeportesRepositoryImpl @Inject constructor(
         return deportesRemoteDataSource.searchEventBySport(sportId)
     }
 
-    override suspend fun changePassword(user: User): Response<User> {
-        return  deportesRemoteDataSource.changePassword(user)
+    override suspend fun changePassword(email: String, newPassword: String): Response<Void> {
+        return  deportesRemoteDataSource.changePassword(email, newPassword)
     }
 
 }
