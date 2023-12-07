@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface DeportesAPI {
@@ -46,13 +47,16 @@ interface DeportesAPI {
     ): Response<Void>
 
     /**
-     *
+     * Pide todos los deportes para ponerlos en la pantalla home
      */
     @GET("sports")
     suspend fun searchAllSports(): Response<List<Sport>>
 
+    /**
+     * 
+     */
     @GET("teams")
-    suspend fun searchTeamsInAthletesBySport(
+    suspend fun searchTeamsBySport(
       @Query("sportId")  sportId: Int
     ): Response<List<Team>>
 
@@ -61,9 +65,9 @@ interface DeportesAPI {
         @Query("sportId") sportId: Int
     ): Response<List<SportEvent>>
 
-    @POST("user-update")
+    @PUT("user-update")
     suspend fun changePassword(
-        @Query("email") email: String,
+        @Body user: User,
         @Query("newPassword") newPassword: String
     ): Response<Void>
 

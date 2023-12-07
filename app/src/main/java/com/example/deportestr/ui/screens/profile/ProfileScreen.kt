@@ -65,7 +65,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileScreen(
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     viewModel: ProfieViewModel = hiltViewModel(),
     email: String
 ) {
@@ -93,7 +93,7 @@ fun ProfileScreen(
                     TopBarProfile(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
                 },
             ) { innerPadding ->
-                Box(modifier = Modifier.padding(innerPadding).background(Color(0xFF1D1D1D)),) {
+                Box(modifier = Modifier.padding(innerPadding)) {
                     ProfileContent(user, viewModel, goLogin)
                 }
 
@@ -151,7 +151,6 @@ fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) 
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 16.dp)
-                    .background(Color(0xFF1D1D1D))
             ) {
                 ProfileHeader(
                     this@BoxWithConstraints.maxHeight
@@ -167,7 +166,7 @@ fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) 
 fun ProfileHeader(maxHeight: Dp) {
 
     Image(
-        painter = painterResource(R.drawable.iris),
+        painter = painterResource(R.drawable.usuario_default),
         contentDescription = "avatar",
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -243,13 +242,11 @@ fun DeleteAccountDialog(
 
 @Composable
 private fun Name(modifier: Modifier = Modifier, user: User) {
-    if (user != null) {
-        Text(
-            text = user.name!!,
-            modifier = modifier,
-            style = MaterialTheme.typography.headlineSmall
-        )
-    }
+    Text(
+        text = user.name!!,
+        modifier = modifier,
+        style = MaterialTheme.typography.headlineSmall
+    )
 }
 
 @Composable
@@ -289,7 +286,7 @@ fun ProfileProperty(label: String, value: String, isLink: Boolean = false) {
 fun DrawerContentProfile(
     user: User?,
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     onCloseDrawer: () -> Unit
 ) {
     if (user != null) {
@@ -314,7 +311,7 @@ fun DrawerContentProfile(
                     .fillMaxWidth(), color = Color(0xFF757575)
             )
             Row(modifier = Modifier
-                .clickable { goHome() }
+                .clickable { goHome(user.email!!) }
                 .fillMaxWidth()
             ) {
                 Text(text = "Deportes", fontSize = 25.sp)

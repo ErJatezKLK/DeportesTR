@@ -52,7 +52,6 @@ fun RegisterScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF303030))
     ) {
         Register(Modifier.align(Alignment.Center), viewModel, goLogin)
     }
@@ -119,12 +118,14 @@ fun EmailRegister(user: String, viewModel: RegistrationViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
+        /*
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFFFFFFF),
             containerColor = Color(0xFF1D1D1D),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
+         */
         label = { Text(text = "Introduce tu correo") }
     )
 }
@@ -142,12 +143,15 @@ fun NameRegister(name: String, viewModel: RegistrationViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
+        /*
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFFFFFFF),
             containerColor = Color(0xFF1D1D1D),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
+
+         */
         label = { Text(text = "Introduce tu Nombre") }
     )
 }
@@ -166,12 +170,15 @@ fun PasswordRegister(user: String, viewModel: RegistrationViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
+        /*
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFFFFFFF),
             containerColor = Color(0xFF1D1D1D),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
+
+         */
         trailingIcon = {
             val image = if (passwordVisibility) {
                 Icons.Filled.Visibility
@@ -205,12 +212,15 @@ fun RepeatePassword(user: String, viewModel: RegistrationViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
+        /*
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFFFFFFF),
             containerColor = Color(0xFF1D1D1D),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
+
+         */
         trailingIcon = {
             val image = if (passwordVisibility) {
                 Icons.Filled.Visibility
@@ -247,6 +257,6 @@ fun LogButton(loginEnabled: Boolean, goLogin: () -> Unit, viewModel: Registratio
             containerColor = Color(0xFF882D2D)
         ), enabled = loginEnabled
     ) {
-        Text(text = "Sign In")
+        Text(text = "Iniciar sesion")
     }
 }

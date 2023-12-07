@@ -38,9 +38,9 @@ class DeportesRemoteDataSourceImpl @Inject constructor(
             return@withContext deportesAPI.deleteUser(email)
         }
 
-    override suspend fun searchTeamsInAthletesBySport(sportId: Int): Response<List<Team>> =
+    override suspend fun searchTeamsBySport(sportId: Int): Response<List<Team>> =
         withContext(dispatcherProvider.ioDispatcher){
-            return@withContext deportesAPI.searchTeamsInAthletesBySport(sportId)
+            return@withContext deportesAPI.searchTeamsBySport(sportId)
         }
 
     override suspend fun searchEventBySport(sportId: Int): Response<List<SportEvent>> =
@@ -48,9 +48,9 @@ class DeportesRemoteDataSourceImpl @Inject constructor(
             return@withContext deportesAPI.searchEventBySport(sportId)
         }
 
-    override suspend fun changePassword(email: String, newPassword: String): Response<Void> =
+    override suspend fun changePassword(user: User, newPassword: String): Response<Void> =
         withContext(dispatcherProvider.ioDispatcher){
-            deportesAPI.changePassword(email, newPassword)
+            deportesAPI.changePassword(user, newPassword)
         }
 
 

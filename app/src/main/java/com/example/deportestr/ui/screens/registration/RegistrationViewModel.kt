@@ -28,7 +28,7 @@ class RegistrationViewModel @Inject constructor(
     fun addUser() {
         viewModelScope.launch(Dispatchers.IO) {
             val user = User(null, name, email, password, null, null)
-            val responseBody = addUserUseCases.addUser(user)
+            addUserUseCases.addUser(user)
         }
     }
 

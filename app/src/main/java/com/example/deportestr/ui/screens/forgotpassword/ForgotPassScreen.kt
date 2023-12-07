@@ -52,7 +52,6 @@ fun ForgotScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF303030))
     ) {
         Forgotted(Modifier.align(Alignment.Center), viewModel, goLogin)
     }
@@ -76,6 +75,10 @@ fun Forgotted(modifier: Modifier, viewModel: ForgotViewModel, goLogin: () -> Uni
         EmailChanged(email, viewModel)
         Spacer(modifier = Modifier.padding(15.dp))
         PasswordChanged(password, viewModel)
+        Text(
+            text = "*La contraseña debe de ser de mas de 6 caracteres",
+            color = Color.Red
+            )
         Spacer(modifier = Modifier.padding(15.dp))
         RepeateChanged(repeatPassword, viewModel)
         Spacer(modifier = Modifier.padding(16.dp))
@@ -116,12 +119,15 @@ fun EmailChanged(user: String, viewModel: ForgotViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
+        /*
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFFFFFFF),
-            containerColor = Color(0xFF1D1D1D),
+            textColor = Color(0xFF000000),
+            containerColor = Color(0xFF7E7E7E),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
+
+         */
         label = { Text(text = "Introduce tu correo") }
     )
 }
@@ -140,12 +146,15 @@ fun PasswordChanged(user: String, viewModel: ForgotViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
+        /*
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFFFFFFF),
             containerColor = Color(0xFF1D1D1D),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
+
+         */
         trailingIcon = {
             val image = if (passwordVisibility) {
                 Icons.Filled.Visibility
@@ -179,12 +188,15 @@ fun RepeateChanged(user: String, viewModel: ForgotViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
+        /*
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFFFFFFF),
             containerColor = Color(0xFF1D1D1D),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
+
+         */
         trailingIcon = {
             val image = if (passwordVisibility) {
                 Icons.Filled.Visibility

@@ -30,7 +30,9 @@ class ForgotViewModel @Inject constructor(
 
     fun resetPassword() {
         viewModelScope.launch(Dispatchers.IO) {
-            changePasswordUsecases.changePassword(email, newPassword)
+            val responseBody = searchUserByEmailUseCases.searchUserByEmail(email)
+            user = responseBody.body()
+            changePasswordUsecases.changePassword(user, newPassword)
         }
     }
 

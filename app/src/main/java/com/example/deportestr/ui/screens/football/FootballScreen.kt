@@ -1,5 +1,6 @@
 package com.example.deportestr.ui.screens.football
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -48,12 +49,14 @@ import com.example.deportestr.ui.models.Team
 import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import kotlin.time.Duration.Companion.days
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FootballScreen(
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     email: String,
     viewModel: FootballViewModel = hiltViewModel()
 ) {
@@ -105,45 +108,317 @@ fun FootballContent(teams: List<Team>?, events: List<SportEvent>?) {
     }
 }
 
+@SuppressLint("SimpleDateFormat")
 @Composable
 fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEvent>) {
-    Card(
-        modifier = Modifier
-            .clickable { }
-            .fillMaxWidth()
-            .background(Color(0xFFAD0000))
-            .padding(8.dp),
-        shape = MaterialTheme.shapes.small
-    ) {
-        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Text(
-                text = "${sportEvent.date.time}",
-                fontSize = 23.sp,
-                modifier = Modifier.padding(2.dp),
-                fontWeight = FontWeight.Bold
-            )
-        }
-        Column {
-            if (teams != null) {
+    val timestamp = sportEvent.date
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val formattedDate = dateFormat.format(timestamp)
+
+    when (sportEvent.id) {
+        25 -> Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFAD0000))
+                .padding(8.dp),
+            shape = MaterialTheme.shapes.small
+        ) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(
-                    text = teams[0].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
+                    text = "$formattedDate",
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
                 )
+            }
+            Column {
+                if (teams != null) {
+                    Text(
+                        text = teams[0].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                    Text(
+                        text = teams[10].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(
-                    text = teams[10].name,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(2.dp)
+                    text = sportEvent.result,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
-        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Text(
-                text = sportEvent.result,
-                fontSize = 23.sp,
-                modifier = Modifier.padding(2.dp),
-                fontWeight = FontWeight.Bold
-            )
+        26 -> Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFAD0000))
+                .padding(8.dp),
+            shape = MaterialTheme.shapes.small
+        ) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = "$formattedDate",
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Column {
+                if (teams != null) {
+                    Text(
+                        text = teams[16].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                    Text(
+                        text = teams[5].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = sportEvent.result,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        27 -> Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFAD0000))
+                .padding(8.dp),
+            shape = MaterialTheme.shapes.small
+        ) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = "$formattedDate",
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Column {
+                if (teams != null) {
+                    Text(
+                        text = teams[12].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                    Text(
+                        text = teams[17].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = sportEvent.result,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        28 -> Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFAD0000))
+                .padding(8.dp),
+            shape = MaterialTheme.shapes.small
+        ) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = "$formattedDate",
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Column {
+                if (teams != null) {
+                    Text(
+                        text = teams[9].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                    Text(
+                        text = teams[19].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = sportEvent.result,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        29 -> Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFAD0000))
+                .padding(8.dp),
+            shape = MaterialTheme.shapes.small
+        ) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = "$formattedDate",
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Column {
+                if (teams != null) {
+                    Text(
+                        text = teams[6].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                    Text(
+                        text = teams[17].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = sportEvent.result,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        30 -> Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFAD0000))
+                .padding(8.dp),
+            shape = MaterialTheme.shapes.small
+        ) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = "$formattedDate",
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Column {
+                if (teams != null) {
+                    Text(
+                        text = teams[4].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                    Text(
+                        text = teams[15].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = sportEvent.result,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        31 -> Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFAD0000))
+                .padding(8.dp),
+            shape = MaterialTheme.shapes.small
+        ) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = "$formattedDate",
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Column {
+                if (teams != null) {
+                    Text(
+                        text = teams[3].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                    Text(
+                        text = teams[9].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = sportEvent.result,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        32 -> Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFAD0000))
+                .padding(8.dp),
+            shape = MaterialTheme.shapes.small
+        ) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = "$formattedDate",
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Column {
+                if (teams != null) {
+                    Text(
+                        text = teams[9].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                    Text(
+                        text = teams[18].name,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = sportEvent.result,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
@@ -152,7 +427,7 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
 fun DrawerContentFootball(
     user: User?,
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     onCloseDrawer: () -> Unit
 ) {
     if (user != null) {
@@ -177,7 +452,7 @@ fun DrawerContentFootball(
                     .fillMaxWidth(), color = Color(0xFF757575)
             )
             Row(modifier = Modifier
-                .clickable { goHome() }
+                .clickable { goHome(user.email!!) }
                 .fillMaxWidth()
             ) {
                 Text(text = "Deportes", fontSize = 25.sp)

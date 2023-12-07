@@ -55,7 +55,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun FormulaScreen(
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     email: String,
     viewModel: FormulaViewModel = hiltViewModel()
 ) {
@@ -199,59 +199,12 @@ fun ItemEvent(sportEvent: SportEvent?, teams: List<Team>?) {
         }
     }
 }
-/*
-fun sportEvents(): List<SportEvent> {
-    val date = Timestamp(2023 - 11 - 5)
-    val aston =
-        Team(1, "Fernando PADRONSO", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1"))
-    val redBull =
-        Team(2, "Verstappen y Marko", creationDate = date, "Austria", Sport(2, "Formula 1"))
-    val mercedes =
-        Team(3, "Mercedes", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1"))
-    return listOf(
-        SportEvent(1, Timestamp(18-11-2023), "Macs Visparten gana","Mexico" ),
-        SportEvent(2, Timestamp(18-11-2023), "MAGIIIC", "Brasil"),
-        SportEvent(3, Timestamp(18-11-2023), "Macs Trampuchero", "Las vegas"),
-        SportEvent(4, Timestamp(18-11-2023), "Goatifi", "Yas marina")
-    )
-}
-
-
-fun teamsList(): List<Team> {
-    val date = Timestamp(2023 - 11 - 5)
-
-    return listOf(
-        Team(1, "La Mision???", creationDate = date, "Vota al Brexit", Sport(2, "Formula 1")),
-        Team(2, "Bed Rull", creationDate = date, "Austria", Sport(2, "Formula 1")),
-        Team(3, "Votan por el brexit", creationDate = date, "Tambien vota al brexit", Sport(2, "Formula 1")),
-        Team(4, "Votan por el brexit y van bien", creationDate = date, "Lo mismo que mercedes", Sport(2, "Formula 1")),
-        Team(
-            5,
-            "Los putos gabachos",
-            creationDate = date,
-            "No deberia existir",
-            Sport(2, "Formula 1")
-        ),
-        Team(6, "Strotegy", creationDate = date, "Pasta Boys", Sport(2, "Formula 1")),
-        Team(7, "Toro Alfa", creationDate = date, "Austria supongo", Sport(2, "Formula 1")),
-        Team(8, "Votan por el brexit y son lentos", creationDate = date, "No se", Sport(2, "Formula 1")),
-        Team(
-            9,
-            "WTF IS A KILOMETER *gun shots and a chopper*",
-            creationDate = date,
-            "",
-            Sport(2, "Formula 1")
-        ),
-        Team(10, "Alfa Bromeo", creationDate = date, "Pasta boys 2", Sport(2, "Formula 1"))
-    )
-}
-*/
 
 @Composable
 fun DrawerContentFormula(
     user: User,
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     onCloseDrawer: () -> Unit
 ) {
     if (user != null) {
@@ -276,7 +229,7 @@ fun DrawerContentFormula(
                     .fillMaxWidth(), color = Color(0xFF757575)
             )
             Row(modifier = Modifier
-                .clickable { goHome() }
+                .clickable { goHome(user.email!!) }
                 .fillMaxWidth()
             ) {
                 Text(text = "Deportes", fontSize = 25.sp)

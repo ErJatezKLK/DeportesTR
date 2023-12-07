@@ -32,15 +32,15 @@ class DeportesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun searchTeamsInAthletesBySport(sportId: Int): Response<List<Team>> {
-        return deportesRemoteDataSource.searchTeamsInAthletesBySport(sportId)
+        return deportesRemoteDataSource.searchTeamsBySport(sportId)
     }
 
     override suspend fun searchEventBySport(sportId: Int): Response<List<SportEvent>> {
         return deportesRemoteDataSource.searchEventBySport(sportId)
     }
 
-    override suspend fun changePassword(email: String, newPassword: String): Response<Void> {
-        return  deportesRemoteDataSource.changePassword(email, newPassword)
+    override suspend fun changePassword(user: User, newPassword: String): Response<Void> {
+        return  deportesRemoteDataSource.changePassword(user, newPassword)
     }
 
 }

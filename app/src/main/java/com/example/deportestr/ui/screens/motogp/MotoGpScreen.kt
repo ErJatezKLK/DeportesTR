@@ -55,7 +55,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MotoGpScreen(
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     email: String,
     viewModel: MotoGpViewModel = hiltViewModel()
     ) {
@@ -201,7 +201,7 @@ fun ItemMotoGp(sportEvent: SportEvent, teams: List<Team>?) {
 fun DrawerContentMotoGp(
     user: User,
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     onCloseDrawer: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -225,7 +225,7 @@ fun DrawerContentMotoGp(
                 .fillMaxWidth(), color = Color(0xFF757575)
         )
         Row(modifier = Modifier
-            .clickable { goHome() }
+            .clickable { goHome(user.email!!) }
             .fillMaxWidth()
         ) {
             Text(text = "Deportes", fontSize = 25.sp)

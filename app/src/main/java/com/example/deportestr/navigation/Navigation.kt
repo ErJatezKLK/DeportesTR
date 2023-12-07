@@ -60,7 +60,7 @@ fun AppNavigation(navController: NavHostController) {
         composable(route = AppScreens.ProfileScreen.route + "/{email}") { backStackEntry ->
             ProfileScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                goHome = {email-> navController.navigate(route = AppScreens.HomeScreen.route + "/$email" )},
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
@@ -68,7 +68,7 @@ fun AppNavigation(navController: NavHostController) {
         composable(route = AppScreens.FormulaScreen.route + "/{email}") { backStackEntry ->
             FormulaScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                goHome = { email-> navController.navigate(route = AppScreens.HomeScreen.route + "/$email") },
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
@@ -76,7 +76,7 @@ fun AppNavigation(navController: NavHostController) {
         composable(route = AppScreens.FootballScreen.route + "/{email}") { backStackEntry ->
             FootballScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                goHome = {email-> navController.navigate(route = AppScreens.HomeScreen.route + "/$email")} ,
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
@@ -84,7 +84,7 @@ fun AppNavigation(navController: NavHostController) {
         composable(route = AppScreens.TenisScreen.route + "/{email}") { backStackEntry ->
             TenisScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                goHome = {email-> navController.navigate(route = AppScreens.HomeScreen.route + "/$email" )},
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
@@ -92,7 +92,7 @@ fun AppNavigation(navController: NavHostController) {
         composable(route = AppScreens.MotoGpScreen.route + "/{email}") { backStackEntry ->
             MotoGpScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                goHome = {email-> navController.navigate(route = AppScreens.HomeScreen.route + "/$email" )},
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
@@ -100,7 +100,7 @@ fun AppNavigation(navController: NavHostController) {
         composable(route = AppScreens.BasketScreen.route + "/{email}") { backStackEntry ->
             BasketScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                goHome = {email-> navController.navigate(route = AppScreens.HomeScreen.route + "/$email" )},
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
@@ -108,9 +108,15 @@ fun AppNavigation(navController: NavHostController) {
         composable(route = AppScreens.WrcScreen.route + "/{email}") { backStackEntry ->
             WrcScreen(
                 goLogin = { navController.navigate(route = AppScreens.LoginScreen.route) },
-                goHome = { navController.navigate(route = AppScreens.HomeScreen.route) },
+                goHome = { email-> navController.navigate(route = AppScreens.HomeScreen.route + "/$email" )},
                 email = backStackEntry.arguments?.getString("email") ?: "null"
             )
         }
+        /*
+        composable(route = AppScreens.ChatScreen.route ){
+            ChatScreen(
+            )
+        }
+        */
     }
 }

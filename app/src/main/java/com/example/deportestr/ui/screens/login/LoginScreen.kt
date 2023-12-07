@@ -58,7 +58,6 @@ fun LoginScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF303030))
     ) {
         Login(Modifier.align(Alignment.Center), viewModel, goRegister, goHome, goForgot)
     }
@@ -137,12 +136,15 @@ fun UserNameField(email: String, viewModelV2: LoginViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
+        /*
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFFFFFFF),
             containerColor = Color(0xFF1D1D1D),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
+
+         */
         label = { Text(text = "Introduce tu correo") }
     )
 }
@@ -161,12 +163,15 @@ fun PasswordField(password: String, viewModel: LoginViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
+        /*
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFFFFFFF),
             containerColor = Color(0xFF1D1D1D),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
+
+         */
         trailingIcon = {
             val image = if (passwordVisibility) {
                 Icons.Filled.Visibility

@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TenisScreen(
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     email: String,
     viewModel: TenisViewModel = hiltViewModel()
 ){
@@ -59,28 +59,29 @@ fun TenisScreen(
             delay(100)
         }
     }
-    if (user != null)
-    ModalNavigationDrawer(drawerContent = {
-        ModalDrawerSheet {
-            DrawerContentTenis( user, goLogin = goLogin, goHome = goHome) {
-                coroutineScope.launch { drawerState.close() }
+    if (user != null) {
+        ModalNavigationDrawer(drawerContent = {
+            ModalDrawerSheet {
+                DrawerContentTenis(user, goLogin = goLogin, goHome = goHome) {
+                    coroutineScope.launch { drawerState.close() }
+                }
             }
-        }
-    }, drawerState = drawerState) {
-        Scaffold(topBar = {
-            TopBarTenis(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
-        }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .background(Color(0xFF303030))
-            ) {
-                TenisContent()
+        }, drawerState = drawerState) {
+            Scaffold(topBar = {
+                TopBarTenis(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
+            }
+            ) { innerPadding ->
+                Box(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .background(Color(0xFF303030))
+                ) {
+                    TenisContent()
+                }
+
             }
 
         }
-
     }
 }
 
@@ -93,7 +94,7 @@ fun TenisContent() {
 fun DrawerContentTenis(
     user: User?,
     goLogin: () -> Unit,
-    goHome: () -> Unit,
+    goHome: (String) -> Unit,
     onCloseDrawer: () -> Unit
 ) {
     if (user != null) {
@@ -118,7 +119,7 @@ fun DrawerContentTenis(
                     .fillMaxWidth(), color = Color(0xFF757575)
             )
             Row(modifier = Modifier
-                .clickable { goHome() }
+                .clickable { goHome(user.email!!) }
                 .fillMaxWidth()
             ) {
                 Text(text = "Deportes", fontSize = 25.sp)

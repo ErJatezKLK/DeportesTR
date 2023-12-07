@@ -97,7 +97,7 @@ fun HomeScreen(
             Scaffold(topBar = {
                 TopBarContent(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
             }) { innerPadding ->
-                Box(modifier = Modifier.padding(innerPadding).background(color = Color(0xFF1D1D1D))) {
+                Box(modifier = Modifier.padding(innerPadding)) {
                     HomeBody(goFootball, goFormula, goTenis, goMotoGp, goBasket, goWrc, sports, user)
                 }
             }
@@ -118,7 +118,7 @@ fun HomeBody(
 ) {
     if (user != null) {
         var selectedTabIndex by remember {
-            mutableIntStateOf(0)
+            mutableIntStateOf(0 )
         }
         val pagerState = rememberPagerState {
             sports.size
@@ -146,14 +146,13 @@ fun HomeBody(
                     .fillMaxWidth()
                     .weight(1f)
             ) { index ->
-                Box(modifier = Modifier.fillMaxSize().background(Color(0xFF1D1D1D))) {
+                Box(modifier = Modifier.fillMaxSize()) {
 
                     when (index) {
                         0 -> Card(
                             modifier = Modifier
                                 .clickable { goFootball(user.email!!) }
-                                .fillMaxWidth()
-                                .background(Color(0xFF1D1D1D)),
+                                .fillMaxWidth(),
                             shape = MaterialTheme.shapes.small
                         ) {
                             Column {
@@ -164,7 +163,6 @@ fun HomeBody(
                                 )
                                 Row(
                                     modifier = Modifier.align(Alignment.Start)
-                                        .background(Color(0xFF1D1D1D))
                                 ) {
                                     Text(
                                         text = sports[index].name,
@@ -182,8 +180,7 @@ fun HomeBody(
                         1 -> Card(
                             modifier = Modifier
                                 .clickable { goFormula(user.email!!) }
-                                .fillMaxWidth()
-                                .background(Color(0xFF1D1D1D)),
+                                .fillMaxWidth(),
                             shape = MaterialTheme.shapes.small
                         ) {
                             Column {
@@ -194,7 +191,6 @@ fun HomeBody(
                                 )
                                 Row(
                                     modifier = Modifier.align(Alignment.Start)
-                                        .background(Color(0xFF1D1D1D))
                                 ) {
                                     Text(
                                         text = sports[index].name,
@@ -212,8 +208,7 @@ fun HomeBody(
                         2 -> Card(
                             modifier = Modifier
                                 .clickable { goTenis(user.email!!) }
-                                .fillMaxWidth()
-                                .background(Color(0xFF1D1D1D)),
+                                .fillMaxWidth(),
                             shape = MaterialTheme.shapes.small
                         ) {
                             Column {
@@ -224,7 +219,6 @@ fun HomeBody(
                                 )
                                 Row(
                                     modifier = Modifier.align(Alignment.Start)
-                                        .background(Color(0xFF1D1D1D))
                                 ) {
                                     Text(
                                         text = sports[index].name,
@@ -242,8 +236,7 @@ fun HomeBody(
                         3 -> Card(
                             modifier = Modifier
                                 .clickable { goMotoGp(user.email!!) }
-                                .fillMaxWidth()
-                                .background(Color(0xFF1D1D1D)),
+                                .fillMaxWidth(),
                             shape = MaterialTheme.shapes.small
                         ) {
                             Column {
@@ -254,7 +247,6 @@ fun HomeBody(
                                 )
                                 Row(
                                     modifier = Modifier.align(Alignment.Start)
-                                        .background(Color(0xFF1D1D1D))
                                 ) {
                                     Text(
                                         text = sports[index].name,
@@ -272,8 +264,7 @@ fun HomeBody(
                         4 -> Card(
                             modifier = Modifier
                                 .clickable { goBasket(user.email!!) }
-                                .fillMaxWidth()
-                                .background(Color(0xFF1D1D1D)),
+                                .fillMaxWidth(),
                             shape = MaterialTheme.shapes.small
                         ) {
                             Column {
@@ -284,7 +275,6 @@ fun HomeBody(
                                 )
                                 Row(
                                     modifier = Modifier.align(Alignment.Start)
-                                        .background(Color(0xFF1D1D1D))
                                 ) {
                                     Text(
                                         text = sports[index].name,
@@ -302,8 +292,7 @@ fun HomeBody(
                         5 -> Card(
                             modifier = Modifier
                                 .clickable { goWrc(user.email!!) }
-                                .fillMaxWidth()
-                                .background(Color(0xFF1D1D1D)),
+                                .fillMaxWidth(),
                             shape = MaterialTheme.shapes.small
                         ) {
                             Column {
@@ -314,7 +303,6 @@ fun HomeBody(
                                 )
                                 Row(
                                     modifier = Modifier.align(Alignment.Start)
-                                        .background(Color(0xFF1D1D1D))
                                 ) {
                                     Text(
                                         text = sports[index].name,
@@ -333,16 +321,6 @@ fun HomeBody(
             }
         }
     }
-}
-fun getSports(): List<Sport> {
-    return listOf(
-        Sport(1, "Futbol"),
-        Sport(2, "Formula 1"),
-        Sport(3, "Tenis"),
-        Sport(4, "MotoGP"),
-        Sport(5, "Baloncesto"),
-        Sport(6, "WRC")
-    )
 }
 
 
