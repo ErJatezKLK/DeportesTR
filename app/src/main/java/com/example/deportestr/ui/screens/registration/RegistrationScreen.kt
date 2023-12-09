@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -114,7 +115,7 @@ fun EmailRegister(user: String, viewModel: RegistrationViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        placeholder = { Text(text = "user@dd.com") },
+        placeholder = { Text(text = stringResource(id = R.string.email)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
@@ -139,7 +140,7 @@ fun NameRegister(name: String, viewModel: RegistrationViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        placeholder = { Text(text = "Nombre") },
+        placeholder = { Text(text = stringResource(id = R.string.name)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
@@ -152,7 +153,7 @@ fun NameRegister(name: String, viewModel: RegistrationViewModel) {
         ),
 
          */
-        label = { Text(text = "Introduce tu Nombre") }
+        label = { Text(text = stringResource(id = R.string.name_insert)) }
     )
 }
 
@@ -166,7 +167,7 @@ fun PasswordRegister(user: String, viewModel: RegistrationViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        placeholder = { Text(text = "contraseña") },
+        placeholder = { Text(text = stringResource(id = R.string.password)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
@@ -194,7 +195,7 @@ fun PasswordRegister(user: String, viewModel: RegistrationViewModel) {
         } else {
             PasswordVisualTransformation()
         },
-        label = { Text(text = "Introduce tu contraseña") }
+        label = { Text(text = stringResource(id = R.string.password_insert)) }
     )
 }
 
@@ -208,7 +209,7 @@ fun RepeatePassword(user: String, viewModel: RegistrationViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        placeholder = { Text(text = "Repite la contraseña") },
+        placeholder = { Text(text = stringResource(id = R.string.password_repeat)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
@@ -236,7 +237,7 @@ fun RepeatePassword(user: String, viewModel: RegistrationViewModel) {
         } else {
             PasswordVisualTransformation()
         },
-        label = { Text(text = "Introduce tu contraseña") }
+        label = { Text(text = stringResource(id = R.string.password_insert)) }
     )
 }
 
@@ -257,6 +258,6 @@ fun LogButton(loginEnabled: Boolean, goLogin: () -> Unit, viewModel: Registratio
             containerColor = Color(0xFF882D2D)
         ), enabled = loginEnabled
     ) {
-        Text(text = "Iniciar sesion")
+        Text(text = stringResource(id = R.string.sign_in))
     }
 }

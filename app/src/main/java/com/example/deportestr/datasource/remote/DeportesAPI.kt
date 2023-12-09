@@ -1,5 +1,7 @@
 package com.example.deportestr.datasource.remote
 
+import androidx.compose.runtime.MutableIntState
+import com.example.deportestr.ui.models.Athlete
 import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.SportEvent
 import com.example.deportestr.ui.models.Team
@@ -70,5 +72,20 @@ interface DeportesAPI {
         @Body user: User,
         @Query("newPassword") newPassword: String
     ): Response<Void>
+
+    @GET("athletes")
+    suspend fun searchAthletesBySport(
+        @Query("sportId") sportId: Int
+    ): Response<List<Athlete>>
+
+    @GET("team-athlete")
+    suspend fun searchTeamById(
+        @Query("teamId") teamId: Int
+    ): Response<Team>
+
+    @GET("atheletes-team")
+    suspend fun searchAthletesByTeamId(
+        @Query("teamId") teamId: MutableIntState
+    ): Response<List<Athlete>>
 
 }

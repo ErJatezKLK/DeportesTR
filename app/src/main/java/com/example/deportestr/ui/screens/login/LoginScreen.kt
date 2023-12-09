@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -132,7 +133,7 @@ fun UserNameField(email: String, viewModelV2: LoginViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        placeholder = { Text(text = "user@dd.com") },
+        placeholder = { Text(text = stringResource(id = R.string.user)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
@@ -145,7 +146,7 @@ fun UserNameField(email: String, viewModelV2: LoginViewModel) {
         ),
 
          */
-        label = { Text(text = "Introduce tu correo") }
+        label = { Text(text = stringResource(id = R.string.email_insert)) }
     )
 }
 
@@ -159,7 +160,7 @@ fun PasswordField(password: String, viewModel: LoginViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        placeholder = { Text(text = "contraseña") },
+        placeholder = { Text(text = stringResource(id = R.string.password)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
@@ -187,14 +188,14 @@ fun PasswordField(password: String, viewModel: LoginViewModel) {
         } else {
             PasswordVisualTransformation()
         },
-        label = { Text(text = "Introduce tu contraseña") }
+        label = { Text(text = stringResource(id = R.string.password_insert)) }
     )
 }
 
 @Composable
 fun ForgotPassword(modifier: Modifier, goForgot: () -> Unit) {
     Text(
-        text = "¿Olvidaste tu crontraseña eh?",
+        text = stringResource(id = R.string.change_password),
         modifier = modifier
             .clickable { }
             .padding(end = 4.dp)
@@ -235,7 +236,7 @@ fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModel, loginEnabled:
             containerColor = Color(0xFF882D2D)
         ), enabled = loginEnabled
     ) {
-        Text(text = "Iniciar sesion")
+        Text(text = stringResource(id = R.string.sign_in))
     }
 
     LaunchedEffect(userLoaded){
@@ -257,6 +258,6 @@ fun RegisterButton(goRegister: () -> Unit) {
             containerColor = Color(0xFF882D2D)
         )
     ) {
-        Text(text = "Registrarse")
+        Text(text = stringResource(id = R.string.sign_up))
     }
 }

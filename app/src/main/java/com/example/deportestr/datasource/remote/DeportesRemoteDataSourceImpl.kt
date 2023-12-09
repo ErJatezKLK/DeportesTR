@@ -1,5 +1,7 @@
 package com.example.deportestr.datasource.remote
 
+import androidx.compose.runtime.MutableIntState
+import com.example.deportestr.ui.models.Athlete
 import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.SportEvent
 import com.example.deportestr.ui.models.Team
@@ -51,6 +53,21 @@ class DeportesRemoteDataSourceImpl @Inject constructor(
     override suspend fun changePassword(user: User, newPassword: String): Response<Void> =
         withContext(dispatcherProvider.ioDispatcher){
             deportesAPI.changePassword(user, newPassword)
+        }
+
+    override suspend fun searchAthletesBySport(sportId: Int): Response<List<Athlete>> =
+        withContext(dispatcherProvider.ioDispatcher) {
+            return@withContext deportesAPI.searchAthletesBySport(sportId)
+        }
+
+    override suspend fun searchTeamById(teamId: Int): Response<Team> =
+        withContext(dispatcherProvider.ioDispatcher){
+            return@withContext deportesAPI.searchTeamById(teamId)
+        }
+
+    override suspend fun searchAthletesByTeamId(teamId: MutableIntState): Response<List<Athlete>> =
+        withContext(dispatcherProvider.ioDispatcher){
+            return@withContext deportesAPI.searchAthletesByTeamId(teamId)
         }
 
 

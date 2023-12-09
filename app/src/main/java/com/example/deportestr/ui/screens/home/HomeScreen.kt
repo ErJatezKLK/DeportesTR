@@ -1,10 +1,11 @@
 package com.example.deportestr.ui.screens.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.NavigateNext
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
@@ -46,7 +48,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -123,6 +128,15 @@ fun HomeBody(
         val pagerState = rememberPagerState {
             sports.size
         }
+
+        val context = LocalContext.current
+        val soyMotorNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://soymotor.com/f1/noticias/la-fia-prohibe-las-pruebas-aerodinamicas-para-desarrollar-los-monoplazas-de-2026")) }
+        val footballNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://www.mundodeportivo.com/futbol/internacional/20231208/1002149782/hijo-leo-messi-mateo-viral-gol-inter-miami.html")) }
+        val tenisNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://www.atptour.com/es/news/best-of-2023-rivalries-djokovic-alcaraz")) }
+        val motoGPNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://es.motorsport.com/motogp/news/trackhouse-propiedad-estadounidense-rnf-aprilia-motogp-2024/10555185/")) }
+        val basketNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://www.mundodeportivo.com/baloncesto/nba/20231208/1002149578/brutal-racha-triplista-lebron-james-inicio-paliza-pelicans.html")) }
+        val wrcNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://lat.motorsport.com/wrc/news/wrc-cambia-sistema-puntos-temporada-2024/10555680/")) }
+
         LaunchedEffect(selectedTabIndex) {
             pagerState.animateScrollToPage(selectedTabIndex)
         }
@@ -174,6 +188,29 @@ fun HomeBody(
                                         contentDescription = null
                                     )
                                 }
+                                Card (
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    shape = MaterialTheme.shapes.small
+                                ){
+                                    Text(
+                                        text = "El hijo de Leo Messi, Mateo, se hace viral por su gol con el Inter Miami",
+                                        fontSize = 30.sp,
+                                        modifier = Modifier.padding(2.dp),
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Row {
+                                        Button(
+                                            onClick = {  context.startActivity(footballNews) },
+                                            modifier = Modifier
+                                                .align(Alignment.CenterVertically)
+                                                .fillMaxWidth()
+                                        ) {
+                                            Text(text = stringResource(id = R.string.go_to_web))
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -203,6 +240,29 @@ fun HomeBody(
                                     )
                                 }
                             }
+                            Card (
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                shape = MaterialTheme.shapes.small
+                            ){
+                                Text(
+                                    text = "La FIA prohíbe las pruebas aerodinámicas para desarrollar los monoplazas de 2026",
+                                    fontSize = 30.sp,
+                                    modifier = Modifier.padding(2.dp),
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Row {
+                                    Button(
+                                        onClick = {  context.startActivity(soyMotorNews) },
+                                        modifier = Modifier
+                                            .align(Alignment.CenterVertically)
+                                            .fillMaxWidth()
+                                    ) {
+                                        Text(text = stringResource(id = R.string.go_to_web))
+                                    }
+                                }
+                            }
                         }
 
                         2 -> Card(
@@ -229,6 +289,29 @@ fun HomeBody(
                                         imageVector = Icons.Filled.NavigateNext,
                                         contentDescription = null
                                     )
+                                }
+                                Card (
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    shape = MaterialTheme.shapes.small
+                                ){
+                                    Text(
+                                        text = "Rivalidades De 2023: Djokovic vs. Alcaraz",
+                                        fontSize = 30.sp,
+                                        modifier = Modifier.padding(2.dp),
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Row {
+                                        Button(
+                                            onClick = { context.startActivity(tenisNews) },
+                                            modifier = Modifier
+                                                .align(Alignment.CenterVertically)
+                                                .fillMaxWidth()
+                                        ) {
+                                            Text(text = stringResource(id = R.string.go_to_web))
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -258,6 +341,29 @@ fun HomeBody(
                                         contentDescription = null
                                     )
                                 }
+                                Card (
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    shape = MaterialTheme.shapes.small
+                                ){
+                                    Text(
+                                        text = "Capital estadounidense se hará cargo de las plazas de RNF en MotoGP 2024",
+                                        fontSize = 30.sp,
+                                        modifier = Modifier.padding(2.dp),
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Row {
+                                        Button(
+                                            onClick = { context.startActivity(motoGPNews) },
+                                            modifier = Modifier
+                                                .align(Alignment.CenterVertically)
+                                                .fillMaxWidth()
+                                        ) {
+                                            Text(text = stringResource(id = R.string.go_to_web))
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -286,6 +392,29 @@ fun HomeBody(
                                         contentDescription = null
                                     )
                                 }
+                                Card (
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    shape = MaterialTheme.shapes.small
+                                ){
+                                    Text(
+                                        text = "La brutal racha triplista de LeBron James que inició la paliza a los Pelicans",
+                                        fontSize = 30.sp,
+                                        modifier = Modifier.padding(2.dp),
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Row {
+                                        Button(
+                                            onClick = { context.startActivity(basketNews) },
+                                            modifier = Modifier
+                                                .align(Alignment.CenterVertically)
+                                                .fillMaxWidth()
+                                        ) {
+                                            Text(text = stringResource(id = R.string.go_to_web))
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -313,6 +442,29 @@ fun HomeBody(
                                         imageVector = Icons.Filled.NavigateNext,
                                         contentDescription = null
                                     )
+                                }
+                                Card (
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    shape = MaterialTheme.shapes.small
+                                ){
+                                    Text(
+                                        text = "El WRC adoptará un nuevo sistema de puntos para mejorar los rallyes",
+                                        fontSize = 30.sp,
+                                        modifier = Modifier.padding(2.dp),
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Row {
+                                        Button(
+                                            onClick = { context.startActivity(wrcNews) },
+                                            modifier = Modifier
+                                                .align(Alignment.CenterVertically)
+                                                .fillMaxWidth()
+                                        ) {
+                                            Text(text = stringResource(id = R.string.go_to_web))
+                                        }
+                                    }
                                 }
                             }
                         }

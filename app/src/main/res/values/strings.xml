@@ -2,5 +2,16 @@
     <string name="app_name">DeportesTR</string>
     <string name="display_name">Nombre</string>
     <string name="email">Email</string>
+    <string name="name">Nombre</string>
+    <string name="password">Contraseña</string>
+    <string name="sign_in">Iniciar Sesion</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="change_password">¿Olvidaste tu crontraseña eh?</string>
+    <string name="go_to_web">Saber mas</string>
     <string name="delete_account">Borrar cuenta</string>
+    <string name="user">user@dd.com</string>
+    <string name="email_insert">Introduce tu correo</string>
+    <string name="password_insert">Introduce tu contraseña</string>
+    <string name="password_repeat">Repite tu contraseña</string>
+    <string name="name_insert">Introduce tu nombre</string>
 </resources>

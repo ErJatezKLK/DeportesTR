@@ -1,6 +1,8 @@
+import androidx.compose.runtime.MutableIntState
 import com.example.deportestr.datasource.DeportesRepository
 
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSource
+import com.example.deportestr.ui.models.Athlete
 import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.SportEvent
 import com.example.deportestr.ui.models.Team
@@ -41,6 +43,18 @@ class DeportesRepositoryImpl @Inject constructor(
 
     override suspend fun changePassword(user: User, newPassword: String): Response<Void> {
         return  deportesRemoteDataSource.changePassword(user, newPassword)
+    }
+
+    override suspend fun searchAthletesBySport(sportId: Int): Response<List<Athlete>> {
+        return deportesRemoteDataSource.searchAthletesBySport(sportId)
+    }
+
+    override suspend fun searchTeamById(teamId: Int): Response<Team> {
+        return deportesRemoteDataSource.searchTeamById(teamId)
+    }
+
+    override suspend fun searchAthletesByTeamId(teamId: MutableIntState): Response<List<Athlete>> {
+        return deportesRemoteDataSource.searchAthletesByTeamId(teamId)
     }
 
 }

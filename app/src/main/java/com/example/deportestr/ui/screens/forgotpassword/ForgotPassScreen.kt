@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -115,7 +116,7 @@ fun EmailChanged(user: String, viewModel: ForgotViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        placeholder = { Text(text = "user@dd.com") },
+        placeholder = { Text(text = stringResource(id = R.string.email_insert)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
@@ -128,7 +129,7 @@ fun EmailChanged(user: String, viewModel: ForgotViewModel) {
         ),
 
          */
-        label = { Text(text = "Introduce tu correo") }
+        label = { Text(text = stringResource(id = R.string.email_insert)) }
     )
 }
 
@@ -142,7 +143,7 @@ fun PasswordChanged(user: String, viewModel: ForgotViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        placeholder = { Text(text = "contraseña") },
+        placeholder = { Text(text = stringResource(id = R.string.password)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
@@ -170,7 +171,7 @@ fun PasswordChanged(user: String, viewModel: ForgotViewModel) {
         } else {
             PasswordVisualTransformation()
         },
-        label = { Text(text = "Introduce tu contraseña") }
+        label = { Text(text = stringResource(id = R.string.password_insert)) }
     )
 }
 
@@ -184,7 +185,7 @@ fun RepeateChanged(user: String, viewModel: ForgotViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        placeholder = { Text(text = "Repite la contraseña") },
+        placeholder = { Text(text = stringResource(id = R.string.password_repeat)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
@@ -212,7 +213,7 @@ fun RepeateChanged(user: String, viewModel: ForgotViewModel) {
         } else {
             PasswordVisualTransformation()
         },
-        label = { Text(text = "Introduce tu contraseña") }
+        label = { Text(text = stringResource(id = R.string.password_insert)) }
     )
 }
 
@@ -233,6 +234,6 @@ fun ChangePassword(loginEnabled: Boolean, goLogin: () -> Unit, viewModel: Forgot
             containerColor = Color(0xFF882D2D)
         ), enabled = loginEnabled
     ) {
-        Text(text = "Sign In")
+        Text(text = stringResource(id = R.string.sign_in))
     }
 }
