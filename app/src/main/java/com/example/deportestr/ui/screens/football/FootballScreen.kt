@@ -50,29 +50,33 @@ import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import kotlin.time.Duration.Companion.days
 
+/**
+ * funcion que carga el drawer y la interfaz
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FootballScreen(
     goLogin: () -> Unit,
     goHome: (String) -> Unit,
     email: String,
-    viewModel: FootballViewModel = hiltViewModel()
+    viewModel: FootballViewModel = hiltViewModel(),
+    goInfoTeam: (Int) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val user = viewModel.user
     val teams = viewModel.teams
     val events = viewModel.events
-
+    //Este launched effect al cargar la pantalla cambia unit y hace la busqueda del usuario para el drawer
+    //Y carga la informacion de los equipos y de los eventos/partidos
     LaunchedEffect(Unit) {
         viewModel.loadInfo(email)
         while (user == null || teams == null || events == null) {
             delay(200)
         }
     }
-
+    //Un drawer el cual deslizas en la pantalla y sale un desplegable de la izquierda con la informacion del usuario
     if (user != null) {
         ModalNavigationDrawer(drawerContent = {
             ModalDrawerSheet {
@@ -90,19 +94,19 @@ fun FootballScreen(
                         .padding(innerPadding)
                         .background(Color(0xFF303030))
                 ) {
-                    FootballContent(teams, events)
+                    FootballContent(teams, events, goInfoTeam)
                 }
             }
         }
     }
 }
-
+//El contenido de la pantalla con los resultados se crean 1 item por cada evento deportivo
 @Composable
-fun FootballContent(teams: List<Team>?, events: List<SportEvent>?) {
+fun FootballContent(teams: List<Team>?, events: List<SportEvent>?, goInfoTeam: (Int) -> Unit) {
     if (events != null) {
         LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
             items(events) { sportEvent ->
-                ItemFootball(sportEvent = sportEvent, teams = teams, events)
+                ItemFootball(sportEvent = sportEvent, teams = teams, events, goInfoTeam)
             }
         })
     }
@@ -110,11 +114,17 @@ fun FootballContent(teams: List<Team>?, events: List<SportEvent>?) {
 
 @SuppressLint("SimpleDateFormat")
 @Composable
-fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEvent>) {
+fun ItemFootball(
+    sportEvent: SportEvent,
+    teams: List<Team>?,
+    events: List<SportEvent>,
+    goInfoTeam: (Int) -> Unit
+) {
     val timestamp = sportEvent.date
     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
     val formattedDate = dateFormat.format(timestamp)
-
+    //Al no tener api externa hay que añadirle al evento los equipos que participen practicamente a mano
+    //Todos los eventos y los deportes vienen de la base de datos
     when (sportEvent.id) {
         25 -> Card(
             modifier = Modifier
@@ -137,11 +147,13 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
                         text = teams[0].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[0].id!!) }
                     )
                     Text(
                         text = teams[10].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[10].id!!) }
                     )
                 }
             }
@@ -175,11 +187,13 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
                         text = teams[16].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[16].id!!) }
                     )
                     Text(
                         text = teams[5].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[5].id!!) }
                     )
                 }
             }
@@ -213,11 +227,13 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
                         text = teams[12].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[12].id!!) }
                     )
                     Text(
                         text = teams[17].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[17].id!!) }
                     )
                 }
             }
@@ -251,11 +267,13 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
                         text = teams[9].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[9].id!!) }
                     )
                     Text(
                         text = teams[19].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[19].id!!) }
                     )
                 }
             }
@@ -289,11 +307,13 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
                         text = teams[6].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[6].id!!) }
                     )
                     Text(
                         text = teams[17].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[17].id!!) }
                     )
                 }
             }
@@ -327,11 +347,13 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
                         text = teams[4].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[4].id!!) }
                     )
                     Text(
                         text = teams[15].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[15].id!!) }
                     )
                 }
             }
@@ -365,11 +387,13 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
                         text = teams[3].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[3].id!!) }
                     )
                     Text(
                         text = teams[9].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[9].id!!) }
                     )
                 }
             }
@@ -403,11 +427,13 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
                         text = teams[9].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[9].id!!) }
                     )
                     Text(
                         text = teams[18].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[18].id!!) }
                     )
                 }
             }
@@ -422,7 +448,7 @@ fun ItemFootball(sportEvent: SportEvent, teams: List<Team>?, events: List<SportE
         }
     }
 }
-
+//El contenido del drawer que contiene los datos del usuario y navega hacia atras en este caso a la pantalla de home
 @Composable
 fun DrawerContentFootball(
     user: User?,
@@ -487,7 +513,7 @@ fun DrawerContentFootball(
         }
     }
 }
-
+//Contenido de la barra superior
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarFootball(onClickDrawer: () -> Unit) {

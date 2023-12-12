@@ -45,6 +45,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
 
+/**
+ * Funcion de registro por donde entra la navegacion y carga la interfaz
+ */
 @Composable
 fun RegisterScreen(
     goLogin: () -> Unit,
@@ -58,6 +61,9 @@ fun RegisterScreen(
     }
 }
 
+/**
+ * Funcion hecha en forma de columna llamando a pequeñas funciones para un mejor entendimiento del codigo
+ */
 @Composable
 fun Register(modifier: Modifier, viewModel: RegistrationViewModel, goLogin: () -> Unit) {
     val name = viewModel.name
@@ -79,13 +85,26 @@ fun Register(modifier: Modifier, viewModel: RegistrationViewModel, goLogin: () -
         NameRegister(name, viewModel)
         Spacer(modifier = Modifier.padding(15.dp))
         PasswordRegister(password, viewModel)
+        Text(
+            text = "*La contraseña debe de ser de mas de 6 caracteres",
+            color = Color.Red
+        )
         Spacer(modifier = Modifier.padding(15.dp))
         RepeatePassword(repeatPassword, viewModel)
         Spacer(modifier = Modifier.padding(16.dp))
         LogButton(loginEnabled, goLogin, viewModel)
     }
 }
-
+//Imagen del header o de la cabeza
+@Composable
+fun HeaderImageRegistration() {
+    Image(
+        painter = painterResource(id = R.drawable.logo_bueno),
+        contentDescription = null,
+        contentScale = ContentScale.Fit
+    )
+}
+//Titulo de la aplicacion
 @Composable
 fun SignTitle(modifier: Modifier) {
     Text(
@@ -97,15 +116,9 @@ fun SignTitle(modifier: Modifier) {
     )
 }
 
-@Composable
-fun HeaderImageRegistration() {
-    Image(
-        painter = painterResource(id = R.drawable.logo_bueno),
-        contentDescription = null,
-        contentScale = ContentScale.Fit
-    )
-}
 
+//El textfield del email para registrar el email del usuario
+//En caso de que no sea un email valido no se activara el boton de iniciar session
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailRegister(user: String, viewModel: RegistrationViewModel) {
@@ -119,18 +132,10 @@ fun EmailRegister(user: String, viewModel: RegistrationViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
-        /*
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFFFFFFF),
-            containerColor = Color(0xFF1D1D1D),
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-         */
         label = { Text(text = "Introduce tu correo") }
     )
 }
-
+//El textfield del nombre para registrar el nombre del usuario
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NameRegister(name: String, viewModel: RegistrationViewModel) {
@@ -156,7 +161,8 @@ fun NameRegister(name: String, viewModel: RegistrationViewModel) {
         label = { Text(text = stringResource(id = R.string.name_insert)) }
     )
 }
-
+//EL Textfield con la contraseña del usuario en caso de que la contraseña no tenga mas de seis caracteres
+//no se activara el boton de iniciar sesion
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordRegister(user: String, viewModel: RegistrationViewModel) {
@@ -171,15 +177,6 @@ fun PasswordRegister(user: String, viewModel: RegistrationViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
-        /*
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFFFFFFF),
-            containerColor = Color(0xFF1D1D1D),
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-
-         */
         trailingIcon = {
             val image = if (passwordVisibility) {
                 Icons.Filled.Visibility
@@ -199,6 +196,8 @@ fun PasswordRegister(user: String, viewModel: RegistrationViewModel) {
     )
 }
 
+//El Textfield de repetir la contraseña es igual que el de contraseña
+//Pero si la contraseña de este textfield no es igual al anterior el boton se quedara desactivado
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RepeatePassword(user: String, viewModel: RegistrationViewModel) {
@@ -213,15 +212,6 @@ fun RepeatePassword(user: String, viewModel: RegistrationViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
-        /*
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFFFFFFF),
-            containerColor = Color(0xFF1D1D1D),
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-
-         */
         trailingIcon = {
             val image = if (passwordVisibility) {
                 Icons.Filled.Visibility
@@ -240,7 +230,8 @@ fun RepeatePassword(user: String, viewModel: RegistrationViewModel) {
         label = { Text(text = stringResource(id = R.string.password_insert)) }
     )
 }
-
+//Boton el cuan guarda al usuario en la base de datos y navega a la pantalla de inicio de sesion
+//para validar el usuario
 @Composable
 fun LogButton(loginEnabled: Boolean, goLogin: () -> Unit, viewModel: RegistrationViewModel) {
     Button(

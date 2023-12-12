@@ -1,6 +1,5 @@
 package com.example.deportestr.datasource.remote
 
-import androidx.compose.runtime.MutableIntState
 import com.example.deportestr.ui.models.Athlete
 import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.SportEvent
@@ -65,7 +64,7 @@ class DeportesRemoteDataSourceImpl @Inject constructor(
             return@withContext deportesAPI.searchTeamById(teamId)
         }
 
-    override suspend fun searchAthletesByTeamId(teamId: MutableIntState): Response<List<Athlete>> =
+    override suspend fun searchAthletesByTeamId(teamId: Int): Response<List<Athlete>> =
         withContext(dispatcherProvider.ioDispatcher){
             return@withContext deportesAPI.searchAthletesByTeamId(teamId)
         }

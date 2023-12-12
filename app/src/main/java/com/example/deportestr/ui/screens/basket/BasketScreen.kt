@@ -47,31 +47,35 @@ import com.example.deportestr.R
 import com.example.deportestr.ui.models.SportEvent
 import com.example.deportestr.ui.models.Team
 import com.example.deportestr.ui.models.User
-import com.example.deportestr.ui.screens.football.ItemFootball
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-
+/**
+ * funcion que carga el drawer y la interfaz
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasketScreen(
     goLogin: () -> Unit,
     goHome: (String) -> Unit,
     email: String,
-    viewModel: BasketViewModel = hiltViewModel()
+    viewModel: BasketViewModel = hiltViewModel(),
+    goInfoTeam: (Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val user = viewModel.user
     val teams = viewModel.teams
     val events = viewModel.events
-
+    //Este launched effect al cargar la pantalla cambia unit y hace la busqueda del usuario para el drawer
+    //Y carga la informacion de los equipos y de los eventos/partidos
     LaunchedEffect(Unit) {
         viewModel.loadInfo(email)
         while (user == null || teams == null || events == null) {
             delay(200)
         }
     }
+    //Un drawer el cual deslizas en la pantalla y sale un desplegable de la izquierda con la informacion del usuario
 
     if (user != null) {
         ModalNavigationDrawer(drawerContent = {
@@ -90,19 +94,20 @@ fun BasketScreen(
                         .padding(innerPadding)
                         .background(Color(0xFF303030))
                 ) {
-                    BasketContent(teams, events)
+                    BasketContent(teams, events, goInfoTeam)
                 }
             }
         }
     }
 }
+//El contenido de la pantalla con los resultados se crean 1 item por cada evento deportivo
 
 @Composable
-fun BasketContent(teams: List<Team>?, events: List<SportEvent>?) {
+fun BasketContent(teams: List<Team>?, events: List<SportEvent>?, goInfoTeam: (Int) -> Unit) {
     if (events != null) {
         LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
             items(events) { sportEvent ->
-                ItemBasket(sportEvent = sportEvent, teams = teams, events)
+                ItemBasket(sportEvent = sportEvent, teams = teams, goInfoTeam)
             }
         })
     }
@@ -110,11 +115,16 @@ fun BasketContent(teams: List<Team>?, events: List<SportEvent>?) {
 
 @SuppressLint("SimpleDateFormat")
 @Composable
-fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEvent>) {
+fun ItemBasket(
+    sportEvent: SportEvent,
+    teams: List<Team>?,
+    goInfoTeam: (Int) -> Unit
+) {
     val timestamp = sportEvent.date
     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
     val formattedDate = dateFormat.format(timestamp)
-
+    //Al no tener api externa hay que añadirle al evento los equipos que participen practicamente a mano
+    //Todos los eventos y los deportes vienen de la base de datos
     when (sportEvent.id) {
         33 -> Card(
             modifier = Modifier
@@ -137,11 +147,13 @@ fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEve
                         text = teams[12].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[12].id!!) }
                     )
                     Text(
                         text = teams[13].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[13].id!!) }
                     )
                 }
             }
@@ -175,11 +187,13 @@ fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEve
                         text = teams[5].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[5].id!!) }
                     )
                     Text(
                         text = teams[17].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[17].id!!) }
                     )
                 }
             }
@@ -213,11 +227,13 @@ fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEve
                         text = teams[0].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[0].id!!) }
                     )
                     Text(
                         text = teams[3].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[3].id!!) }
                     )
                 }
             }
@@ -251,11 +267,13 @@ fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEve
                         text = teams[6].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[6].id!!) }
                     )
                     Text(
                         text = teams[11].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[11].id!!) }
                     )
                 }
             }
@@ -289,11 +307,13 @@ fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEve
                         text = teams[14].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[14].id!!) }
                     )
                     Text(
                         text = teams[16].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[16].id!!) }
                     )
                 }
             }
@@ -327,11 +347,13 @@ fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEve
                         text = teams[2].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[2].id!!) }
                     )
                     Text(
                         text = teams[8].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[8].id!!) }
                     )
                 }
             }
@@ -365,11 +387,14 @@ fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEve
                         text = teams[1].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[1].id!!) }
+
                     )
                     Text(
                         text = teams[4].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[4].id!!) }
                     )
                 }
             }
@@ -403,11 +428,13 @@ fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEve
                         text = teams[2].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[2].id!!) }
                     )
                     Text(
                         text = teams[17].name,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(2.dp)
+                            .clickable { goInfoTeam(teams[17].id!!) }
                     )
                 }
             }
@@ -422,7 +449,7 @@ fun ItemBasket(sportEvent: SportEvent, teams: List<Team>?, events: List<SportEve
         }
     }
 }
-
+//El contenido del drawer que contiene los datos del usuario y navega hacia atras en este caso a la pantalla de home
 @Composable
 fun DrawerContentBasket(
     user: User,
@@ -486,6 +513,9 @@ fun DrawerContentBasket(
     }
 }
 
+/**
+ * Barra superior de la pantalla
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarBasket(onClickDrawer: () -> Unit) {

@@ -46,31 +46,34 @@ import com.example.deportestr.R
 import com.example.deportestr.ui.models.SportEvent
 import com.example.deportestr.ui.models.Team
 import com.example.deportestr.ui.models.User
-import com.example.deportestr.ui.screens.motogp.ItemMotoGp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+/**
+ * funcion que carga el drawer y la interfaz
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WrcScreen(
     goLogin: () -> Unit,
     goHome: (String) -> Unit,
     email: String,
-    viewModel: WrcViewModel = hiltViewModel()
+    viewModel: WrcViewModel = hiltViewModel(),
+    goInfoTeam: (Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val user = viewModel.user
     val teams = viewModel.teams
     val events = viewModel.events
-
+    //Este launched effect al cargar la pantalla cambia unit y hace la busqueda del usuario para el drawer
+    //Y carga la informacion de los equipos y de los eventos/partidos
     LaunchedEffect(Unit) {
         viewModel.loadInfo(email)
         while (user == null || teams == null || events == null) {
             delay(200)
         }
     }
-
+    //Un drawer el cual deslizas en la pantalla y sale un desplegable de la izquierda con la informacion del usuario
     if (user != null) {
         ModalNavigationDrawer(drawerContent = {
             ModalDrawerSheet {
@@ -88,26 +91,30 @@ fun WrcScreen(
                         .padding(innerPadding)
                         .background(Color(0xFF303030))
                 ) {
-                    WrcContent(teams, events)
+                    WrcContent(teams, events, goInfoTeam)
                 }
             }
         }
     }
 }
-
+/**
+ * El contenido de la pantalla con los resultados se crean 1 item por cada evento deportivo
+ */
 @Composable
-fun WrcContent(teams: List<Team>?, events: List<SportEvent>?) {
+fun WrcContent(teams: List<Team>?, events: List<SportEvent>?, goInfoTeam: (Int) -> Unit) {
     if (events != null) {
         LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
             items(events) { sportEvent ->
-                ItemWrc(sportEvent = sportEvent, teams = teams)
+                ItemWrc(sportEvent = sportEvent, teams = teams, goInfoTeam)
             }
         })
     }
 }
 
 @Composable
-fun ItemWrc(sportEvent: SportEvent, teams: List<Team>?) {
+fun ItemWrc(sportEvent: SportEvent, teams: List<Team>?, goInfoTeam: (Int) -> Unit) {
+    //Al no tener api externa hay que añadirle al evento los equipos que participen practicamente a mano
+//Todos los eventos y los deportes vienen de la base de datos
     Card(
         modifier = Modifier
             .clickable { }
@@ -130,16 +137,19 @@ fun ItemWrc(sportEvent: SportEvent, teams: List<Team>?) {
                     text = teams[0].name,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(2.dp)
+                        .clickable { goInfoTeam(teams[0].id!!) }
                 )
                 Text(
                     text = teams[1].name,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(2.dp)
+                        .clickable { goInfoTeam(teams[1].id!!) }
                 )
                 Text(
                     text = teams[2].name,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(2.dp)
+                        .clickable { goInfoTeam(teams[2].id!!) }
                 )
             }
         }
@@ -154,6 +164,9 @@ fun ItemWrc(sportEvent: SportEvent, teams: List<Team>?) {
     }
 }
 
+/**
+ * Contenido del drawer con la informacion del usuario y la navegacion a la pantalla de deportes o home
+ */
 @Composable
 fun DrawerContentWrc(
     user: User,
@@ -216,7 +229,7 @@ fun DrawerContentWrc(
         }
     }
 }
-
+//Contenido de la barra superior
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarWrc(onClickDrawer: () -> Unit) {

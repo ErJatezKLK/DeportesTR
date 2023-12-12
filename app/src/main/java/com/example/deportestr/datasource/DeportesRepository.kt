@@ -20,6 +20,6 @@ interface DeportesRepository {
     suspend fun changePassword(user: User, newPassword: String): Response<Void>
     suspend fun searchAthletesBySport(sportId: Int): Response<List<Athlete>>
     suspend fun searchTeamById(teamId: Int): Response<Team>
-    suspend fun searchAthletesByTeamId(teamId: MutableIntState): Response<List<Athlete>>
+    suspend fun searchAthletesByTeamId(teamId: Int): Response<List<Athlete>>
 
 }

@@ -1,6 +1,5 @@
 package com.example.deportestr.datasource.remote
 
-import androidx.compose.runtime.MutableIntState
 import com.example.deportestr.ui.models.Athlete
 import com.example.deportestr.ui.models.Sport
 import com.example.deportestr.ui.models.SportEvent
@@ -85,7 +84,7 @@ interface DeportesAPI {
 
     @GET("atheletes-team")
     suspend fun searchAthletesByTeamId(
-        @Query("teamId") teamId: MutableIntState
+        @Query("teamId") teamId: Int
     ): Response<List<Athlete>>
 
 }

@@ -49,7 +49,9 @@ import com.example.deportestr.ui.models.Team
 import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+/**
+ * funcion que carga el drawer y la interfaz
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,21 +59,23 @@ fun FormulaScreen(
     goLogin: () -> Unit,
     goHome: (String) -> Unit,
     email: String,
-    viewModel: FormulaViewModel = hiltViewModel()
+    viewModel: FormulaViewModel = hiltViewModel(),
+    goInfoTeam: (Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val user = viewModel.user
     val teams = viewModel.teams
     val events = viewModel.events
-
+    //Este launched effect al cargar la pantalla cambia unit y hace la busqueda del usuario para el drawer
+    //Y carga la informacion de los equipos y de los eventos/partidos
     LaunchedEffect(Unit) {
         viewModel.loadInfo(email)
         while (user == null || teams == null || events == null) {
             delay(200)
         }
     }
-
+    //Un drawer el cual deslizas en la pantalla y sale un desplegable de la izquierda con la informacion del usuario
     if (user != null) {
         ModalNavigationDrawer(drawerContent = {
             ModalDrawerSheet {
@@ -89,43 +93,42 @@ fun FormulaScreen(
                         .padding(innerPadding)
                         .background(Color(0xFF303030))
                 ) {
-                    FormulaContent(teams, events)
+                    FormulaContent(teams, events, goInfoTeam)
                 }
             }
         }
     }
 }
 
+/**
+ * El contenido de la pantalla con los resultados se crean 1 item por cada evento deportivo
+ */
 @Composable
-fun FormulaContent(teams: List<Team>?, events: List<SportEvent>?) {
+fun FormulaContent(teams: List<Team>?, events: List<SportEvent>?, goInfoTeam: (Int) -> Unit) {
     if (events != null) {
         LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
             items(events) { sportEvent ->
-                ItemEvent(sportEvent = sportEvent, teams = teams)
+                ItemEvent(sportEvent = sportEvent, teams = teams, goInfoTeam)
             }
         })
     }
 }
 
+
 @Composable
-fun ItemEvent(sportEvent: SportEvent?, teams: List<Team>?) {
+fun ItemEvent(sportEvent: SportEvent?, teams: List<Team>?, goInfoTeam: (Int) -> Unit) {
     if (sportEvent != null || teams != null) {
         if (sportEvent != null) {
+            //Al no tener api externa hay que añadirle al evento los equipos que participen practicamente a mano
+            //Todos los eventos y los deportes vienen de la base de datos
             Card(
                 modifier = Modifier
-                    .clickable { }
                     .fillMaxWidth()
                     .background(Color(0xFFAD0000))
                     .padding(8.dp),
                 shape = MaterialTheme.shapes.small
             ) {
                 Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                    Text(
-                        text = "",
-                        fontSize = 23.sp,
-                        modifier = Modifier.padding(2.dp),
-                        fontWeight = FontWeight.Bold
-                    )
                     Text(
                         text = sportEvent.location,
                         fontSize = 23.sp,
@@ -139,51 +142,61 @@ fun ItemEvent(sportEvent: SportEvent?, teams: List<Team>?) {
                             text = teams[0].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[0].id!!) }
                         )
                         Text(
                             text = teams[1].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[1].id!!) }
                         )
                         Text(
                             text = teams[2].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[2].id!!) }
                         )
                         Text(
                             text = teams[3].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[3].id!!) }
                         )
                         Text(
                             text = teams[4].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[4].id!!) }
                         )
                         Text(
                             text = teams[5].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[5].id!!) }
                         )
                         Text(
                             text = teams[6].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[6].id!!) }
                         )
                         Text(
                             text = teams[7].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[7].id!!) }
                         )
                         Text(
                             text = teams[8].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[8].id!!) }
                         )
                         Text(
                             text = teams[9].name,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(2.dp)
+                                .clickable { goInfoTeam(teams[9].id!!) }
                         )
                     }
                 }
@@ -199,7 +212,9 @@ fun ItemEvent(sportEvent: SportEvent?, teams: List<Team>?) {
         }
     }
 }
-
+/**
+ * Contenido del drawer con la informacion del usuario y la navegacion a la pantalla de deportes o home
+ */
 @Composable
 fun DrawerContentFormula(
     user: User,
@@ -264,7 +279,7 @@ fun DrawerContentFormula(
         }
     }
 }
-
+//Contenido de la barra superior
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarFormula(onClickDrawer: () -> Unit) {

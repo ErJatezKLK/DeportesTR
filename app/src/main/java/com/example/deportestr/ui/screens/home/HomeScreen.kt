@@ -62,7 +62,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
+/**
+ * funcion que carga la pantalla de home
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,7 +84,8 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val user = viewModel.user
     val sports = viewModel.sports
-
+    //Este launched effect al cargar la pantalla cambia unit y hace la busqueda del usuario para el drawer
+    //Y carga la informacion de los deportes
     LaunchedEffect(Unit) {
         viewModel.loadInfo(email)
         while (user == null || sports == null) {
@@ -90,7 +93,7 @@ fun HomeScreen(
         }
     }
 
-
+    //Un drawer el cual deslizas en la pantalla y sale un desplegable de la izquierda con la informacion del usuario
     if (user != null && sports != null) {
         ModalNavigationDrawer(drawerContent = {
             ModalDrawerSheet {
@@ -101,7 +104,7 @@ fun HomeScreen(
         }, drawerState = drawerState) {
             Scaffold(topBar = {
                 TopBarContent(onClickDrawer = { coroutineScope.launch { drawerState.open() } })
-            }) { innerPadding ->
+            }) { innerPadding -> //innerPadding para que se separe de la barra de arriba en caso de no ponerlo se susperpone
                 Box(modifier = Modifier.padding(innerPadding)) {
                     HomeBody(goFootball, goFormula, goTenis, goMotoGp, goBasket, goWrc, sports, user)
                 }
@@ -129,6 +132,7 @@ fun HomeBody(
             sports.size
         }
 
+        //Links metidos a mano por que no tenemos api externa gratuita que nos aporte una feed de noticias
         val context = LocalContext.current
         val soyMotorNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://soymotor.com/f1/noticias/la-fia-prohibe-las-pruebas-aerodinamicas-para-desarrollar-los-monoplazas-de-2026")) }
         val footballNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://www.mundodeportivo.com/futbol/internacional/20231208/1002149782/hijo-leo-messi-mateo-viral-gol-inter-miami.html")) }
@@ -136,14 +140,16 @@ fun HomeBody(
         val motoGPNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://es.motorsport.com/motogp/news/trackhouse-propiedad-estadounidense-rnf-aprilia-motogp-2024/10555185/")) }
         val basketNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://www.mundodeportivo.com/baloncesto/nba/20231208/1002149578/brutal-racha-triplista-lebron-james-inicio-paliza-pelicans.html")) }
         val wrcNews = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://lat.motorsport.com/wrc/news/wrc-cambia-sistema-puntos-temporada-2024/10555680/")) }
-
+        //Estos launched effect son para los tabs o pestaña
+        //El primero hace que se vea cual esta seleccionado
+        //El segundo al pulsar va a la pestaña seleccionada
         LaunchedEffect(selectedTabIndex) {
             pagerState.animateScrollToPage(selectedTabIndex)
         }
         LaunchedEffect(pagerState.currentPage) {
             selectedTabIndex = pagerState.currentPage
         }
-
+        //Este ScrollableTabRow es para que las pestañas o tabs salgan en forma de fila
         Column {
             ScrollableTabRow(selectedTabIndex = selectedTabIndex) {
                 sports.forEachIndexed { index, sport ->
@@ -154,6 +160,7 @@ fun HomeBody(
                     )
                 }
             }
+            //El HorizontalPager para que se vean en horizontal las cards o cartas de presentacion
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
@@ -399,7 +406,7 @@ fun HomeBody(
                                     shape = MaterialTheme.shapes.small
                                 ){
                                     Text(
-                                        text = "La brutal racha triplista de LeBron James que inició la paliza a los Pelicans",
+                                        text = "La brutal racha triplista de LeBron James que inició la paliza a los Pelicansw",
                                         fontSize = 30.sp,
                                         modifier = Modifier.padding(2.dp),
                                         fontWeight = FontWeight.Bold
@@ -475,7 +482,7 @@ fun HomeBody(
     }
 }
 
-
+//Contenido de la barra superior
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarContent(onClickDrawer: () -> Unit) {
@@ -502,7 +509,7 @@ fun TopBarContent(onClickDrawer: () -> Unit) {
         colors = TopAppBarDefaults.largeTopAppBarColors(Color.Red)
     )
 }
-
+//Contenido del drawer con la informacion del usuario y la navegacion a la pantalla de usuario
 @Composable
 fun DrawerContent(
     user: User?,

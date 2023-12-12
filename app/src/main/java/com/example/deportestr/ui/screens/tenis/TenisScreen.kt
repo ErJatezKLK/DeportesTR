@@ -50,7 +50,9 @@ import com.example.deportestr.ui.screens.basket.ItemBasket
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-
+/**
+ * funcion que carga el drawer y la interfaz
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TenisScreen(
@@ -65,12 +67,16 @@ fun TenisScreen(
     val athletes = viewModel.athletes
     val events = viewModel.events
 
+    //Este launched effect al cargar la pantalla cambia unit y hace la busqueda del usuario para el drawer
+    //Y carga la informacion de los equipos y de los eventos/partidos
     LaunchedEffect(Unit) {
         viewModel.loadInfo(email)
         while (user == null || athletes == null || events == null) {
             delay(200)
         }
     }
+    //Un drawer el cual deslizas en la pantalla y sale un desplegable de la izquierda con la informacion del usuario
+
     if (user != null) {
         ModalNavigationDrawer(drawerContent = {
             ModalDrawerSheet {
@@ -97,6 +103,7 @@ fun TenisScreen(
     }
 }
 
+//El contenido de la pantalla con los resultados se crean 1 item por cada evento deportivo
 @Composable
 fun TenisContent(athletes: List<Athlete>?, events: List<SportEvent>?) {
     if (events != null) {
@@ -113,7 +120,8 @@ fun ItemTenis(sportEvent: SportEvent, athlete: List<Athlete>?, events: List<Spor
     val timestamp = sportEvent.date
     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
     val formattedDate = dateFormat.format(timestamp)
-
+    //Al no tener api externa hay que añadirle al evento los equipos que participen practicamente a mano
+    //Todos los eventos y los deportes vienen de la base de datos
     when (sportEvent.id) {
         41 -> Card(
             modifier = Modifier
@@ -422,6 +430,7 @@ fun ItemTenis(sportEvent: SportEvent, athlete: List<Athlete>?, events: List<Spor
     }
 }
 
+//El contenido del drawer que contiene los datos del usuario y navega hacia atras en este caso a la pantalla de home
 @Composable
 fun DrawerContentTenis(
     user: User?,
@@ -487,6 +496,9 @@ fun DrawerContentTenis(
     }
 }
 
+/**
+ * Barra superior de la pantalla
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarTenis(onClickDrawer: () -> Unit) {

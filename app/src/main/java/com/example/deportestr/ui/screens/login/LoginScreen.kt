@@ -2,7 +2,6 @@ package com.example.deportestr.ui.screens.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -47,8 +45,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
+import kotlinx.coroutines.time.delay
 
-
+/**
+ * LoginScreen se encarga de poner en pantalla la interfaz
+ */
 @Composable
 fun LoginScreen(
     goRegister: () -> Unit,
@@ -65,6 +66,9 @@ fun LoginScreen(
 
 }
 
+/**
+ * La estructura de la pantalla de login
+ */
 @Composable
 fun Login(
     modifier: Modifier,
@@ -78,18 +82,19 @@ fun Login(
     val loginEnabled = viewModel.loginEnabled
     viewModel.onLoginChange(email, password)
 
+    //Estructura en columna que llama a otras funciones para un codigo mas limpio y ordenado
+
     Column(modifier = Modifier) {
-        Row(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 20.dp, start = 10.dp)
-        ) {
-            TitleText()
-        }
+        HeaderImageLogin()
+        TitleTextLogIn(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.padding(60.dp))
-        UserNameField(email, viewModel)
+        UserEmailField(email, viewModel)
         Spacer(modifier = Modifier.padding(15.dp))
         PasswordField(password, viewModel)
+        Text(
+            text = "*La contraseña debe de ser de mas de 6 caracteres",
+            color = Color.Red
+        )
         Spacer(modifier = Modifier.padding(8.dp))
         ForgotPassword(Modifier.align(Alignment.End), goForgot)
         Spacer(modifier = Modifier.padding(16.dp))
@@ -100,23 +105,9 @@ fun Login(
     }
 }
 
-
+//La imagen del logo
 @Composable
-fun TitleText() {
-    Text(
-        text = "Deportes",
-        fontSize = 40.sp,
-        fontWeight = FontWeight.Bold,
-        color = Color(0xFFB10404),
-        modifier = Modifier.padding(start = 4.dp)
-    )
-    Text(
-        text = "TR",
-        fontSize = 40.sp,
-        fontWeight = FontWeight.Bold,
-        color = Color(0xFF000000),
-        modifier = Modifier.padding(start = 4.dp)
-    )
+fun HeaderImageLogin() {
     Image(
         painter = painterResource(id = R.drawable.logo_bueno),
         contentDescription = null,
@@ -124,12 +115,25 @@ fun TitleText() {
     )
 }
 
+//El titulo de la aplicacion
+@Composable
+fun TitleTextLogIn(modifier: Modifier) {
+    Text(
+        text = "DeportesTR",
+        fontSize = 40.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color(0xFFB10404),
+        modifier = modifier
+    )
+}
+
+//el textfield del email
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserNameField(email: String, viewModelV2: LoginViewModel) {
+fun UserEmailField(email: String, viewModel: LoginViewModel) {
     TextField(
         value = email,
-        onValueChange = { viewModelV2.email = it },
+        onValueChange = { viewModel.email = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
@@ -137,19 +141,12 @@ fun UserNameField(email: String, viewModelV2: LoginViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
-        /*
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFFFFFFF),
-            containerColor = Color(0xFF1D1D1D),
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-
-         */
         label = { Text(text = stringResource(id = R.string.email_insert)) }
     )
 }
 
+//El textfield de la contraseña con el trailing icon para que cambie al pulsar en el icono y
+//esta sea visible
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordField(password: String, viewModel: LoginViewModel) {
@@ -164,15 +161,6 @@ fun PasswordField(password: String, viewModel: LoginViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
-        /*
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFFFFFFF),
-            containerColor = Color(0xFF1D1D1D),
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-
-         */
         trailingIcon = {
             val image = if (passwordVisibility) {
                 Icons.Filled.Visibility
@@ -192,6 +180,7 @@ fun PasswordField(password: String, viewModel: LoginViewModel) {
     )
 }
 
+//Olvidaste la contraseña en caso de olvidarse vas a esta pantalla y la cambias
 @Composable
 fun ForgotPassword(modifier: Modifier, goForgot: () -> Unit) {
     Text(
@@ -206,14 +195,23 @@ fun ForgotPassword(modifier: Modifier, goForgot: () -> Unit) {
     )
 }
 
-
+//El boton de inicio de sesion el cual lleva a la pantalla de home
 @Composable
 fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModel, loginEnabled: Boolean) {
     val context = LocalContext.current
     val userLoaded = viewModel.userLoaded
 
+    LaunchedEffect(userLoaded){
+        viewModel.searchUser()
+    }
     Button(
         onClick = {
+            /**
+             *  Al pulsar el boton si el usuario es nulo o no se ha encontrado
+             *  por que se han introducido los datos mal saltaria un toast y saldria que el usuario
+             *  no se a encontrado o no existe
+             */
+
             viewModel.searchUser()
             val user = viewModel.user
             if (user != null) {
@@ -238,12 +236,9 @@ fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModel, loginEnabled:
     ) {
         Text(text = stringResource(id = R.string.sign_in))
     }
-
-    LaunchedEffect(userLoaded){
-        viewModel.searchUser()
-    }
 }
 
+//El boton de registro el cual lleva a la pantalla de registro
 @Composable
 fun RegisterButton(goRegister: () -> Unit) {
     Button(

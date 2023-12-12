@@ -1,4 +1,3 @@
-import androidx.compose.runtime.MutableIntState
 import com.example.deportestr.datasource.DeportesRepository
 
 import com.example.deportestr.datasource.remote.DeportesRemoteDataSource
@@ -53,7 +52,7 @@ class DeportesRepositoryImpl @Inject constructor(
         return deportesRemoteDataSource.searchTeamById(teamId)
     }
 
-    override suspend fun searchAthletesByTeamId(teamId: MutableIntState): Response<List<Athlete>> {
+    override suspend fun searchAthletesByTeamId(teamId: Int): Response<List<Athlete>> {
         return deportesRemoteDataSource.searchAthletesByTeamId(teamId)
     }
 

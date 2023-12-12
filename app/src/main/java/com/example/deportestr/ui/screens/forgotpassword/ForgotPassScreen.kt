@@ -45,6 +45,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deportestr.R
 
+/**
+ * Esta funcion es la que se llama cuando navegas desde el login
+ * la cual carga la interfaz
+ */
 @Composable
 fun ForgotScreen(
     goLogin: () -> Unit,
@@ -58,6 +62,10 @@ fun ForgotScreen(
     }
 }
 
+/**
+ * Una vez llegado aqui se carga en forma de columna
+ * Esta hecho asi para un mejor entendimiento y limpieza
+ */
 @Composable
 fun Forgotted(modifier: Modifier, viewModel: ForgotViewModel, goLogin: () -> Unit) {
     val email = viewModel.email
@@ -86,7 +94,16 @@ fun Forgotted(modifier: Modifier, viewModel: ForgotViewModel, goLogin: () -> Uni
         ChangePassword(loginEnabled, goLogin, viewModel)
     }
 }
-
+//El header con la imagen
+@Composable
+fun HeaderImageChange() {
+    Image(
+        painter = painterResource(id = R.drawable.logo_bueno),
+        contentDescription = null,
+        contentScale = ContentScale.Fit
+    )
+}
+//El titulo de la aplicacion
 @Composable
 fun SignChange(modifier: Modifier) {
     Text(
@@ -98,15 +115,8 @@ fun SignChange(modifier: Modifier) {
     )
 }
 
-@Composable
-fun HeaderImageChange() {
-    Image(
-        painter = painterResource(id = R.drawable.logo_bueno),
-        contentDescription = null,
-        contentScale = ContentScale.Fit
-    )
-}
 
+//El textfield con el email
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailChanged(user: String, viewModel: ForgotViewModel) {
@@ -120,19 +130,10 @@ fun EmailChanged(user: String, viewModel: ForgotViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
-        /*
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFF000000),
-            containerColor = Color(0xFF7E7E7E),
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-
-         */
         label = { Text(text = stringResource(id = R.string.email_insert)) }
     )
 }
-
+//El textfield con para cambiar la contraseña
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordChanged(user: String, viewModel: ForgotViewModel) {
@@ -147,15 +148,6 @@ fun PasswordChanged(user: String, viewModel: ForgotViewModel) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
-        /*
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFFFFFFF),
-            containerColor = Color(0xFF1D1D1D),
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-
-         */
         trailingIcon = {
             val image = if (passwordVisibility) {
                 Icons.Filled.Visibility
@@ -174,7 +166,7 @@ fun PasswordChanged(user: String, viewModel: ForgotViewModel) {
         label = { Text(text = stringResource(id = R.string.password_insert)) }
     )
 }
-
+//Repetir la contraseña en caso de que no sean iguales no se activa el boton de iniciar sesion
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RepeateChanged(user: String, viewModel: ForgotViewModel) {
@@ -216,11 +208,15 @@ fun RepeateChanged(user: String, viewModel: ForgotViewModel) {
         label = { Text(text = stringResource(id = R.string.password_insert)) }
     )
 }
-
+//Boton de inicio de sesion este lleva a la pantalla de inicio la cual te permite buscar el usuario
+//con tu nueva contraseña
 @Composable
 fun ChangePassword(loginEnabled: Boolean, goLogin: () -> Unit, viewModel: ForgotViewModel) {
     Button(
         onClick = {
+            //Una vez introducidos los datos al pinchar en el boton buscara al usuario por email
+            //y despues enviara al usuario buscado por email con la nueva contraseña y se cambiara en la api rest
+            //aparte te navegara al inicio de sesion para iniciar sesion
             viewModel.resetPassword()
             goLogin()
         },

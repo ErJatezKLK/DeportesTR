@@ -60,6 +60,9 @@ import com.example.deportestr.ui.models.User
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * Funcion a la que se navega desde el home y carga la interfaz del usuario
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,14 +76,16 @@ fun ProfileScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val user = viewModel.user
 
+    //Este launched effect al cargar la pantalla cambia unit y hace la busqueda del usuario para el drawer
+    //Y carga la informacion del usuario
     LaunchedEffect(Unit) {
         viewModel.loadInfoUser(email)
         while (user == null) {
             delay(100)
         }
     }
+    //Un drawer el cual deslizas en la pantalla y sale un desplegable de la izquierda con la informacion del usuario
     if (user != null) {
-
         ModalNavigationDrawer(drawerContent = {
             ModalDrawerSheet {
                 DrawerContentProfile(user, goLogin, goHome) {
@@ -103,7 +108,7 @@ fun ProfileScreen(
     }
 }
 
-
+//Barra superior de la pantalla
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarProfile(onClickDrawer: () -> Unit) {
@@ -130,7 +135,7 @@ fun TopBarProfile(onClickDrawer: () -> Unit) {
         colors = TopAppBarDefaults.largeTopAppBarColors(Color.Red),
     )
 }
-
+//Contenido del perfil
 @Composable
 fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) {
     Divider(
@@ -139,6 +144,7 @@ fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) 
             .fillMaxWidth()
             .padding(top = 10.dp), color = Color(0xFF757575)
     )
+    //Una caja con los paddings necesarios enre cada informacion
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -146,6 +152,7 @@ fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) 
             .padding(10.dp)
             .background(Color(0xFF303030))
     ) {
+        //El contenido con el header hecho en forma de columna
         Surface {
             Column(
                 modifier = Modifier
@@ -161,7 +168,7 @@ fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) 
     }
 }
 
-
+//El header que tendria la imagen del perfil del usuario
 @Composable
 fun ProfileHeader(maxHeight: Dp) {
 
@@ -177,6 +184,9 @@ fun ProfileHeader(maxHeight: Dp) {
     )
 }
 
+/**
+ * Informacion del usuario
+ */
 @Composable
 fun UserInfo(maxHeight: Dp, user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) {
     var show by remember { mutableStateOf(false) }
@@ -210,6 +220,9 @@ fun UserInfo(maxHeight: Dp, user: User, viewModel: ProfieViewModel, goLogin: () 
     }
 }
 
+/**
+ * Dialog para borrar la cuenta
+ */
 @Composable
 fun DeleteAccountDialog(
     user: User,
@@ -240,6 +253,9 @@ fun DeleteAccountDialog(
     }
 }
 
+/**
+ * Nombre de usuario
+ */
 @Composable
 private fun Name(modifier: Modifier = Modifier, user: User) {
     Text(
@@ -249,6 +265,9 @@ private fun Name(modifier: Modifier = Modifier, user: User) {
     )
 }
 
+/**
+ * Texto para descriptivo para informacion del perfil
+ */
 @Composable
 private fun Position(modifier: Modifier = Modifier) {
     Text(
@@ -259,6 +278,9 @@ private fun Position(modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * Propiedad del perfil con dividers por cada credencial del usuario
+ */
 @Composable
 fun ProfileProperty(label: String, value: String, isLink: Boolean = false) {
     Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
@@ -282,6 +304,9 @@ fun ProfileProperty(label: String, value: String, isLink: Boolean = false) {
     }
 }
 
+/**
+ * Contenido del drawer con la informacion del usuario y la navegacion a la pantalla de deportes o home
+ */
 @Composable
 fun DrawerContentProfile(
     user: User?,

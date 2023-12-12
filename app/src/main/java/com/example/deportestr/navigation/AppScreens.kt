@@ -12,5 +12,7 @@ sealed class AppScreens(val route: String){
     object MotoGpScreen: AppScreens("motogp")
     object BasketScreen: AppScreens("basket")
     object WrcScreen: AppScreens("wrc")
+    object TeamInfoScreen: AppScreens("infoTeam")
     object ChatScreen: AppScreens("chat")
+
 }
