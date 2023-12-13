@@ -33,9 +33,11 @@ class LoginViewModel @Inject constructor(
             awaitAll(
                 async {
                     val responseBody = searchUserUsecases.searchUser(email, password)
-                    user = responseBody.body()
-                    userLoaded = true
-                    Log.i(TAG, "User loaded: $user")
+                    if (responseBody.isSuccessful){
+                        userLoaded = true
+                        user = responseBody.body()
+                    }
+                    Log.i(TAG, "User loaded: $user $userLoaded")
                 }
             )
         }

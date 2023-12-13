@@ -200,10 +200,6 @@ fun ForgotPassword(modifier: Modifier, goForgot: () -> Unit) {
 fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModel, loginEnabled: Boolean) {
     val context = LocalContext.current
     val userLoaded = viewModel.userLoaded
-
-    LaunchedEffect(userLoaded){
-        viewModel.searchUser()
-    }
     Button(
         onClick = {
             /**
@@ -236,6 +232,7 @@ fun LoginButton(home: (String) -> Unit, viewModel: LoginViewModel, loginEnabled:
     ) {
         Text(text = stringResource(id = R.string.sign_in))
     }
+
 }
 
 //El boton de registro el cual lleva a la pantalla de registro
