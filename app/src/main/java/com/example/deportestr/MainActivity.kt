@@ -26,6 +26,9 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(Color(0xFF303030))
                 ) {
+                    /**
+                     * El navController hace que se inicie la aplicacion desde la ruta que le digas dentro de navigation
+                     */
                     val navController = rememberNavController()
                     AppNavigation(navController)
                 }
