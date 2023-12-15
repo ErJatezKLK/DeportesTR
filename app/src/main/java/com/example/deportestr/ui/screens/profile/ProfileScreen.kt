@@ -135,7 +135,7 @@ fun TopBarProfile(onClickDrawer: () -> Unit) {
         colors = TopAppBarDefaults.largeTopAppBarColors(Color.Red),
     )
 }
-//Contenido del perfil
+//Contenido del perfilç
 @Composable
 fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) {
     Divider(
@@ -144,7 +144,7 @@ fun ProfileContent(user: User, viewModel: ProfieViewModel, goLogin: () -> Unit) 
             .fillMaxWidth()
             .padding(top = 10.dp), color = Color(0xFF757575)
     )
-    //Una caja con los paddings necesarios enre cada informacion
+    //Una caja con los paddings necesarios entre cada informacion
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()

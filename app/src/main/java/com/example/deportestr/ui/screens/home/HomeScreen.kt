@@ -160,7 +160,7 @@ fun HomeBody(
                     )
                 }
             }
-            //El HorizontalPager para que se vean en horizontal las cards o cartas de presentacion
+            //El HorizontalPager para que se deslice de izquierda a derecha las cards o cartas de presentacion
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
